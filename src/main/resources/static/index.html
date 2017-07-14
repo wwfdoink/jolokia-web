@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html ng-app="myApp" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Jolokia Web</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/jolokiaweb/static/lib/bootstrap-3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/jolokiaweb/static/lib/bootstrap-3.3.7/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/jolokiaweb/static/lib/angular-treeview/css/angular.treeview.css">
+
+    <link rel="stylesheet" href="/jolokiaweb/static/css/style.css">
+
+    <!-- Angular -->
+    <script src="/jolokiaweb/static/lib/angular-1.6.5/angular.min.js"></script>
+    <script src="/jolokiaweb/static/lib/angular-1.6.5/angular-route.min.js"></script>
+    <script src="/jolokiaweb/static/lib/chart.js-2.6.0/chart.min.js"></script>
+    <script src="/jolokiaweb/static/lib/angular-chart-1.1.1/angular-chart.min.js"></script>
+    <script src="/jolokiaweb/static/lib/angular-treeview/angular.treeview.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#/">JolokiaWeb</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="#!/">Dashboard</a></li>
+                    <li><a href="#!/mbean">MBeans</a></li>
+                    <li><a href="#!/version">Version</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="row" ng-view>
+        </div>
+    </div>
+
+    <script src="/jolokiaweb/static/lib/jquery-3.2.1/jquery-3.2.1.min.js"></script>
+    <script src="/jolokiaweb/static/lib/underscore-1.8.3/underscore-min.js"></script>
+    <script src="/jolokiaweb/static/lib/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script src="/jolokiaweb/static/app.js"></script>
+    <script src="/jolokiaweb/static/filter/toArray.js"></script>
+    <script src="/jolokiaweb/static/filter/beanTree.js"></script>
+    <script src="/jolokiaweb/static/service/DashboardService.js"></script>
+    <script src="/jolokiaweb/static/service/JolokiaService.js"></script>
+    <script src="/jolokiaweb/static/component/cpuChart.js"></script>
+    <script src="/jolokiaweb/static/component/heapChart.js"></script>
+    <script src="/jolokiaweb/static/component/threadChart.js"></script>
+    <script src="/jolokiaweb/static/controller/DashboardController.js"></script>
+    <script src="/jolokiaweb/static/controller/MbeanController.js"></script>
+    <script src="/jolokiaweb/static/controller/VersionController.js"></script>
+</body>
+</html>

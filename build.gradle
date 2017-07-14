@@ -1,0 +1,52 @@
+apply plugin: 'application'
+apply plugin: 'java'
+apply plugin: 'idea'
+
+def javaVersion = '1.8'
+def springVersion = '4.3.9.RELEASE'
+def tomcatVersion = '8.5.16'
+def tomcatLog4jVersion = '8.5.2'
+def jacksonVersion = '2.8.9'
+def jacksonMapperVersion = '1.9.13'
+def jolokiaClientVersion = '2.0.0-M3'
+
+sourceCompatibility = javaVersion
+targetCompatibility = javaVersion
+
+mainClassName = 'prj.jolokiaweb'
+
+jar {
+    baseName = 'jolokia-web'
+    version =  '0.1.0'
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.springframework:spring-webmvc:${springVersion}",
+            "org.jolokia:jolokia-client-java:${jolokiaClientVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-logging-log4j:${tomcatLog4jVersion}",
+            "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}",
+            "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+}
+
+task onejar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.0.1'
+}
+

@@ -1,0 +1,74 @@
+<div class="col-sm-3 col-md-2 sidebar">
+    <div
+        data-angular-treeview="true"
+        data-tree-model="tree"
+        data-tree-id="beanTree"
+        data-node-id="id"
+        data-node-label="name"
+        data-node-children="children" >
+    </div>
+</div>
+
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <h2 class="sub-header">Info</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <tr>
+                <td>Class</td>
+                <td>{{beanTree.currentNode.class}}</td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td>{{beanTree.currentNode.desc}}</td>
+            </tr>
+        </table>
+    </div>
+
+    <h2 class="sub-header">Attributes</h2>
+    <div class="table-responsive" ng-if="beanTree.currentNode">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                    <th>Write</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="attr in beanTree.currentNode.attr | orderBy:'name'">
+                    <td>{{attr.name}}</td>
+                    <td>{{attr.value}}</td>
+                    <td>{{attr.rw}}</td>
+                    <td>{{attr.type}}</td>
+                    <td>{{attr.desc}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2 class="sub-header">Operations</h2>
+    <div class="table-responsive" ng-if="beanTree.currentNode">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Function</th>
+                    <th>ReturnType</th>
+                    <th>Description</th>
+                    <th>Args</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="o in beanTree.currentNode.op | orderBy:'name'">
+                    <td>{{o.name}}</td>
+                    <td>{{o.ret}}</td>
+                    <td>{{o.desc}}</td>
+                    <td>
+                        <span class="badge" ng-repeat="ar in o.args">{{ar.name}}:{{ar.type}}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
