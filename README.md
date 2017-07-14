@@ -22,3 +22,5 @@ JolokiaApp app = new JolokiaApp.Builder("http://localhost:8778/jolokia")
 app.start();
 //app.startAndWait();
 ```
+
+Open your browser and navigate to http://yourhost:8081/jolokiaweb
