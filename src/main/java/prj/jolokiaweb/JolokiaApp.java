@@ -83,7 +83,12 @@ public class JolokiaApp {
          * @param jolokiaUrl absolute URL to the jolokia endpoint
          */
         public Builder(final String jolokiaUrl) {
-            this.jolokiaUrl = jolokiaUrl;
+            // bulk request and multi attribute requests requires the trailing slash
+            if (jolokiaUrl.endsWith("/")) {
+                this.jolokiaUrl = jolokiaUrl;
+            } else {
+                this.jolokiaUrl = jolokiaUrl+"/";
+            }
             this.port = 8080;
         }
 
