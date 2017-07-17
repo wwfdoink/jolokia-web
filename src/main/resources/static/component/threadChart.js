@@ -4,24 +4,26 @@ angular.module("myApp").component('threadChart', {
     },
     controllerAs: 'ctx',
     controller: function($rootScope, DashboardService){
-        this.labels = DashboardService.threadChartData().labels;
-        this.series = DashboardService.threadChartData().series;
-        this.data = DashboardService.threadChartData().data;
+        this.$onInit = () => {
+            this.labels = DashboardService.threadChartData().labels;
+            this.series = DashboardService.threadChartData().series;
+            this.data = DashboardService.threadChartData().data;
 
-        this.datasetOverride = [{ yAxisID: 'y-axis-thread1' }];
-        this.options = {
-            scales: {
-                yAxes: [{
-                    id: 'y-axis-thread1',
-                    type: 'linear',
-                    display: true,
-                    position: 'left',
-                    ticks: {
-                        beginAtZero:true,
-                    }
-                }]
-            }
-        };
+            this.datasetOverride = [{ yAxisID: 'y-axis-thread1' }];
+            this.options = {
+                scales: {
+                    yAxes: [{
+                        id: 'y-axis-thread1',
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        ticks: {
+                            beginAtZero:true,
+                        }
+                    }]
+                }
+            };
+        }
 
         this.onClick = function (points, evt) {
             console.log(points, evt);

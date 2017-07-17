@@ -106,3 +106,12 @@ body {
   display: inline-block;
   border-radius: 50%;
 }
+
+
+.sidebar > div > ul > li {
+    padding-left:0;
+}
+
+.loading {
+    font-size: 3em;
+}

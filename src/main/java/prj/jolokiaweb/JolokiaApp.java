@@ -14,7 +14,7 @@ public class JolokiaApp {
         READ,WRITE,EXEC
     }
     private static final int DEFAULT_PORT = 8080;
-    private static final String DEFAULT_JOLOKIA_URL = "http://localhost:8778/jolokia";
+    private static final String DEFAULT_JOLOKIA_URL = "http://localhost:8778/jolokia/";
     private final Tomcat tomcat;
     private static String jolokiaUrl = null;
     private final Set<JolokiaBeanPermission> beanPermissions = new HashSet<>();

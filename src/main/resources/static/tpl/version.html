@@ -1,24 +1,34 @@
 <div class="col-sm-12">
-    <h1 class="page-header">Runtime</h1>
-    <table class="table table-striped">
-        <tr>
-            <th>#</th>
-            <th>Value</th>
-        </tr>
-        <tr ng-repeat="item in runtimeData">
-            <td>{{item.key}}</td>
-            <td>{{item.value}}</td>
-        </tr>
-    </table>
-    <h1 class="page-header">Jolokia Version</h1>
-    <table class="table table-striped">
-        <tr>
-            <th>#</th>
-            <th>Value</th>
-        </tr>
-        <tr ng-repeat="item in versionData">
-            <td>{{item.key}}</td>
-            <td>{{item.value}}</td>
-        </tr>
-    </table>
+    <div class="loading" ng-show="loading">
+        <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+    </div>
+
+    <div ng-show="error && !loading" class="alert alert-danger" role="alert">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{error}}
+    </div>
+
+    <div ng-show="!loading && !error">
+        <h1 class="page-header">Runtime</h1>
+        <table class="table table-striped">
+            <tr>
+                <th>#</th>
+                <th>Value</th>
+            </tr>
+            <tr ng-repeat="item in runtimeData">
+                <td>{{item.key}}</td>
+                <td>{{item.value}}</td>
+            </tr>
+        </table>
+        <h1 class="page-header">Jolokia Version</h1>
+        <table class="table table-striped">
+            <tr>
+                <th>#</th>
+                <th>Value</th>
+            </tr>
+            <tr ng-repeat="item in versionData">
+                <td>{{item.key}}</td>
+                <td>{{item.value}}</td>
+            </tr>
+        </table>
+    </div>
 </div>

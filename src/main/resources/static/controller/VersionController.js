@@ -1,6 +1,7 @@
 angular.module("myApp").controller('VersionController', function($scope, JolokiaService) {
     $scope.versionData = [];
     $scope.runtimeData = [];
+    $scope.loading = true;
 
     JolokiaService.version().then(function(res){
         var verArr = [];
@@ -24,5 +25,10 @@ angular.module("myApp").controller('VersionController', function($scope, Jolokia
             }
         });
         $scope.runtimeData = runArr;
-    })
+    }).catch(function(err) {
+        if (_.isObject(err.data)) { $scope.error = err.data.error; }
+        else { $scope.error = err.data; }
+    }).finally(function(){
+        $scope.loading = false;
+    });
 });
