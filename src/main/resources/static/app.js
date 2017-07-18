@@ -1,4 +1,4 @@
-var app = angular.module('myApp', ['ngRoute', 'chart.js', 'angularTreeview']);
+var app = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'chart.js', 'angularTreeview']);
 
 app.config(function($routeProvider) {
     var pre = "/jolokiaweb/static/";

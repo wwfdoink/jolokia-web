@@ -69,6 +69,7 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Function</th>
                         <th>ReturnType</th>
                         <th>Description</th>
@@ -77,6 +78,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="o in beanTree.currentNode.op | orderBy:'name'">
+                        <td><execute-button bean="beanTree.currentNode" operation="o"></execute-button></td>
                         <td>{{o.name}}</td>
                         <td>{{o.ret}}</td>
                         <td>{{o.desc}}</td>

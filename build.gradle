@@ -38,6 +38,7 @@ dependencies {
             "org.webjars:jquery:3.2.1",
             "org.webjars.bower:angularjs:1.6.5",
             "org.webjars.bower:angular-route:1.6.5",
+            'org.webjars.npm:angular-ui-bootstrap:2.5.0',
             "org.webjars.bower:chartjs:2.6.0",
             "org.webjars:angular-chart.js:1.1.1",
             "org.webjars.bower:angular-chart.js:1.1.1",

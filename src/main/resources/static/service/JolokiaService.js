@@ -19,7 +19,11 @@ app.service("JolokiaService", function($http){
     this.write = function(){
         return $http.get("/jolokiaweb/api/write");
     }
-    this.exec = function(){
-        return $http.get("/jolokiaweb/api/exec");
+    this.execute = function(mbean, operation, data){
+        return $http.post("/jolokiaweb/api/execute", {
+            mbean: mbean,
+            operation: operation,
+            data: data
+        });
     }
 });

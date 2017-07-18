@@ -28,10 +28,10 @@ angular.module("myApp").controller('MbeanController', function($scope, JolokiaSe
                         });
                     }
                 }
-                $scope.loading = false;
-            }, function(err){
+            }).catch(function(err){
                 if (_.isObject(err.data)) { $scope.error = err.data.error; }
                 else { $scope.error = err.data; }
+            }).finally(function(){
                 $scope.loading = false;
             });
         }
