@@ -115,3 +115,6 @@ body {
 .loading {
     font-size: 3em;
 }
+.operation-table .badge {
+    margin-right: 0.5em;
+}

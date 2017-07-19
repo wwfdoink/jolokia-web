@@ -19,11 +19,14 @@ app.service("JolokiaService", function($http){
     this.write = function(){
         return $http.get("/jolokiaweb/api/write");
     }
-    this.execute = function(mbean, operation, data){
+    this.execute = function(mbean, operation, paramArray){
+        if (!_.isArray(paramArray)) {
+            throw "paramArray is not an array..";
+        }
         return $http.post("/jolokiaweb/api/execute", {
             mbean: mbean,
             operation: operation,
-            data: data
+            data: paramArray
         });
     }
 });

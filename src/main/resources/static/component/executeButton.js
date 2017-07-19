@@ -11,34 +11,12 @@ angular.module("myApp").component('executeButton', {
             $scope.loading = false;
         }
 
-        this.execute = function(){
-            console.log("exec");
-            $scope.loading = true;
-            JolokiaService.execute(this.bean.id, this.operation.name, null).then(function(res) {
-                console.log(res.data);
-                $scope.loading = false;
-                $ctrl.openComponentModal($ctrl.operation.name, res.data, false);
-            }).catch(function(err){
-                if (_.isObject(err.data)) { $scope.error = err.data.error; }
-                else { $scope.error = err.data; }
-                this.openComponentModal($ctrl.operation.name, $scope.error, true);
-            }).finally(function(){
-                $scope.loading = false;
-            });
-        }
-
-        this.openComponentModal = function(title, data, isError) {
+        this.openForm = function() {
             var modalInstance = $uibModal.open({
-                component: 'valueDisplayModal',
+                component: 'executeFormModal',
                 resolve: {
-                    data: function () {
-                        if (_.isEmpty(data.value)) {
-                            return "Execution completed!";
-                        }
-                        return data.value;
-                    },
-                    title: function(){ return title; },
-                    isError: function(){ return isError; }
+                    bean: function(){ return $ctrl.bean; },
+                    operation: function(){ return $ctrl.operation; }
                 }
             });
 

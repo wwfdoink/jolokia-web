@@ -1,0 +1,16 @@
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Set parameters for {{$ctrl.operation.name}}</h3>
+</div>
+<div class="modal-body" id="modal-body">
+    <div class="alert alert-info" role="alert" ng-if="$ctrl.operation.args.length < 1"><i class="fa fa-info-circle" aria-hidden="true"></i> This operation has no parameters!</div>
+    <form>
+        <value-input ng-repeat="arg in $ctrl.operation.args" arg="arg">
+        </value-input>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-disabled="loading" ng-click="$ctrl.execute()">
+        <i class="fa fa-spinner fa-spin" ng-show="loading"></i><i class="fa fa-play" ng-hide="loading"></i> Execute
+    </button>
+    <button class="btn btn-default" type="button" ng-click="$ctrl.close()">Close</button>
+</div>

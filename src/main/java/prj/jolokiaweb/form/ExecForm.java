@@ -1,12 +1,12 @@
 package prj.jolokiaweb.form;
 
-
-import org.json.simple.JSONObject;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExecForm {
     private String mbean;
     private String operation;
-    private Object data;
+    private List<Object> data = new ArrayList<>();
 
     public String getMbean() {
         return mbean;
@@ -24,11 +24,11 @@ public class ExecForm {
         this.operation = operation;
     }
 
-    public Object getData() {
+    public List<Object> getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(List<Object> data) {
         this.data = data;
     }
 }

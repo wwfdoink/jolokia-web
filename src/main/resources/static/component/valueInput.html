@@ -1,0 +1,20 @@
+<div class="form-group" ng-switch on="$ctrl.getType()">
+    <label class="sr-only" for="{{$ctrl.arg.name}}">{{$ctrl.arg.name}}</label>
+    <div ng-switch-when="simple" class="input-group">
+        <div class="input-group-addon">{{$ctrl.arg.name}}</div>
+        <input type="text" id="{{$ctrl.arg.name}}" class="form-control" placeholder="{{$ctrl.arg.name}}" ng-model="$ctrl.arg.value">
+        <div class="input-group-addon">{{$ctrl.arg.type}}</div>
+    </div>
+
+    <div ng-switch-when="number" class="input-group">
+        <div class="input-group-addon">{{$ctrl.arg.name}}</div>
+        <input type="number" id="{{$ctrl.arg.name}}" class="form-control" placeholder="{{$ctrl.arg.name}}" ng-model="$ctrl.arg.value">
+        <div class="input-group-addon">{{$ctrl.arg.type}}</div>
+    </div>
+
+    <div ng-switch-when="bool" class="input-group">
+        <div class="input-group-addon"><input type="checkbox" id="{{$ctrl.arg.name}}" ng-model="$ctrl.arg.value"></div>
+        <input type="text" class="form-control" value="{{$ctrl.arg.name}}" readonly>
+        <div class="input-group-addon">{{$ctrl.arg.type}}</div>
+    </div>
+</div>

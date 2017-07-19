@@ -66,25 +66,21 @@
     <div ng-if="beanTree.currentNode.op.length > 0">
         <h2 class="sub-header">Operations</h2>
         <div class="table-responsive" ng-if="beanTree.currentNode">
-            <table class="table table-striped">
+            <table class="table table-striped operation-table">
                 <thead>
                     <tr>
-                        <th></th>
+                        <th style="width:90px;"></th>
                         <th>Function</th>
                         <th>ReturnType</th>
                         <th>Description</th>
-                        <th>Args</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="o in beanTree.currentNode.op | orderBy:'name'">
                         <td><execute-button bean="beanTree.currentNode" operation="o"></execute-button></td>
-                        <td>{{o.name}}</td>
+                        <td>{{o.name}} <span class="badge" ng-repeat="ar in o.args">{{ar.name}}:{{ar.type}}</span></td>
                         <td>{{o.ret}}</td>
                         <td>{{o.desc}}</td>
-                        <td>
-                            <span class="badge" ng-repeat="ar in o.args">{{ar.name}}:{{ar.type}}</span>
-                        </td>
                     </tr>
                 </tbody>
             </table>

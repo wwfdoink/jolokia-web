@@ -12,6 +12,7 @@ angular.module("myApp").component('valueDisplayModal', {
             $ctrl.title = $ctrl.resolve.title;
             $ctrl.data = $ctrl.resolve.data;
             $ctrl.isError = $ctrl.resolve.isError;
+            $ctrl.error = $ctrl.resolve.error;
         };
 
         $ctrl.cancel = function () {

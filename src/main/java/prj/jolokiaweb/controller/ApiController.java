@@ -112,8 +112,8 @@ public class ApiController {
         J4pClient j4pClient = new J4pClient(JolokiaApp.getJolokiaUrl());
         try {
             J4pExecRequest execReq;
-            if (execForm.getData() != null) {
-                execReq = new J4pExecRequest(execForm.getMbean(), execForm.getOperation(), execForm.getData());
+            if (execForm.getData() != null && execForm.getData().size() > 0) {
+                execReq = new J4pExecRequest(execForm.getMbean(), execForm.getOperation(), execForm.getData().toArray());
             } else {
                 execReq = new J4pExecRequest(execForm.getMbean(), execForm.getOperation());
             }
