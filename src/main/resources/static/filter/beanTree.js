@@ -29,7 +29,15 @@ angular.module('myApp').filter('beanTree', function() {
         } else {
         }
     }
-    
+
+    function getTypeName(str){
+        if (str === "[J") { return "long[]"; }
+        else if (str.startsWith("[L") && str.endsWith(";")) {
+            return str.replace(/^\[L/, "").replace(/;$/,"") + "[]";
+        }
+        return str;
+    }
+
     var parentCache = {
     }
     function traverseObject (obj, target, path) {
@@ -79,7 +87,8 @@ angular.module('myApp').filter('beanTree', function() {
                                 name: attrKey,
                                 rw: obj[key].attr[attrKey].rw,
                                 desc: obj[key].attr[attrKey].desc,
-                                type: obj[key].attr[attrKey].type
+                                type: getTypeName(obj[key].attr[attrKey].type),
+                                typeOrig: obj[key].attr[attrKey].type
                             });
                         }
                     }
@@ -96,12 +105,13 @@ angular.module('myApp').filter('beanTree', function() {
                                     name: opName,
                                     args: [],
                                 }
-                                operationNode.ret = fnc.ret;
+                                operationNode.ret = getTypeName(fnc.ret);
                                 operationNode.desc = fnc.desc;
                                 fnc.args.forEach(function(argument){
                                     operationNode.args.push({
                                         name: argument.name,
-                                        type: argument.type,
+                                        type: getTypeName(argument.type),
+                                        typeOrig: argument.type,
                                     });									
                                 });
                                 node.op.push(operationNode);									

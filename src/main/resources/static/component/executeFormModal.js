@@ -21,7 +21,7 @@ angular.module("myApp").component('executeFormModal', {
         $ctrl.getOperationNameWithSignature = function(){
             // since some of the functions are overloaded, you need to pass the signatures to the method name
             var sigArr = _.map($ctrl.resolve.operation.args, function(arg){
-                return arg.type;
+                return arg.typeOrig;
             });
             return $ctrl.operation.name + "(" + sigArr.join(',') + ")";
         }

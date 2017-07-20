@@ -4,16 +4,15 @@ angular.module("myApp").component('valueInput', {
         arg: '='
     },
     controller: function($scope) {
+        var $ctrl = this;
         this.$onInit = function(){
             if (this.arg.type === "boolean") {
                 this.arg.value = false;
             }
         }
         this.getType = function(){
-            if (this.arg.type === "[Ljava.lang.String;") {
-                return "array";
-            } else if (this.arg.type === "boolean") {
-                return "bool";
+            if (_.contains(["java.lang.String[]", "long[]", "boolean"], this.arg.type)) {
+                return this.arg.type;
             } else if (this.isNumber(this.arg.type)) {
                 return "number";
             } else {
@@ -28,16 +27,20 @@ angular.module("myApp").component('valueInput', {
             return false;
         }
 
-        this.getTypeText = function(){
-            var type = this.getType();
-            if (type === "array") {
-                return "Array";
-            } else if (type === "boolean") {
-                return "Boolean";
-            } else if (this.isNumber(this.arg.type)) {
-                return "Number";
-            } else {
-                return "Text";
+        this.pushToArray = function(val){
+            if (val === "" || typeof val === "undefined" || val === null) {
+                return;
+            }
+            if (!_.isArray($ctrl.arg.value)) {
+                $ctrl.arg.value = [];
+            }
+            $ctrl.arg.value.push(val);
+            $ctrl.arrayInput = null;
+        }
+
+        this.removeFromArray = function(idx){
+            if (idx > -1) {
+                $ctrl.arg.value.splice(idx, 1);
             }
         }
     }

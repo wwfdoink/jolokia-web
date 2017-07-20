@@ -12,9 +12,33 @@
         <div class="input-group-addon">{{$ctrl.arg.type}}</div>
     </div>
 
-    <div ng-switch-when="bool" class="input-group">
+    <div ng-switch-when="boolean" class="input-group">
         <div class="input-group-addon"><input type="checkbox" id="{{$ctrl.arg.name}}" ng-model="$ctrl.arg.value"></div>
         <input type="text" class="form-control" value="{{$ctrl.arg.name}}" readonly>
         <div class="input-group-addon">{{$ctrl.arg.type}}</div>
     </div>
+
+    <div class="panel panel-default" ng-if="$ctrl.arg.type.endsWith('[]')">
+        <div class="panel-heading">{{$ctrl.arg.name}}</div>
+        <div class="panel-body">
+            <div class="input-group">
+                <input type="{{($ctrl.arg.type == 'long[]') ? 'number' : 'text'}}" ng-model="$ctrl.arrayInput" class="form-control" placeholder="Enter a single value for {{$ctrl.arg.name}} array">
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" type="button" ng-click="$ctrl.pushToArray($ctrl.arrayInput)">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i> Add
+                    </button>
+                </span>
+            </div>
+
+            <table class="table table-striped">
+                <tbody>
+                <tr ng-repeat="val in $ctrl.arg.value track by $index">
+                    <td>{{val}}</td>
+                    <td style="width:20px;"><a href="" ng-click="$ctrl.removeFromArray($index)"><i class="fa fa-trash-o"></i></a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
