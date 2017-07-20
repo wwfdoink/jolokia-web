@@ -10,14 +10,14 @@ angular.module("myApp").controller('MbeanController', function($scope, JolokiaSe
         $scope.loading = false;
     });
 
-    $scope.$watch('beanTree.currentNode', function(newObj, oldObj) {
+    $scope.getBeanValue = function(){
         $scope.error = null;
         if ($scope.beanTree && angular.isObject($scope.beanTree.currentNode)) {
             if (!$scope.beanTree.currentNode.class) {
                 return;
             }
             var bean = $scope.beanTree.currentNode;
-            $scope.loading = true;
+            $scope.beanLoading = true;
             JolokiaService.read(bean.id).then(function(res) {
                 for (key in res.data) {
                     if (res.data.hasOwnProperty(key)) {
@@ -32,8 +32,12 @@ angular.module("myApp").controller('MbeanController', function($scope, JolokiaSe
                 if (_.isObject(err.data)) { $scope.error = err.data.error; }
                 else { $scope.error = err.data; }
             }).finally(function(){
-                $scope.loading = false;
+                $scope.beanLoading = false;
             });
         }
+    }
+
+    $scope.$watch('beanTree.currentNode', function(newObj, oldObj) {
+        $scope.getBeanValue();
     }, false);
 });

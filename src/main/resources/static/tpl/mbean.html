@@ -23,67 +23,84 @@
         <i class="fa fa-info-circle" aria-hidden="true"></i> No Bean selected...
     </div>
 
-    <div ng-show="beanTree.currentNode">
-        <h2 class="sub-header">Info</h2>
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <tr>
-                    <td>Class</td>
-                    <td>{{beanTree.currentNode.class}}</td>
-                </tr>
-                <tr>
-                    <td>Description</td>
-                    <td>{{beanTree.currentNode.desc}}</td>
-                </tr>
-            </table>
-        </div>
-    </div>
+    <uib-tabset active="active" ng-show="beanTree.currentNode">
+        <uib-tab index="0" select="getBeanValue()">
+            <uib-tab-heading>
+                <i class="fa fa-file-text-o"></i> Attributes
+            </uib-tab-heading>
 
-    <div ng-if="beanTree.currentNode.attr.length > 0">
-        <h2 class="sub-header">Attributes</h2>
-        <div class="table-responsive" ng-if="beanTree.currentNode">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Attribute</th>
-                        <th>Value</th>
-                        <th>Type</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="attr in beanTree.currentNode.attr | orderBy:'name'">
-                        <td><i class="fa" ng-class="(attr.rw == true) ? 'fa-unlock' : 'fa-lock'"></i> {{attr.name}}</td>
-                        <td><value-display my-value="attr.value"></value-display></td>
-                        <td>{{attr.type}}</td>
-                        <td>{{attr.desc}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+            <div>
+                <h2 class="sub-header">Info</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <tr>
+                            <td>Class</td>
+                            <td>{{beanTree.currentNode.class}}</td>
+                        </tr>
+                        <tr>
+                            <td>Description</td>
+                            <td>{{beanTree.currentNode.desc}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
 
-    <div ng-if="beanTree.currentNode.op.length > 0">
-        <h2 class="sub-header">Operations</h2>
-        <div class="table-responsive" ng-if="beanTree.currentNode">
-            <table class="table table-striped operation-table">
-                <thead>
-                    <tr>
-                        <th style="width:90px;"></th>
-                        <th>Function</th>
-                        <th>ReturnType</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="o in beanTree.currentNode.op | orderBy:'name'">
-                        <td><execute-button bean="beanTree.currentNode" operation="o"></execute-button></td>
-                        <td>{{o.name}} <span class="badge" ng-repeat="ar in o.args">{{ar.name}}:{{ar.type}}</span></td>
-                        <td>{{o.ret}}</td>
-                        <td>{{o.desc}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+            <div class="loading" ng-show="beanLoading">
+                <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+            </div>
+
+            <div ng-if="beanTree.currentNode.attr.length > 0" ng-hide="beanLoading">
+                <h2 class="sub-header">Attributes</h2>
+                <div class="table-responsive" ng-if="beanTree.currentNode">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Attribute</th>
+                            <th>Value</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="attr in beanTree.currentNode.attr | orderBy:'name'">
+                            <td><i class="fa" ng-class="(attr.rw == true) ? 'fa-unlock' : 'fa-lock'"></i> {{attr.name}}</td>
+                            <td><value-display my-value="attr.value"></value-display></td>
+                            <td>{{attr.type}}</td>
+                            <td>{{attr.desc}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </uib-tab>
+
+        <uib-tab index="1" ng-show="beanTree.currentNode.op.length > 0">
+            <uib-tab-heading>
+                <i class="fa fa-gears"></i> Operations
+            </uib-tab-heading>
+            <div ng-if="beanTree.currentNode.op.length > 0">
+                <h2 class="sub-header">Operations</h2>
+                <div class="table-responsive" ng-if="beanTree.currentNode">
+                    <table class="table table-striped operation-table">
+                        <thead>
+                        <tr>
+                            <th style="width:90px;"></th>
+                            <th>Function</th>
+                            <th>ReturnType</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="o in beanTree.currentNode.op | orderBy:'name'">
+                            <td><execute-button bean="beanTree.currentNode" operation="o"></execute-button></td>
+                            <td>{{o.name}} <span class="badge" ng-repeat="ar in o.args">{{ar.name}}:{{ar.type}}</span></td>
+                            <td>{{o.ret}}</td>
+                            <td>{{o.desc}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </uib-tab>
+    </uib-tabset>
 </div>
