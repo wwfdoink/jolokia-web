@@ -6,7 +6,7 @@ angular.module("myApp").component('valueInput', {
     controller: function($scope) {
         var $ctrl = this;
         this.$onInit = function(){
-            if (this.arg.type === "boolean") {
+            if (this.arg.type === "boolean" && !this.arg.value) {
                 this.arg.value = false;
             }
         }

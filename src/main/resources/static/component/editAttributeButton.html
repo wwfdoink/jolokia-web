@@ -1,0 +1,7 @@
+<button class="btn btn-primary btn-xs" ng-click="$ctrl.openForm()" ng-if="$ctrl.attr.rw">
+    <i class="fa fa-wrench"></i> Edit
+</button>
+
+<button class="btn btn-xs" ng-click="$ctrl.openForm()" disabled  ng-if="!$ctrl.attr.rw">
+    <i class="fa fa-lock"></i> Read-only
+</button>

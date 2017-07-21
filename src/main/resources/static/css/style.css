@@ -118,3 +118,14 @@ body {
 .operation-table .badge {
     margin-right: 0.5em;
 }
+
+edit-attribute-button > button {
+    width: 100%;
+}
+
+.input-group-checkbox-addon {
+    background-color: #fff;
+    font-size: 1.5em;
+    padding: 1px 10px;
+    cursor: pointer;
+}

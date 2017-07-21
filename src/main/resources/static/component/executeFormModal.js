@@ -60,6 +60,8 @@ angular.module("myApp").component('executeFormModal', {
                     isError: function(){ return isError; },
                     error: function(){ return error; }
                 }
+            }, function(){
+                //Cancel
             });
 
             modalInstance.result.then(function (selectedItem) {

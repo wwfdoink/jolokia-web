@@ -50,11 +50,12 @@
             </div>
 
             <div ng-if="beanTree.currentNode.attr.length > 0" ng-hide="beanLoading">
-                <h2 class="sub-header">Attributes</h2>
+                <h2 class="sub-header">Attributes <button class="btn btn-primary btn-xs" ng-click="getBeanValue()"><i class="fa fa-refresh"></i> Reload</button></h2>
                 <div class="table-responsive" ng-if="beanTree.currentNode">
                     <table class="table table-striped">
                         <thead>
                         <tr>
+                            <th style="width:100px"></th>
                             <th>Attribute</th>
                             <th>Value</th>
                             <th>Type</th>
@@ -63,7 +64,8 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="attr in beanTree.currentNode.attr | orderBy:'name'">
-                            <td><i class="fa" ng-class="(attr.rw == true) ? 'fa-unlock' : 'fa-lock'"></i> {{attr.name}}</td>
+                            <td><edit-attribute-button bean="beanTree.currentNode" attr="attr"></edit-attribute-button></td>
+                            <td>{{attr.name}}</td>
                             <td><value-display my-value="attr.value"></value-display></td>
                             <td>{{attr.type}}</td>
                             <td>{{attr.desc}}</td>

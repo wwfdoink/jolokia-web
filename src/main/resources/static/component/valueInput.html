@@ -13,7 +13,10 @@
     </div>
 
     <div ng-switch-when="boolean" class="input-group">
-        <div class="input-group-addon"><input type="checkbox" id="{{$ctrl.arg.name}}" ng-model="$ctrl.arg.value"></div>
+        <div class="input-group-addon input-group-checkbox-addon" ng-click="$ctrl.arg.value = !$ctrl.arg.value">
+            <i class="fa fa-square-o" ng-hide="$ctrl.arg.value"></i>
+            <i class="fa fa-check-square-o" ng-show="$ctrl.arg.value"></i>
+        </div>
         <input type="text" class="form-control" value="{{$ctrl.arg.name}}" readonly>
         <div class="input-group-addon">{{$ctrl.arg.type}}</div>
     </div>

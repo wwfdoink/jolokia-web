@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import prj.jolokiaweb.JolokiaApp;
 import prj.jolokiaweb.form.ExecForm;
 import prj.jolokiaweb.form.ReadForm;
+import prj.jolokiaweb.form.WriteForm;
 
 import javax.management.MalformedObjectNameException;
 import java.util.*;
@@ -106,7 +107,7 @@ public class ApiController {
     }
 
     @RequestMapping(value = "/api/execute", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity execute(@RequestBody ExecForm execForm) {
+    public ResponseEntity<JSONObject> execute(@RequestBody ExecForm execForm) {
         JSONObject result = new JSONObject();
 
         J4pClient j4pClient = new J4pClient(JolokiaApp.getJolokiaUrl());
@@ -129,10 +130,23 @@ public class ApiController {
         return ResponseEntity.ok(result);
     }
 
-    @RequestMapping(value = "/api/write", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity write() {
-        //TODO: implement
-        return ResponseEntity.ok("");
+    @RequestMapping(value = "/api/write", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<JSONObject> write(@RequestBody WriteForm form) {
+        JSONObject result = new JSONObject();
+
+        J4pClient j4pClient = new J4pClient(JolokiaApp.getJolokiaUrl());
+        try {
+            J4pWriteRequest writeReq = new J4pWriteRequest(form.getMbean(), form.getAttribute(), form.getValue());
+            J4pWriteResponse writeRes = j4pClient.execute(writeReq);
+            result = writeRes.asJSONObject();
+        } catch (MalformedObjectNameException e) {
+            result.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(result);
+        } catch (J4pException e) {
+            result.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(result);
+        }
+        return ResponseEntity.ok(result);
     }
 
 }

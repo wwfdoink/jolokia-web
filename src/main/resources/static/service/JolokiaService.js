@@ -16,8 +16,12 @@ app.service("JolokiaService", function($http){
     this.search = function(){
         return $http.get("/jolokiaweb/api/search");
     }
-    this.write = function(){
-        return $http.get("/jolokiaweb/api/write");
+    this.write = function(mbean, attribute, value){
+        return $http.post("/jolokiaweb/api/write",{
+            mbean: mbean,
+            attribute: attribute,
+            value: value
+        });
     }
     this.execute = function(mbean, operation, paramArray){
         if (!_.isArray(paramArray)) {
