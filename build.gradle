@@ -13,7 +13,7 @@ def jolokiaClientVersion = '2.0.0-M3'
 sourceCompatibility = javaVersion
 targetCompatibility = javaVersion
 
-mainClassName = 'prj.jolokiaweb'
+mainClassName = 'prj.jolokiaweb.JolokiaApp'
 
 jar {
     baseName = 'jolokia-web'
