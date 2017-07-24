@@ -3,12 +3,6 @@ apply plugin: 'java'
 apply plugin: 'idea'
 
 def javaVersion = '1.8'
-def springVersion = '4.3.9.RELEASE'
-def tomcatVersion = '8.5.16'
-def tomcatLog4jVersion = '8.5.2'
-def jacksonVersion = '2.8.9'
-def jacksonMapperVersion = '1.9.13'
-def jolokiaClientVersion = '2.0.0-M3'
 
 sourceCompatibility = javaVersion
 targetCompatibility = javaVersion
@@ -17,7 +11,7 @@ mainClassName = 'prj.jolokiaweb.JolokiaApp'
 
 jar {
     baseName = 'jolokia-web'
-    version =  '0.1.0'
+    version =  '0.3.1'
     manifest {
         attributes 'Main-Class': mainClassName
     }
@@ -28,13 +22,14 @@ repositories {
 }
 
 dependencies {
-    compile "org.springframework:spring-webmvc:${springVersion}",
-            "org.jolokia:jolokia-client-java:${jolokiaClientVersion}",
-            "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
-            "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}",
-            "org.apache.tomcat.embed:tomcat-embed-logging-log4j:${tomcatLog4jVersion}",
-            "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}",
-            "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}",
+    compile "org.springframework:spring-webmvc:4.3.9.RELEASE",
+            "org.jolokia:jolokia-client-java:2.0.0-M3",
+            "org.apache.tomcat.embed:tomcat-embed-core:8.5.16",
+            "org.apache.tomcat.embed:tomcat-embed-jasper:8.5.16",
+            "org.apache.tomcat.embed:tomcat-embed-logging-log4j:8.5.2",
+            "com.fasterxml.jackson.core:jackson-core:2.8.9",
+            "com.fasterxml.jackson.core:jackson-databind:2.8.9",
+            "commons-cli:commons-cli:1.4",
             "org.webjars:jquery:3.2.1",
             "org.webjars.bower:angularjs:1.6.5",
             "org.webjars.bower:angular-route:1.6.5",

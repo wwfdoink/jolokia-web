@@ -2,9 +2,11 @@ package prj.jolokiaweb;
 
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
+import org.apache.commons.cli.*;
 
 import javax.servlet.ServletException;
 import java.io.File;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -30,13 +32,85 @@ public class JolokiaApp {
         tomcat.setBaseDir(new File(System.getProperty("java.io.tmpdir")).getAbsolutePath());
         tomcat.getHost().setAppBase(".");
         tomcat.addWebapp("/jolokiaweb", new File(System.getProperty("java.io.tmpdir")).getAbsolutePath());
-        this.jolokiaUrl = jolokiaUrl;
+        JolokiaApp.jolokiaUrl = jolokiaUrl;
         this.beanPermissions.addAll(Arrays.asList(beanPermissions));
     }
 
     public static void main(String[] args) throws Exception {
-        JolokiaApp app = new JolokiaApp(DEFAULT_JOLOKIA_URL, DEFAULT_PORT);
-        app.startAndWait();
+        Options options = new Options();
+
+        options.addOption(Option.builder()
+                .argName("1-65534")
+                .longOpt("port")
+                .optionalArg(true)
+                .hasArg()
+                .desc("Tomcat listening port")
+                .build());
+        options.addOption(Option.builder()
+                .argName("jolokia-url")
+                .longOpt("url")
+                .optionalArg(false)
+                .hasArg()
+                .desc("Jolokia agent URL")
+                .build());
+        options.addOption(Option.builder()
+                .argName("rwx")
+                .longOpt("access")
+                .optionalArg(true)
+                .hasArg()
+                .desc("MBean permissions, r|w|x|rw|rx|wx|rwx")
+                .build());
+
+        CommandLineParser parser = new DefaultParser();
+
+        int port = DEFAULT_PORT;
+        String jolokiaUrl = DEFAULT_JOLOKIA_URL;
+        Set<JolokiaBeanPermission> beanPermissions = new HashSet<>();
+
+        try {
+            CommandLine line = parser.parse( options, args );
+            if (line.hasOption("url") ) {
+                String url = line.getOptionValue("url");
+                URL checkUrl = new URL(url); //check url validity
+                if (!url.endsWith("/")) {
+                    jolokiaUrl = url + "/";
+                } else {
+                    jolokiaUrl = url;
+                }
+                System.out.println(jolokiaUrl);
+            } else {
+                throw new RuntimeException("Jolokia url not set");
+            }
+
+            if (line.hasOption("port") ) {
+                port = Integer.parseInt(line.getOptionValue("port"));
+                if (port < 1 || port > 65534) {
+                    throw new RuntimeException("Invalid port number");
+                }
+            } else {
+                System.out.println("Using default port: " + port);
+            }
+
+            if (line.hasOption("access") ) {
+                String permStr = line.getOptionValue("access");
+                if (permStr.contains("r")) {
+                    beanPermissions.add(JolokiaBeanPermission.READ);
+                }
+                if (permStr.contains("w")) {
+                    beanPermissions.add(JolokiaBeanPermission.WRITE);
+                }
+                if (permStr.contains("x")) {
+                    beanPermissions.add(JolokiaBeanPermission.EXEC);
+                }
+            }
+
+            JolokiaApp app = new JolokiaApp(jolokiaUrl, port, beanPermissions.toArray(new JolokiaBeanPermission[beanPermissions.size()]));
+            app.startAndWait();
+        } catch(Exception e) {
+            System.out.println("Invalid input:" + e.getMessage());
+            HelpFormatter formatter = new HelpFormatter();
+            formatter.printHelp( "java -jar jolokiaweb-all.jar", options);
+        }
     }
 
     public static String getJolokiaUrl() {
