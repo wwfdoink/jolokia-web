@@ -16,7 +16,6 @@ public class JolokiaApp {
         READ,WRITE,EXEC
     }
     private static final int DEFAULT_PORT = 8080;
-    private static final String DEFAULT_JOLOKIA_URL = "http://localhost:8778/jolokia/";
     private final Tomcat tomcat;
     private static String jolokiaUrl = null;
     private final Set<JolokiaBeanPermission> beanPermissions = new HashSet<>();
@@ -44,7 +43,7 @@ public class JolokiaApp {
                 .longOpt("port")
                 .optionalArg(true)
                 .hasArg()
-                .desc("Tomcat listening port")
+                .desc("Tomcat listening port, default: " + DEFAULT_PORT)
                 .build());
         options.addOption(Option.builder()
                 .argName("jolokia-url")
@@ -64,7 +63,7 @@ public class JolokiaApp {
         CommandLineParser parser = new DefaultParser();
 
         int port = DEFAULT_PORT;
-        String jolokiaUrl = DEFAULT_JOLOKIA_URL;
+        String jolokiaUrl;
         Set<JolokiaBeanPermission> beanPermissions = new HashSet<>();
 
         try {

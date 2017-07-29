@@ -1,18 +1,18 @@
-var app = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'chart.js', 'angularTreeview']);
+var app = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'angular-websocket', 'chart.js', 'angularTreeview']);
 
 app.config(function($routeProvider) {
-    var pre = "/jolokiaweb/static/";
+    var tplDir = "/jolokiaweb/static/tpl";
   $routeProvider
   .when('/', {
-    templateUrl : pre+'tpl/dashboard.html',
+    templateUrl : tplDir+'/dashboard.html',
     controller  : 'DashboardController'
   })
   .when('/mbean', {
-    templateUrl : pre+'tpl/mbean.html',
+    templateUrl : tplDir+'/mbean.html',
     controller  : 'MbeanController'
   })
   .when('/version', {
-    templateUrl : pre+'tpl/version.html',
+    templateUrl : tplDir+'/version.html',
     controller  : 'VersionController'
   })
   .otherwise({redirectTo: '/'});

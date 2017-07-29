@@ -20,6 +20,7 @@
     <script src="/jolokiaweb/webjars/angularjs/1.6.5/angular.min.js"></script>
     <script src="/jolokiaweb/webjars/angular-route/1.6.5/angular-route.min.js"></script>
     <script src="/jolokiaweb/webjars/angular-ui-bootstrap/2.5.0/dist/ui-bootstrap-tpls.js"></script>
+    <script src="/jolokiaweb/webjars/angular-websocket/2.0.0/dist/angular-websocket.min.js"></script>
     <script src="/jolokiaweb/webjars/chartjs/2.6.0/dist/Chart.min.js"></script>
     <script src="/jolokiaweb/webjars/angular-chart.js/1.1.1/angular-chart.min.js"></script>
     <script src="/jolokiaweb/static/lib/angular-treeview/angular.treeview.min.js"></script>
@@ -41,6 +42,11 @@
                     <li><a href="#!/">Dashboard</a></li>
                     <li><a href="#!/mbean">MBeans</a></li>
                     <li><a href="#!/version">Version</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li ng-show="!$root.wsConnected()" class="ws-error">
+                        <a href><i class="fa fa-plug"></i> Connecting...</a>
+                    </li>
                 </ul>
             </div>
         </div>

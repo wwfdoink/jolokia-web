@@ -129,3 +129,6 @@ edit-attribute-button > button {
     padding: 1px 10px;
     cursor: pointer;
 }
+.ws-error > a {
+    color: #ff524c !important;
+}

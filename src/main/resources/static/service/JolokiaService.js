@@ -13,9 +13,6 @@ app.service("JolokiaService", function($http){
     this.read = function(path){
         return $http.post("/jolokiaweb/api/read", {mbean: path});
     }
-    this.search = function(){
-        return $http.get("/jolokiaweb/api/search");
-    }
     this.write = function(mbean, attribute, value){
         return $http.post("/jolokiaweb/api/write",{
             mbean: mbean,

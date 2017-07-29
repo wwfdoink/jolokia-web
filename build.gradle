@@ -23,10 +23,12 @@ repositories {
 
 dependencies {
     compile "org.springframework:spring-webmvc:4.3.9.RELEASE",
+            "org.springframework:spring-websocket:4.3.10.RELEASE",
             "org.jolokia:jolokia-client-java:2.0.0-M3",
             "org.apache.tomcat.embed:tomcat-embed-core:8.5.16",
             "org.apache.tomcat.embed:tomcat-embed-jasper:8.5.16",
             "org.apache.tomcat.embed:tomcat-embed-logging-log4j:8.5.2",
+            "org.apache.tomcat.embed:tomcat-embed-websocket:8.5.16",
             "com.fasterxml.jackson.core:jackson-core:2.8.9",
             "com.fasterxml.jackson.core:jackson-databind:2.8.9",
             "commons-cli:commons-cli:1.4",
@@ -34,6 +36,7 @@ dependencies {
             "org.webjars.bower:angularjs:1.6.5",
             "org.webjars.bower:angular-route:1.6.5",
             'org.webjars.npm:angular-ui-bootstrap:2.5.0',
+            "org.webjars.bower:angular-websocket:2.0.0",
             "org.webjars.bower:chartjs:2.6.0",
             "org.webjars:angular-chart.js:1.1.1",
             "org.webjars.bower:angular-chart.js:1.1.1",

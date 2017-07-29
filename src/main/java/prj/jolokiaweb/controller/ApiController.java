@@ -55,33 +55,9 @@ public class ApiController {
         return ResponseEntity.ok(result);
     }
 
-    @RequestMapping(value = "/api/dashboard", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<JSONObject> dashboard() {
-        JSONObject result = new JSONObject();
-
-        J4pClient j4pClient = new J4pClient(JolokiaApp.getJolokiaUrl());
-        try {
-            J4pReadRequest cpuReq = new J4pReadRequest("java.lang:type=OperatingSystem","ProcessCpuLoad","SystemCpuLoad");
-            J4pReadRequest threadReq = new J4pReadRequest("java.lang:type=Threading","ThreadCount","PeakThreadCount");
-            J4pReadRequest memoryHeapReq = new J4pReadRequest("java.lang:type=Memory","HeapMemoryUsage");
-            List<J4pResponse<J4pRequest>> responseList = j4pClient.execute(cpuReq, threadReq, memoryHeapReq);
-
-            result.put("CpuLoad", responseList.get(0).getValue());
-            result.put("Thread", responseList.get(1).getValue());
-            result.put("HeapMemoryUsage", responseList.get(2).getValue());
-        } catch (MalformedObjectNameException e) {
-            result.put("error", e.getMessage());
-            return ResponseEntity.badRequest().body(result);
-        } catch (J4pException e) {
-            result.put("error", e.getMessage());
-            return ResponseEntity.badRequest().body(result);
-        }
-        return ResponseEntity.ok(result);
-    }
-
     @RequestMapping(value = "/api/read", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JSONObject> read(@RequestBody ReadForm readForm) {
-        JSONObject result =new JSONObject();
+        JSONObject result = new JSONObject();
 
         J4pClient j4pClient = new J4pClient(JolokiaApp.getJolokiaUrl());
         try {
@@ -98,12 +74,6 @@ public class ApiController {
             return ResponseEntity.badRequest().body(result);
         }
         return ResponseEntity.ok(result);
-    }
-
-    @RequestMapping(value = "/api/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity search() {
-        //TODO: implement
-        return ResponseEntity.ok("");
     }
 
     @RequestMapping(value = "/api/execute", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
