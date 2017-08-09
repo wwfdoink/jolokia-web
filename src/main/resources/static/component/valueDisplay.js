@@ -1,5 +1,5 @@
 angular.module("myApp").component('valueDisplay', {
-    templateUrl: '/jolokiaweb/static/component/valueDisplay.html',
+    templateUrl: '/static/component/valueDisplay.html',
     bindings: {
         myValue: '<'
     },

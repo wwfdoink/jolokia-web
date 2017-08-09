@@ -2,19 +2,19 @@ var app = angular.module('myApp');
 
 app.service("JolokiaService", function($http){
     this.dashboard = function(){
-        return $http.get("/jolokiaweb/api/dashboard");
+        return $http.get("/api/dashboard");
     }
     this.version = function(){
-        return $http.get("/jolokiaweb/api/version");
+        return $http.get("/api/version");
     }
     this.getMbeanTree = function(){
-        return $http.get("/jolokiaweb/api/beans");
+        return $http.get("/api/beans");
     }
     this.read = function(path){
-        return $http.post("/jolokiaweb/api/read", {mbean: path});
+        return $http.post("/api/read", {mbean: path});
     }
     this.write = function(mbean, attribute, value){
-        return $http.post("/jolokiaweb/api/write",{
+        return $http.post("/api/write",{
             mbean: mbean,
             attribute: attribute,
             value: value
@@ -24,7 +24,7 @@ app.service("JolokiaService", function($http){
         if (!_.isArray(paramArray)) {
             throw "paramArray is not an array..";
         }
-        return $http.post("/jolokiaweb/api/execute", {
+        return $http.post("/api/execute", {
             mbean: mbean,
             operation: operation,
             data: paramArray

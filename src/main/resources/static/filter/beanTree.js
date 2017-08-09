@@ -6,13 +6,7 @@ angular.module('myApp').filter('beanTree', function() {
         var parts = text.split(',');
         parts.forEach(function(p){
             var subPart = p.split("=");
-            if (subPart[0] == 'name') {
-                result.name = subPart[1];
-            } else if (subPart[0] == 'type') {
-                result.type = subPart[1];
-            } else {
-                throw "invalid subPart";
-            }
+            result[subPart[0]] = subPart[1];
         });
         return result;
     }
@@ -122,7 +116,7 @@ angular.module('myApp').filter('beanTree', function() {
                     
                     if (!(splittedObj.name)) {
                         target.push(node);
-                    } else {
+                    } else if (typeof splittedObj.type != "undefined") {
                         parentCache[splittedObj.type].children.push(node);
                     }
 

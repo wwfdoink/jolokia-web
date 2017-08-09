@@ -1,5 +1,5 @@
 angular.module("myApp").component('executeFormModal', {
-    templateUrl: '/jolokiaweb/static/component/executeFormModal.html',
+    templateUrl: '/static/component/executeFormModal.html',
     bindings: {
         resolve: '<',
         close: '&',

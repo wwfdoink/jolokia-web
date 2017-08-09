@@ -16,6 +16,7 @@ import prj.jolokiaweb.form.ReadForm;
 import prj.jolokiaweb.form.WriteForm;
 
 import javax.management.MalformedObjectNameException;
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 

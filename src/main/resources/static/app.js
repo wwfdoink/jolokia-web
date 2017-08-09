@@ -1,7 +1,7 @@
 var app = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'angular-websocket', 'chart.js', 'angularTreeview']);
 
 app.config(function($routeProvider) {
-    var tplDir = "/jolokiaweb/static/tpl";
+    var tplDir = "/static/tpl";
   $routeProvider
   .when('/', {
     templateUrl : tplDir+'/dashboard.html',

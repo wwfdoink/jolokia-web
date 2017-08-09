@@ -1,5 +1,5 @@
 angular.module("myApp").component('cpuChart', {
-    templateUrl: '/jolokiaweb/static/component/simpleChart.html',
+    templateUrl: '/static/component/simpleChart.html',
     bindings: {
     },
     controllerAs: 'ctx',

@@ -64,7 +64,7 @@ app.service("DashboardService", function($http, $timeout, $rootScope, $websocket
         $rootScope.$broadcast('chartChange', {});
     }
 
-    var ws = $websocket((window.location.protocol.startsWith("https") ? "wss://" : "ws://") + window.location.host + '/jolokiaweb/ws', null, { reconnectIfNotNormalClose: true });
+    var ws = $websocket((window.location.protocol.startsWith("https") ? "wss://" : "ws://") + window.location.host + '/ws', null, { reconnectIfNotNormalClose: true });
     ws.onOpen(function() {
         $rootScope.$apply();
     });

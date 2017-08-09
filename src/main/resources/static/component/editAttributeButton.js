@@ -1,5 +1,5 @@
 angular.module("myApp").component('editAttributeButton', {
-    templateUrl: '/jolokiaweb/static/component/editAttributeButton.html',
+    templateUrl: '/static/component/editAttributeButton.html',
     bindings: {
         bean: '<',
         attr: '<'

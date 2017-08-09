@@ -1,5 +1,5 @@
 angular.module("myApp").component('valueDisplayModal', {
-    templateUrl: '/jolokiaweb/static/component/valueDisplayModal.html',
+    templateUrl: '/static/component/valueDisplayModal.html',
     bindings: {
         resolve: '<',
         close: '&',
