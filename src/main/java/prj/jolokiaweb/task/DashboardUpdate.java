@@ -7,7 +7,6 @@ import org.jolokia.client.request.J4pRequest;
 import org.jolokia.client.request.J4pResponse;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import prj.jolokiaweb.JolokiaApp;

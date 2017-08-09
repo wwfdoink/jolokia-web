@@ -29,7 +29,6 @@ dependencies {
             "org.apache.tomcat.embed:tomcat-embed-jasper:8.5.16",
             "org.apache.tomcat.embed:tomcat-embed-logging-log4j:8.5.2",
             "org.apache.tomcat.embed:tomcat-embed-websocket:8.5.16",
-            "javax.websocket:javax.websocket-api:1.1",
             "com.fasterxml.jackson.core:jackson-core:2.8.9",
             "com.fasterxml.jackson.core:jackson-databind:2.8.9",
             "commons-cli:commons-cli:1.4",

@@ -18,7 +18,7 @@ public class ApplicationInitializer implements WebApplicationInitializer {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.setConfigLocation("prj.jolokiaweb.config");
         servletContext.addListener(new ContextLoaderListener(context));
-        //context.addServletContainerInitializer(new WsSci(), null);
+
         /*
         * Jolokia Servlet
         */
