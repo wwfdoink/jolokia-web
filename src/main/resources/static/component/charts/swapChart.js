@@ -8,7 +8,11 @@ angular.module("myApp").component('swapChart', {
         this.series = DashboardService.swapChartData().series;
         this.data = DashboardService.swapChartData().data;
 
-        this.datasetOverride = [{ yAxisID: 'y-axis-heap1' }];
+        this.datasetOverride = [
+            UtilService.chartColor(150,187,205),
+            UtilService.chartColor(220,220,220)
+        ];
+
         this.options = {
             scales: {
                 yAxes: [{
@@ -37,6 +41,9 @@ angular.module("myApp").component('swapChart', {
                         return data.datasets[tooltipItems.datasetIndex].label + ': ' + UtilService.formatBytes(tooltipItems.yLabel, 0);
                     }
                 }
+            },
+            legend: {
+                display:true
             }
         };
 

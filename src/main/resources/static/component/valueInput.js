@@ -11,13 +11,22 @@ angular.module("myApp").component('valueInput', {
             }
         }
         this.getType = function(){
-            if (_.contains(["java.lang.String[]", "long[]", "boolean"], this.arg.type)) {
+            if (this.isBoolean(this.arg.type)) {
+                return "boolean"
+            } else if (_.contains(["java.lang.String[]", "long[]"], this.arg.type)) {
                 return this.arg.type;
             } else if (this.isNumber(this.arg.type)) {
                 return "number";
             } else {
                 return "simple";
             }
+        }
+
+        this.isBoolean = function(type){
+            if (type === "boolean" || type === "java.lang.Boolean") {
+                return true;
+            }
+            return false;
         }
 
         this.isNumber = function(type){

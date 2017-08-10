@@ -3,13 +3,17 @@ angular.module("myApp").component('threadChart', {
     bindings: {
     },
     controllerAs: 'ctx',
-    controller: function($rootScope, DashboardService){
+    controller: function($rootScope, DashboardService, UtilService){
         this.$onInit = () => {
             this.labels = DashboardService.threadChartData().labels;
             this.series = DashboardService.threadChartData().series;
             this.data = DashboardService.threadChartData().data;
 
-            this.datasetOverride = [{ yAxisID: 'y-axis-thread1' }];
+            this.datasetOverride = [
+                UtilService.chartColor(150,187,205),
+                UtilService.chartColor(220,220,220)
+            ];
+
             this.options = {
                 scales: {
                     yAxes: [{
@@ -26,6 +30,9 @@ angular.module("myApp").component('threadChart', {
                             fontColor: "#666666"
                         }
                     }]
+                },
+                legend: {
+                    display:true
                 }
             };
         }

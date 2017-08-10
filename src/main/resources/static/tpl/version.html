@@ -16,7 +16,7 @@
             </tr>
             <tr ng-repeat="item in runtimeData">
                 <td>{{item.key}}</td>
-                <td>{{item.value}}</td>
+                <td><value-display my-value="item.value"></value-display></td>
             </tr>
         </table>
         <h1 class="page-header">Jolokia Version</h1>
@@ -27,7 +27,7 @@
             </tr>
             <tr ng-repeat="item in versionData">
                 <td>{{item.key}}</td>
-                <td>{{item.value}}</td>
+                <td><value-display my-value="item.value"></value-display></td>
             </tr>
         </table>
     </div>

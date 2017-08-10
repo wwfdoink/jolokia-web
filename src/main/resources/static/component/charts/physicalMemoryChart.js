@@ -8,7 +8,10 @@ angular.module("myApp").component('physicalMemoryChart', {
         this.series = DashboardService.physicalMemoryChartData().series;
         this.data = DashboardService.physicalMemoryChartData().data;
 
-        this.datasetOverride = [{ yAxisID: 'y-axis-phys1' }];
+        this.datasetOverride = [
+            UtilService.chartColor(150,187,205),
+            UtilService.chartColor(220,220,220)
+        ];
         this.options = {
             scales: {
                 yAxes: [{
@@ -37,6 +40,9 @@ angular.module("myApp").component('physicalMemoryChart', {
                         return data.datasets[tooltipItems.datasetIndex].label + ': ' + UtilService.formatBytes(tooltipItems.yLabel, 0);
                     }
                 }
+            },
+            legend: {
+                display:true
             }
         };
 

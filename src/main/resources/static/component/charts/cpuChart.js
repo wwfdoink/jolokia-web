@@ -3,12 +3,15 @@ angular.module("myApp").component('cpuChart', {
     bindings: {
     },
     controllerAs: 'ctx',
-    controller: function($rootScope, DashboardService){
+    controller: function($rootScope, DashboardService, UtilService){
         this.labels = DashboardService.cpuChartData().labels;
         this.series = DashboardService.cpuChartData().series;
         this.data = DashboardService.cpuChartData().data;
 
-        this.datasetOverride = [{ yAxisID: 'y-axis-cpu1' }];
+        this.datasetOverride = [
+            UtilService.chartColor(240,0,0,0),
+            UtilService.chartColor(150,187,205)
+        ];
         this.options = {
             scales: {
                 yAxes: [{
@@ -19,11 +22,14 @@ angular.module("myApp").component('cpuChart', {
                     ticks: {
                         beginAtZero:true,
                         max: 100,
-                        stepsize: 10
+                        stepsize: 10,
+                        callback: function(label, index, labels) {
+                            return label + " %";
+                        }
                     },
                     scaleLabel:{
                         display: true,
-                        labelString: 'CPU load %',
+                        labelString: 'CPU load',
                         fontColor: "#666666"
                     }
                 }]
@@ -35,6 +41,14 @@ angular.module("myApp").component('cpuChart', {
                     label: function (tooltipItems, data) {
                         return data.datasets[tooltipItems.datasetIndex].label + ": " + tooltipItems.yLabel + " % ";
                     }
+                }
+            },
+            legend: {
+                display:true
+            },
+            plotOptions: {
+                line: {
+                    colorIndex: 4
                 }
             }
         };

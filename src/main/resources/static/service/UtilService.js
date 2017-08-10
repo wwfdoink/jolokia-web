@@ -13,4 +13,13 @@ app.service("UtilService", function(){
            i = Math.floor(Math.log(bytes) / Math.log(k));
        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
     }
+    this.chartColor = function(r,g,b){
+        return {
+            backgroundColor: "rgba("+r+","+g+","+b+",0.3)",
+            borderColor: "rgba("+r+","+g+","+b+",0.8)",
+            pointBackgroundColor: "rgba("+r+","+g+","+b+",0.8)",
+            pointHoverBackgroundColor: "rgba("+r+","+g+","+b+",0.8)",
+            pointHoverBorderColor: "rgba("+r+","+g+","+b+",1)"
+        }
+    }
 });
