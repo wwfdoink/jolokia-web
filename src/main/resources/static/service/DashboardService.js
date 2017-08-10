@@ -1,9 +1,9 @@
 var app = angular.module('myApp');
 
-app.service("DashboardService", function($http, $timeout, $rootScope, $websocket, JolokiaService){
+app.service("DashboardService", function($http, $timeout, $rootScope, $websocket, JolokiaService, UtilService){
     var self = this;
 
-    var chartData = {
+    self.chartData = {
         cpu: {
             labels:[],
             series:['Process','System'],
@@ -11,7 +11,22 @@ app.service("DashboardService", function($http, $timeout, $rootScope, $websocket
         },
         heap: {
            labels:[],
-           series:['HeapMemoryUsage','Max'],
+           series:['Used','Committed','Max'],
+           data:[[],[],[]]
+        },
+        nonHeap: {
+           labels:[],
+           series:['Used','Committed','Max'],
+           data:[[],[],[]]
+        },
+        swap: {
+           labels:[],
+           series:['Used','Total'],
+           data:[[],[]]
+        },
+        physicalMemory: {
+           labels:[],
+           series:['Used','Total'],
            data:[[],[]]
         },
         thread: {
@@ -21,46 +36,82 @@ app.service("DashboardService", function($http, $timeout, $rootScope, $websocket
         }
     }
 
-    var fields = ['cpu','heap','thread'];
-    _.each(fields,function(field){
+    _.each(Object.keys(self.chartData),function(field){
         for(var i=0; i<50;i++) {
-            chartData[field].labels.push("");
-            if (chartData[field].series.length > 1) {
-                for(var j=0;j<chartData[field].series.length; j++) {
-                    chartData[field].data[j].push(0);
+            self.chartData[field].labels.push("");
+            if (self.chartData[field].series.length > 1) {
+                for(var j=0;j<self.chartData[field].series.length; j++) {
+                    self.chartData[field].data[j].push(Number.NaN);
                 }
             } else {
-                chartData[field].data.push(0);
+                self.chartData[field].data.push(Number.NaN);
             }
         }
     });
 
     this.cpuChartData = function(){
-        return chartData.cpu;
+        return self.chartData.cpu;
     }
     this.heapChartData = function(){
-        return chartData.heap;
+        return self.chartData.heap;
+    }
+    this.nonHeapChartData = function(){
+        return self.chartData.nonHeap;
     }
     this.threadChartData = function(){
-        return chartData.thread;
+        return self.chartData.thread;
+    }
+    this.swapChartData = function(){
+        return self.chartData.swap;
+    }
+    this.physicalMemoryChartData = function(){
+        return self.chartData.physicalMemory;
     }
 
     self.processDashboardStats = function(data){
+        //update X-axis labels
+        /*
+        var time = UtilService.getTimeString();
+        _.each(Object.keys(self.chartData),function(field){
+            self.chartData[field].labels.shift();
+            self.chartData[field].labels.push(time);
+        });*/
+
         //heap
-        chartData.heap.data[0].shift();
-        chartData.heap.data[0].push(Math.floor(data.HeapMemoryUsage.used/1024/1024));
-        chartData.heap.data[1].shift();
-        chartData.heap.data[1].push(Math.floor(data.HeapMemoryUsage.max/1024/1024));
+        self.chartData.heap.data[0].shift();
+        self.chartData.heap.data[0].push(data.memory.HeapMemoryUsage.used);
+        self.chartData.heap.data[1].shift();
+        self.chartData.heap.data[1].push(data.memory.HeapMemoryUsage.committed);
+        self.chartData.heap.data[2].shift();
+        self.chartData.heap.data[2].push(data.memory.HeapMemoryUsage.max);
+        //non-heap
+        self.chartData.nonHeap.data[0].shift();
+        self.chartData.nonHeap.data[0].push(data.memory.NonHeapMemoryUsage.used);
+        self.chartData.nonHeap.data[1].shift();
+        self.chartData.nonHeap.data[1].push(data.memory.NonHeapMemoryUsage.committed);
+        self.chartData.nonHeap.data[2].shift();
+        self.chartData.nonHeap.data[2].push((data.memory.NonHeapMemoryUsage.max <= 0) ? Number.NaN : data.memory.NonHeapMemoryUsage.max);
         //thread
-        chartData.thread.data[0].shift();
-        chartData.thread.data[0].push(data.Thread.ThreadCount);
-        chartData.thread.data[1].shift();
-        chartData.thread.data[1].push(data.Thread.PeakThreadCount);
+        self.chartData.thread.data[0].shift();
+        self.chartData.thread.data[0].push(data.thread.ThreadCount);
+        self.chartData.thread.data[1].shift();
+        self.chartData.thread.data[1].push(data.thread.PeakThreadCount);
         //cpu
-        chartData.cpu.data[0].shift();
-        chartData.cpu.data[0].push(data.CpuLoad.ProcessCpuLoad);
-        chartData.cpu.data[1].shift();
-        chartData.cpu.data[1].push(data.CpuLoad.SystemCpuLoad);
+        self.chartData.cpu.data[0].shift();
+        self.chartData.cpu.data[0].push((data.os.ProcessCpuLoad == -1) ? Number.NaN : Math.round(data.os.ProcessCpuLoad * 100));
+        self.chartData.cpu.data[1].shift();
+        self.chartData.cpu.data[1].push((data.os.SystemCpuLoad == -1) ? Number.NaN : Math.round(data.os.SystemCpuLoad * 100));
+        //swap
+        self.chartData.swap.data[0].shift();
+        self.chartData.swap.data[0].push((data.os.SystemCpuLoad == -1) ? Number.NaN : data.os.TotalSwapSpaceSize - data.os.FreeSwapSpaceSize);
+        self.chartData.swap.data[1].shift();
+        self.chartData.swap.data[1].push((data.os.TotalSwapSpaceSize == -1) ? Number.NaN : data.os.TotalSwapSpaceSize);
+        //physicalMemory
+        self.chartData.physicalMemory.data[0].shift();
+        self.chartData.physicalMemory.data[0].push((data.os.FreePhysicalMemorySize == -1 || data.os.TotalPhysicalMemorySize == -1) ? Number.NaN : data.os.TotalPhysicalMemorySize - data.os.FreePhysicalMemorySize);
+        self.chartData.physicalMemory.data[1].shift();
+        self.chartData.physicalMemory.data[1].push((data.os.TotalPhysicalMemorySize == -1) ? Number.NaN : data.os.TotalPhysicalMemorySize);
+
         $rootScope.$broadcast('chartChange', {});
     }
 

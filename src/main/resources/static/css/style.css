@@ -131,4 +131,17 @@ edit-attribute-button > button {
 }
 .ws-error > a {
     color: #ff524c !important;
+    -webkit-animation-duration: 0.5s;
+    -webkit-animation-name: glow;
+    -webkit-animation-direction: alternate;
+    -webkit-animation-iteration-count: infinite;
+    animation-duration: 0.5s;
+    animation-name: glow;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes glow {
+    from { text-shadow: 0 0 0px red; }
+    to { text-shadow: 3px 3px 5px red; }
 }

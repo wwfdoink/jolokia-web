@@ -30,14 +30,21 @@ public class DashboardUpdate {
         JSONObject result = new JSONObject();
         J4pClient j4pClient = new J4pClient(JolokiaApp.getJolokiaUrl());
         try {
-            J4pReadRequest cpuReq = new J4pReadRequest("java.lang:type=OperatingSystem","ProcessCpuLoad","SystemCpuLoad");
+            J4pReadRequest osReq = new J4pReadRequest("java.lang:type=OperatingSystem",
+                    "ProcessCpuLoad",
+                    "SystemCpuLoad",
+                    "TotalSwapSpaceSize",
+                    "FreeSwapSpaceSize",
+                    "TotalPhysicalMemorySize",
+                    "FreePhysicalMemorySize"
+            );
             J4pReadRequest threadReq = new J4pReadRequest("java.lang:type=Threading","ThreadCount","PeakThreadCount");
-            J4pReadRequest memoryHeapReq = new J4pReadRequest("java.lang:type=Memory","HeapMemoryUsage");
-            List<J4pResponse<J4pRequest>> responseList = j4pClient.execute(cpuReq, threadReq, memoryHeapReq);
+            J4pReadRequest memoryHeapReq = new J4pReadRequest("java.lang:type=Memory","HeapMemoryUsage", "NonHeapMemoryUsage");
+            List<J4pResponse<J4pRequest>> responseList = j4pClient.execute(osReq, threadReq, memoryHeapReq);
 
-            result.put("CpuLoad", responseList.get(0).getValue());
-            result.put("Thread", responseList.get(1).getValue());
-            result.put("HeapMemoryUsage", responseList.get(2).getValue());
+            result.put("os", responseList.get(0).getValue());
+            result.put("thread", responseList.get(1).getValue());
+            result.put("memory", responseList.get(2).getValue());
 
             handler.sendDashboardStats(new Message("dashboard", result));
         } catch (MalformedObjectNameException e) {

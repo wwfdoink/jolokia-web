@@ -1,9 +1,9 @@
 angular.module("myApp").component('heapChart', {
-    templateUrl: '/static/component/simpleChart.html',
+    templateUrl: '/static/component/charts/simpleChart.html',
     bindings: {
     },
     controllerAs: 'ctx',
-    controller: function($rootScope, DashboardService){
+    controller: function($rootScope, DashboardService, UtilService){
         this.labels = DashboardService.heapChartData().labels;
         this.series = DashboardService.heapChartData().series;
         this.data = DashboardService.heapChartData().data;
@@ -18,8 +18,25 @@ angular.module("myApp").component('heapChart', {
                     position: 'left',
                     ticks: {
                         beginAtZero:true,
+                        callback: function(label, index, labels) {
+                            return UtilService.formatBytes(label, 0);
+                        }
+                    },
+                    scaleLabel:{
+                        display: true,
+                        labelString: 'Memory usage',
+                        fontColor: "#666666"
                     }
                 }]
+            },
+            tooltips: {
+                enabled: true,
+                mode: 'label',
+                callbacks: {
+                    label: function (tooltipItems, data) {
+                        return data.datasets[tooltipItems.datasetIndex].label + ': ' + UtilService.formatBytes(tooltipItems.yLabel, 0);
+                    }
+                }
             }
         };
 

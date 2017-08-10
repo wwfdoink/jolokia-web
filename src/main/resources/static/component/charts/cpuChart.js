@@ -1,5 +1,5 @@
 angular.module("myApp").component('cpuChart', {
-    templateUrl: '/static/component/simpleChart.html',
+    templateUrl: '/static/component/charts/simpleChart.html',
     bindings: {
     },
     controllerAs: 'ctx',
@@ -18,10 +18,24 @@ angular.module("myApp").component('cpuChart', {
                     position: 'left',
                     ticks: {
                         beginAtZero:true,
-                        max: 1,
-                        stepsize: 0.1
+                        max: 100,
+                        stepsize: 10
+                    },
+                    scaleLabel:{
+                        display: true,
+                        labelString: 'CPU load %',
+                        fontColor: "#666666"
                     }
                 }]
+            },
+            tooltips: {
+                enabled: true,
+                mode: 'label',
+                callbacks: {
+                    label: function (tooltipItems, data) {
+                        return data.datasets[tooltipItems.datasetIndex].label + ": " + tooltipItems.yLabel + " % ";
+                    }
+                }
             }
         };
 

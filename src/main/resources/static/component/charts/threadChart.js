@@ -1,5 +1,5 @@
 angular.module("myApp").component('threadChart', {
-    templateUrl: '/static/component/simpleChart.html',
+    templateUrl: '/static/component/charts/simpleChart.html',
     bindings: {
     },
     controllerAs: 'ctx',
@@ -19,6 +19,11 @@ angular.module("myApp").component('threadChart', {
                         position: 'left',
                         ticks: {
                             beginAtZero:true,
+                        },
+                        scaleLabel:{
+                            display: true,
+                            labelString: 'Number of Threads',
+                            fontColor: "#666666"
                         }
                     }]
                 }
