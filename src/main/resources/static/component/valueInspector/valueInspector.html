@@ -1,0 +1,6 @@
+<span ng-if="$ctrl.isType('simple')">{{$ctrl.myValue}}</span>
+<span ng-if="$ctrl.isType('number')">{{$ctrl.myValue | number}}</span>
+
+<button class="btn btn-default btn-xs" ng-if="!($ctrl.isType('number') || $ctrl.isType('simple'))" ng-click="$ctrl.openModal()">
+    <i class="fa fa-search"></i> Inspect value
+</button>

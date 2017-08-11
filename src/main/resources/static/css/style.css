@@ -119,7 +119,7 @@ body {
     margin-right: 0.5em;
 }
 
-edit-attribute-button > button {
+edit-attribute-button > button, execute-button > button, .btn-search {
     width: 100%;
 }
 
@@ -144,4 +144,8 @@ edit-attribute-button > button {
 @-webkit-keyframes glow {
     from { text-shadow: 0 0 0px red; }
     to { text-shadow: 3px 3px 5px red; }
+}
+.dashboard-charts .panel-body {
+    padding-top:0;
+    padding-bottom:0;
 }

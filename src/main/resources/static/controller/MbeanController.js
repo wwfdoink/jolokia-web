@@ -1,8 +1,10 @@
 angular.module("myApp").controller('MbeanController', function($scope, JolokiaService, $filter) {
+    var origTree = [];
     $scope.tree = [];
     $scope.loading = true;
     JolokiaService.getMbeanTree().then(function(res){
         $scope.tree = $filter('beanTree')(res.data.value);
+        origTree = angular.copy($scope.tree);
         $scope.loading = false;
     },function(err){
         if (_.isObject(err.data)) { $scope.error = err.data.error; }
@@ -40,4 +42,11 @@ angular.module("myApp").controller('MbeanController', function($scope, JolokiaSe
     $scope.$watch('beanTree.currentNode', function(newObj, oldObj) {
         $scope.getBeanValue();
     }, false);
+
+    $scope.$watch('searchTree', function(newObj, oldObj) {
+        if (newObj != oldObj) {
+            $scope.tree = $filter('beanTreeSearch')(origTree, newObj);
+        }
+    }, false);
+
 });

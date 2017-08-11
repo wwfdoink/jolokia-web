@@ -128,6 +128,14 @@ angular.module('myApp').filter('beanTree', function() {
         }
     }
 
+    function sortTree(arr) {
+        arr = _.sortBy(arr, 'name');
+        arr.forEach(function(item){
+            item.children = sortTree(item.children);
+        });
+        return arr;
+    }
+
     return function (obj) {
         if (!(obj instanceof Object)) {
             return undefined;
@@ -135,6 +143,7 @@ angular.module('myApp').filter('beanTree', function() {
         parentCache = {}
         var result = [];
         traverse(obj, result, '');
+        result = sortTree(result);
         return result;
     };
 });

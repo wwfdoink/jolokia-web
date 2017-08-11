@@ -1,0 +1,23 @@
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Value Inspector</h3>
+</div>
+<div class="modal-body" id="modal-body">
+    <table class="table table-striped" ng-if="$ctrl.isType('array')">
+        <tr ng-repeat="data in $ctrl.myValue">
+            <td><value-inspector my-value="data"></value-inspector></td>
+        </tr>
+    </table>
+
+    <table class="table table-striped" ng-if="$ctrl.isType('object')">
+        <tr ng-repeat="(key,data) in $ctrl.myValue">
+            <td>{{key}}</td>
+            <td><value-inspector my-value="data"></value-inspector></td>
+        </tr>
+    </table>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" type="button" ng-click="$ctrl.close()">Close</button>
+</div>
+
+
+
