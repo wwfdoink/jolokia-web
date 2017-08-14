@@ -1,0 +1,16 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="$ctrl.cancel()"><span aria-hidden="true">&times;</span></button>
+    <h3 class="modal-title" id="modal-title">Value Inspector</h3>
+</div>
+<div class="modal-body" id="modal-body" ng-switch="$ctrl.getType()">
+    <!-- Modal for huge texts -->
+    <span class="huge-text">
+        {{$ctrl.value}}
+    </span>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" type="button" ng-click="$ctrl.close()">Close</button>
+</div>
+
+
+

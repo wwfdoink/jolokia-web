@@ -149,3 +149,7 @@ edit-attribute-button > button, execute-button > button, .btn-search {
     padding-top:0;
     padding-bottom:0;
 }
+.huge-text {
+    word-break:break-all;
+}
+

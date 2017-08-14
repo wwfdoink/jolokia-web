@@ -1,5 +1,15 @@
-<span ng-if="$ctrl.isType('simple')">{{$ctrl.value}}</span>
-<span ng-if="$ctrl.isType('number')">{{$ctrl.value | number}}</span>
+<div ng-if="$ctrl.isType('simple')">
+    <span ng-if="!$ctrl.isHugeText()" class="huge-text">{{$ctrl.value}}</span>
+    <span ng-if="$ctrl.isHugeText()">
+        <button class="btn btn-default btn-xs" ng-click="$ctrl.openTextModal()">
+            <i class="fa fa-search"></i> Inspect value
+        </button>
+    </span>
+</div>
+
+<div ng-if="$ctrl.isType('number')">
+    <span>{{$ctrl.value | number}}</span>
+</div>
 
 <button class="btn btn-default btn-xs" ng-if="!($ctrl.isType('number') || $ctrl.isType('simple'))" ng-click="$ctrl.openModal()">
     <i class="fa fa-search"></i> Inspect value

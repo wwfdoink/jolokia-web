@@ -17,7 +17,12 @@ angular.module("myApp").component('valueInspector', {
                 return "simple" === type;
             }
         }
-
+        this.isHugeText = function(){
+            if ((typeof $ctrl.value == "string") && ($ctrl.value.length > 200)) {
+                return true;
+            }
+            return false;
+        }
         this.isEmptyArray = function(){
             return $ctrl.isType("array") && $ctrl.value.length > 0;
         }
@@ -27,10 +32,24 @@ angular.module("myApp").component('valueInspector', {
                 component: 'valueInspectorModal',
                 resolve: {
                     value: function(){ return $ctrl.value; }
-                }
+                },
+                size: 'lg'
             }, function() {
                 // Cancel
             });
         };
+
+        // Huge texts only
+        this.openTextModal = function() {
+            var modalInstance = $uibModal.open({
+                component: 'valueInspectorTextModal',
+                resolve: {
+                    value: function(){ return $ctrl.value; }
+                },
+                size: 'lg'
+            }, function() {
+                    // Cancel
+            });
+        }
     }
 });

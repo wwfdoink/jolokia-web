@@ -76,7 +76,8 @@ angular.module("myApp").component('executeFormModal', {
                             return data.value;
                         },
                         title: function(){ return title; }
-                    }
+                    },
+                    size: 'lg'
                 }, function(){
                     //Cancel
                 });
