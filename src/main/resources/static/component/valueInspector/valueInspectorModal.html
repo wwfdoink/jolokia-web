@@ -1,19 +1,47 @@
 <div class="modal-header">
-    <h3 class="modal-title" id="modal-title">Value Inspector</h3>
+    <h3 class="modal-title" id="modal-title">{{$ctrl.title}}</h3>
 </div>
-<div class="modal-body" id="modal-body">
-    <table class="table table-striped" ng-if="$ctrl.isType('array')">
-        <tr ng-repeat="data in $ctrl.myValue">
-            <td><value-inspector my-value="data"></value-inspector></td>
+<div class="modal-body" id="modal-body" ng-switch="$ctrl.getType()">
+    <!-- unpack array if its an obj array: [{},{}] -->
+    <table class="table table-striped" ng-switch-when="objectArray">
+        <tr ng-repeat="item in $ctrl.value">
+            <td>
+                <table class="table table-striped">
+                    <tr ng-repeat="(key,data) in item">
+                        <td>{{key}}</td>
+                        <td><value-inspector value="data"></value-inspector></td>
+                    </tr>
+                </table>
+            </td>
         </tr>
     </table>
 
-    <table class="table table-striped" ng-if="$ctrl.isType('object')">
-        <tr ng-repeat="(key,data) in $ctrl.myValue">
-            <td>{{key}}</td>
-            <td><value-inspector my-value="data"></value-inspector></td>
-        </tr>
-    </table>
+    <!-- simple array -->
+    <div ng-switch-when="array">
+        <div class="alert alert-info" role="alert" ng-if="$ctrl.value.length < 1">
+            <i class="fa fa-info-circle" aria-hidden="true"></i> This array is empty...
+        </div>
+        <table class="table table-striped" ng-if="$ctrl.value.length > 0">
+            <tr ng-repeat="data in $ctrl.value track by $index">
+                <td><value-inspector value="data"></value-inspector></td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- simple object -->
+    <div ng-switch-when="object">
+        <table class="table table-striped">
+            <tr ng-repeat="(key,data) in $ctrl.value">
+                <td>{{key}}</td>
+                <td><value-inspector value="data"></value-inspector></td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- primitive return type -->
+    <div ng-switch-when="simple">
+        <value-inspector value="$ctrl.value"></value-inspector>
+    </div>
 </div>
 <div class="modal-footer">
     <button class="btn btn-default" type="button" ng-click="$ctrl.close()">Close</button>

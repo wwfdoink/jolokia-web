@@ -1,5 +1,5 @@
 angular.module("myApp").component('executeFormModal', {
-    templateUrl: '/static/component/executeFormModal.html',
+    templateUrl: '/static/component/execute/executeFormModal.html',
     bindings: {
         resolve: '<',
         close: '&',
@@ -47,22 +47,41 @@ angular.module("myApp").component('executeFormModal', {
         }
 
         $ctrl.openResultModal = function(title, data, isError, error) {
-            var modalInstance = $uibModal.open({
-                component: 'valueDisplayModal',
-                resolve: {
-                    data: function () {
-                        if (_.isEmpty(data) || _.isEmpty(data.value)) {
-                            return "Execution completed with no result!";
-                        }
-                        return data.value;
-                    },
-                    title: function(){ return title; },
-                    isError: function(){ return isError; },
-                    error: function(){ return error; }
-                }
-            }, function(){
-                //Cancel
-            });
+            var modalInstance;
+
+            if (isError || (_.isEmpty(data) || (typeof data.value === "undefined") || (data.value === null))) {
+                // if it's just a simple error or empty value we dont need the valueInspector
+                modalInstance = $uibModal.open({
+                    component: 'executeSimpleModal',
+                    resolve: {
+                        data: function () {
+                            if (_.isEmpty(data) || _.isEmpty(data.value)) {
+                                return null;
+                            }
+                            return data.value;
+                        },
+                        title: function(){ return title; },
+                        isError: function(){ return isError; },
+                        error: function(){ return error; }
+                    }
+                }, function(){
+                    //Cancel
+                });
+            } else {
+                // if all good and got a non-empty result then we want the valueInspector
+                modalInstance = $uibModal.open({
+                    component: 'valueInspectorModal',
+                    resolve: {
+                        value: function () {
+                            return data.value;
+                        },
+                        title: function(){ return title; }
+                    }
+                }, function(){
+                    //Cancel
+                });
+
+            }
 
             modalInstance.result.then(function (selectedItem) {
                 $ctrl.selected = selectedItem;

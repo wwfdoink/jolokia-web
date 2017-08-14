@@ -9,22 +9,23 @@ angular.module("myApp").component('valueInspectorModal', {
         var $ctrl = this;
 
         this.$onInit = function () {
-            $ctrl.myValue = $ctrl.resolve.myValue;
+            $ctrl.value = $ctrl.resolve.value;
+            $ctrl.title = (typeof $ctrl.resolve.title != "undefined") ? $ctrl.resolve.title : "Value Inspector";
         };
 
         this.cancel = function () {
             $ctrl.dismiss({$value: 'cancel'});
         };
 
-        this.isType = function(type){
-            if (Array.isArray($ctrl.myValue)) {
-                return "array" === type;
-            } else if (_.isObject($ctrl.myValue)) {
-                return "object" === type;
-            } else if (_.isNumber($ctrl.myValue)) {
-                return "number" === type;
+        this.getType = function(){
+            if (Array.isArray($ctrl.value) && ($ctrl.value.length>0) && _.isObject($ctrl.value[0])) {
+                return "objectArray";
+            } else if (Array.isArray($ctrl.value)) {
+                return "array";
+            } else if (_.isObject($ctrl.value)) {
+                return "object";
             } else {
-                return "simple" === type;
+                return "simple";
             }
         }
     }

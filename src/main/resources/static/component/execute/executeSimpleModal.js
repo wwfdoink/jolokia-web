@@ -1,5 +1,5 @@
-angular.module("myApp").component('valueDisplayModal', {
-    templateUrl: '/static/component/valueDisplayModal.html',
+angular.module("myApp").component('executeSimpleModal', {
+    templateUrl: '/static/component/execute/executeSimpleModal.html',
     bindings: {
         resolve: '<',
         close: '&',

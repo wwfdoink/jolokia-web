@@ -1,5 +1,5 @@
 angular.module("myApp").component('valueInput', {
-    templateUrl: '/static/component/valueInput.html',
+    templateUrl: '/static/component/valueInput/valueInput.html',
     bindings: {
         arg: '='
     },

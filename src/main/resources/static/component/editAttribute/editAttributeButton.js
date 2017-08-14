@@ -1,8 +1,8 @@
-angular.module("myApp").component('executeButton', {
-    templateUrl: '/static/component/executeButton.html',
+angular.module("myApp").component('editAttributeButton', {
+    templateUrl: '/static/component/editAttribute/editAttributeButton.html',
     bindings: {
         bean: '<',
-        operation: '<'
+        attr: '<'
     },
     controller: function($scope, JolokiaService, $uibModal) {
         var $ctrl = this;
@@ -13,10 +13,10 @@ angular.module("myApp").component('executeButton', {
 
         this.openForm = function() {
             var modalInstance = $uibModal.open({
-                component: 'executeFormModal',
+                component: 'editAttributeFormModal',
                 resolve: {
                     bean: function(){ return $ctrl.bean; },
-                    operation: function(){ return $ctrl.operation; }
+                    attr: function(){ return $ctrl.attr; }
                 }
             }, function() {
                 // Cancel
