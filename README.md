@@ -23,7 +23,7 @@ app.start();
 //app.startAndWait(); //blocking
 ```
 Open your browser and navigate to http://yourhost:8080/
-### CLI Usage example
+### CLI Usage for testing purposes
 ```sh
 $ java -jar jolokia-web-all.jar --port=8080
 ```
