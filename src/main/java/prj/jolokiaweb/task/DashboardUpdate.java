@@ -7,9 +7,13 @@ import org.jolokia.client.request.J4pRequest;
 import org.jolokia.client.request.J4pResponse;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import prj.jolokiaweb.JolokiaApp;
+import prj.jolokiaweb.jolokia.JolokiaClient;
 import prj.jolokiaweb.websocket.DashboardHandler;
 import prj.jolokiaweb.websocket.Message;
 
@@ -20,6 +24,9 @@ import java.util.List;
 public class DashboardUpdate {
 
     @Autowired
+    private JolokiaClient jolokiaClient;
+
+    @Autowired
     private DashboardHandler handler;
 
     @Scheduled(fixedDelay=3000)
@@ -28,7 +35,6 @@ public class DashboardUpdate {
             return;
         }
         JSONObject result = new JSONObject();
-        J4pClient j4pClient = new J4pClient(JolokiaApp.getJolokiaUrl());
         try {
             J4pReadRequest osReq = new J4pReadRequest("java.lang:type=OperatingSystem",
                     "ProcessCpuLoad",
@@ -40,7 +46,7 @@ public class DashboardUpdate {
             );
             J4pReadRequest threadReq = new J4pReadRequest("java.lang:type=Threading","ThreadCount","PeakThreadCount");
             J4pReadRequest memoryHeapReq = new J4pReadRequest("java.lang:type=Memory","HeapMemoryUsage", "NonHeapMemoryUsage");
-            List<J4pResponse<J4pRequest>> responseList = j4pClient.execute(osReq, threadReq, memoryHeapReq);
+            List<J4pResponse<J4pRequest>> responseList = jolokiaClient.getClient().execute(osReq, threadReq, memoryHeapReq);
 
             result.put("os", responseList.get(0).getValue());
             result.put("thread", responseList.get(1).getValue());

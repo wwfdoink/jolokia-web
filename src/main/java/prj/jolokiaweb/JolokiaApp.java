@@ -5,9 +5,9 @@ import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.commons.cli.*;
 import org.apache.tomcat.websocket.server.WsSci;
+import org.jolokia.client.J4pClient;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -20,6 +20,7 @@ public class JolokiaApp {
     private static final int DEFAULT_PORT = 8080;
     private static Tomcat tomcat;
     private static String baseUrl;
+
     private final Set<JolokiaBeanPermission> beanPermissions = new HashSet<>();
 
     /**
@@ -37,6 +38,7 @@ public class JolokiaApp {
 
         //TODO fix this
         baseUrl = "http://" + tomcat.getServer().getAddress() + ":" + port;
+
         this.beanPermissions.addAll(Arrays.asList(beanPermissions));
     }
 
