@@ -24,6 +24,7 @@ public class DashboardHandler extends TextWebSocketHandler {
     public int getClientNum(){
         return sessionList.size();
     }
+
     public void sendDashboardStats(Message msg) {
         for (WebSocketSession session : sessionList) {
             if (session.isOpen()) {
@@ -37,21 +38,12 @@ public class DashboardHandler extends TextWebSocketHandler {
     }
 
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        if ("CLOSE".equalsIgnoreCase(message.getPayload())) {
-            session.close();
-        }
-    }
-
-    @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        super.afterConnectionEstablished(session);
         addSession(session);
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        super.afterConnectionClosed(session, status);
         removeSession(session);
     }
 
