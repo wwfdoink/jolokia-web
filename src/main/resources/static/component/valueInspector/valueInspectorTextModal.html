@@ -4,7 +4,10 @@
 </div>
 <div class="modal-body" id="modal-body" ng-switch="$ctrl.getType()">
     <!-- Modal for huge texts -->
-    <span class="huge-text">
+    <pre class="huge-text" ng-switch-when="preformatted">
+        {{$ctrl.value}}
+    </pre>
+    <span class="huge-text" ng-switch-when="text">
         {{$ctrl.value}}
     </span>
 </div>

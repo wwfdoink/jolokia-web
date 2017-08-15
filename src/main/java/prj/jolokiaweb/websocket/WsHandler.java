@@ -8,25 +8,24 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 @Component
-public class DashboardHandler extends TextWebSocketHandler {
+public class WsHandler extends TextWebSocketHandler {
 
-    List<WebSocketSession> sessionList = new ArrayList<>();
+    private ConcurrentSkipListSet<WebSocketSession> sessionList = new ConcurrentSkipListSet(new WebSocketSessionComparator());
 
-    synchronized void addSession(WebSocketSession session) {
-        this.sessionList.add(session);
-    }
-    synchronized void removeSession(WebSocketSession session) {
-        this.sessionList.remove(session);
-    }
     public int getClientNum(){
         return sessionList.size();
     }
 
     public void sendDashboardStats(Message msg) {
-        for (WebSocketSession session : sessionList) {
+        Iterator<WebSocketSession> itr = sessionList.iterator();
+        while (itr.hasNext()){
+            WebSocketSession session = itr.next();
             if (session.isOpen()) {
                 try {
                     session.sendMessage(msg.toTextMessage());
@@ -39,12 +38,12 @@ public class DashboardHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        addSession(session);
+        sessionList.add(session);
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        removeSession(session);
+        sessionList.remove(session);
     }
 
 }

@@ -11,7 +11,12 @@ angular.module("myApp").component('valueInspectorTextModal', {
         this.$onInit = function () {
             $ctrl.value = $ctrl.resolve.value;
         };
-
+        this.getType = function() {
+            if (($ctrl.value.indexOf("  ") > -1) && (($ctrl.value.indexOf("\t") > -1) || ($ctrl.value.indexOf("\n") > -1))) {
+                return 'preformatted'
+            }
+            return 'text';
+        }
         this.cancel = function () {
             $ctrl.dismiss({$value: 'cancel'});
         };

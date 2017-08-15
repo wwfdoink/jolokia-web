@@ -23,6 +23,14 @@ angular.module("myApp").component('executeFormModal', {
             var sigArr = _.map($ctrl.resolve.operation.args, function(arg){
                 return arg.typeOrig;
             });
+
+            // TODO: jolokia client issue https://github.com/rhuss/jolokia/issues/337
+            for(var i=0;i<sigArr.length;i++) {
+                if (sigArr[i].indexOf("[Ljava.lang.String;") > -1) {
+                    return $ctrl.operation.name;
+                }
+            };
+            //
             return $ctrl.operation.name + "(" + sigArr.join(',') + ")";
         }
 
@@ -49,8 +57,8 @@ angular.module("myApp").component('executeFormModal', {
         $ctrl.openResultModal = function(title, data, isError, error) {
             var modalInstance;
 
-            if (isError || (_.isEmpty(data) || (typeof data.value === "undefined") || (data.value === null))) {
-                // if it's just a simple error or empty value we dont need the valueInspector
+            if (isError || (_.isEmpty(data) || (typeof data.value === "undefined") || _.isEmpty(data.value) || (data.value === null))) {
+                // if it's just a simple error or empty value we don't need the valueInspector
                 modalInstance = $uibModal.open({
                     component: 'executeSimpleModal',
                     resolve: {

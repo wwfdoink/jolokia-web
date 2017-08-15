@@ -5,7 +5,6 @@ import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.commons.cli.*;
 import org.apache.tomcat.websocket.server.WsSci;
-import org.jolokia.client.J4pClient;
 
 import javax.servlet.ServletException;
 import java.io.File;
