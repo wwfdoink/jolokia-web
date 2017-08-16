@@ -32,6 +32,7 @@ angular.module("myApp").component('executeFormModal', {
             var params = _.map($ctrl.resolve.operation.args, function(arg){
                 return arg.value;
             });
+            params = params.filter(function(item){ return item != undefined });
 
             $scope.loading = true;
             JolokiaService.execute($ctrl.bean.id, $ctrl.getOperationNameWithSignature(), params).then(function(res) {

@@ -25,7 +25,7 @@
         <div class="panel-heading">{{$ctrl.arg.name}}</div>
         <div class="panel-body">
             <div class="input-group">
-                <input type="{{($ctrl.arg.type == 'long[]') ? 'number' : 'text'}}" ng-model="$ctrl.arrayInput" class="form-control" placeholder="Enter a single value for {{$ctrl.arg.name}} array">
+                <input type="{{($ctrl.arg.type == 'long[]') ? 'number' : 'text'}}" ng-model="$ctrl.arrayInput" on-enter-key="$ctrl.pushToArray($ctrl.arrayInput)" class="form-control" placeholder="Enter a single value for {{$ctrl.arg.name}} array">
                 <span class="input-group-btn">
                     <button class="btn btn-primary" type="button" ng-click="$ctrl.pushToArray($ctrl.arrayInput)">
                         <i class="fa fa-plus-circle" aria-hidden="true"></i> Add

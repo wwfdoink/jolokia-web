@@ -8,6 +8,8 @@ angular.module("myApp").component('valueInput', {
         this.$onInit = function(){
             if (this.arg.type === "boolean" && !this.arg.value) {
                 this.arg.value = false;
+            } else if (_.contains(["java.lang.String[]", "long[]"], this.arg.type)) {
+                this.arg.value = [];
             }
         }
         this.getType = function(){
