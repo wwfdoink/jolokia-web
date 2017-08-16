@@ -1,6 +1,8 @@
 package prj.jolokiaweb.controller;
 
 import org.jolokia.client.J4pClient;
+import org.jolokia.client.J4pClientBuilder;
+import org.jolokia.client.J4pClientBuilderFactory;
 import org.jolokia.client.exception.J4pException;
 import org.jolokia.client.request.*;
 import org.json.simple.JSONObject;
@@ -23,8 +25,6 @@ import java.util.*;
 
 @RestController
 public class ApiController {
-    @Autowired
-    private JolokiaClient jolokiaClient;
 
     @RequestMapping(value = "/api/beans", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JSONObject> beanTree() {
@@ -32,7 +32,7 @@ public class ApiController {
 
         try {
             String path = null; // null means full tree
-            result = jolokiaClient.getClient().execute(new J4pListRequest(path)).asJSONObject();
+            result = JolokiaClient.getInstance().execute(new J4pListRequest(path)).asJSONObject();
         } catch(Exception e) {
             result.put("error", e.getMessage());
             return ResponseEntity.badRequest().body(result);
@@ -46,8 +46,8 @@ public class ApiController {
 
         try {
             J4pReadRequest runtimeReq = new J4pReadRequest("java.lang:type=Runtime");
-            J4pReadResponse runtimeRes = jolokiaClient.getClient().execute(runtimeReq);
-            J4pVersionResponse versionRes = jolokiaClient.getClient().execute(new J4pVersionRequest());
+            J4pReadResponse runtimeRes = JolokiaClient.getInstance().execute(runtimeReq);
+            J4pVersionResponse versionRes = JolokiaClient.getInstance().execute(new J4pVersionRequest());
 
             result.put("runtime", runtimeRes.getValue());
             result.put("version", versionRes.getValue());
@@ -64,9 +64,10 @@ public class ApiController {
 
         try {
             J4pReadRequest readReq = new J4pReadRequest(readForm.getMbean());
+            readReq.setPreferredHttpMethod("POST");
             Map<J4pQueryParameter,String> params = new HashMap<>();;
             params.put(J4pQueryParameter.IGNORE_ERRORS,"true");
-            J4pReadResponse readRes = jolokiaClient.getClient().execute(readReq, params);
+            J4pReadResponse readRes = JolokiaClient.getInstance().execute(readReq, params);
             result = readRes.getValue();
         } catch (MalformedObjectNameException e) {
             result.put("error", e.getMessage());
@@ -89,7 +90,8 @@ public class ApiController {
             } else {
                 execReq = new J4pExecRequest(execForm.getMbean(), execForm.getOperation());
             }
-            J4pExecResponse execRes = jolokiaClient.getClient().execute(execReq);
+            execReq.setPreferredHttpMethod("POST");
+            J4pExecResponse execRes = JolokiaClient.getInstance().execute(execReq);
             result = execRes.asJSONObject();
         } catch (MalformedObjectNameException e) {
             result.put("error", e.getMessage());
@@ -107,8 +109,27 @@ public class ApiController {
 
         try {
             J4pWriteRequest writeReq = new J4pWriteRequest(form.getMbean(), form.getAttribute(), form.getValue());
-            J4pWriteResponse writeRes = jolokiaClient.getClient().execute(writeReq);
+            J4pWriteResponse writeRes = JolokiaClient.getInstance().execute(writeReq);
             result = writeRes.asJSONObject();
+        } catch (MalformedObjectNameException e) {
+            result.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(result);
+        } catch (J4pException e) {
+            result.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(result);
+        }
+        return ResponseEntity.ok(result);
+    }
+
+    @RequestMapping(value = "/api/gcRun", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<JSONObject> gcRun() {
+        JSONObject result = new JSONObject();
+
+        try {
+            J4pExecRequest execReq = new J4pExecRequest("com.sun.management:type=DiagnosticCommand","gcRun()");
+            execReq.setPreferredHttpMethod("POST");
+            J4pExecResponse execRes = JolokiaClient.getInstance().execute(execReq);
+            result = execRes.asJSONObject();
         } catch (MalformedObjectNameException e) {
             result.put("error", e.getMessage());
             return ResponseEntity.badRequest().body(result);

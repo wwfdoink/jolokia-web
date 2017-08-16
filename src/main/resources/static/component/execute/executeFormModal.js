@@ -23,14 +23,6 @@ angular.module("myApp").component('executeFormModal', {
             var sigArr = _.map($ctrl.resolve.operation.args, function(arg){
                 return arg.typeOrig;
             });
-
-            // TODO: jolokia client issue https://github.com/rhuss/jolokia/issues/337
-            for(var i=0;i<sigArr.length;i++) {
-                if (sigArr[i].indexOf("[Ljava.lang.String;") > -1) {
-                    return $ctrl.operation.name;
-                }
-            };
-            //
             return $ctrl.operation.name + "(" + sigArr.join(',') + ")";
         }
 

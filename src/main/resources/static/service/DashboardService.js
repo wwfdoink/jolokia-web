@@ -69,50 +69,88 @@ app.service("DashboardService", function($http, $timeout, $rootScope, $websocket
     }
 
     self.processDashboardStats = function(data){
-        //update X-axis labels
-        /*
+        /* Update X-axis labels
         var time = UtilService.getTimeString();
         _.each(Object.keys(self.chartData),function(field){
             self.chartData[field].labels.shift();
             self.chartData[field].labels.push(time);
         });*/
 
-        //heap
-        self.chartData.heap.data[0].shift();
-        self.chartData.heap.data[0].push(data.memory.HeapMemoryUsage.used);
-        self.chartData.heap.data[1].shift();
-        self.chartData.heap.data[1].push(data.memory.HeapMemoryUsage.committed);
-        self.chartData.heap.data[2].shift();
-        self.chartData.heap.data[2].push(data.memory.HeapMemoryUsage.max);
-        //non-heap
-        self.chartData.nonHeap.data[0].shift();
-        self.chartData.nonHeap.data[0].push(data.memory.NonHeapMemoryUsage.used);
-        self.chartData.nonHeap.data[1].shift();
-        self.chartData.nonHeap.data[1].push(data.memory.NonHeapMemoryUsage.committed);
-        self.chartData.nonHeap.data[2].shift();
-        self.chartData.nonHeap.data[2].push((data.memory.NonHeapMemoryUsage.max <= 0) ? Number.NaN : data.memory.NonHeapMemoryUsage.max);
-        //thread
-        self.chartData.thread.data[0].shift();
-        self.chartData.thread.data[0].push(data.thread.ThreadCount);
-        self.chartData.thread.data[1].shift();
-        self.chartData.thread.data[1].push(data.thread.PeakThreadCount);
-        //cpu
-        self.chartData.cpu.data[0].shift();
-        self.chartData.cpu.data[0].push((data.os.ProcessCpuLoad == -1) ? Number.NaN : Math.round(data.os.ProcessCpuLoad * 100));
-        self.chartData.cpu.data[1].shift();
-        self.chartData.cpu.data[1].push((data.os.SystemCpuLoad == -1) ? Number.NaN : Math.round(data.os.SystemCpuLoad * 100));
-        //swap
-        self.chartData.swap.data[0].shift();
-        self.chartData.swap.data[0].push((data.os.SystemCpuLoad == -1) ? Number.NaN : data.os.TotalSwapSpaceSize - data.os.FreeSwapSpaceSize);
-        self.chartData.swap.data[1].shift();
-        self.chartData.swap.data[1].push((data.os.TotalSwapSpaceSize == -1) ? Number.NaN : data.os.TotalSwapSpaceSize);
-        //physicalMemory
-        self.chartData.physicalMemory.data[0].shift();
-        self.chartData.physicalMemory.data[0].push((data.os.FreePhysicalMemorySize == -1 || data.os.TotalPhysicalMemorySize == -1) ? Number.NaN : data.os.TotalPhysicalMemorySize - data.os.FreePhysicalMemorySize);
-        self.chartData.physicalMemory.data[1].shift();
-        self.chartData.physicalMemory.data[1].push((data.os.TotalPhysicalMemorySize == -1) ? Number.NaN : data.os.TotalPhysicalMemorySize);
+        /*
+         Since angular $watch can't detect the below change type and the chart
+         doesn't flow and bugs out. That's why we ask for another $digest cycle to push data.
+         You can't shift the array first that's why we set to NaN because the
+         data array length must match to keep the smooth animation.
 
-        $rootScope.$broadcast('chartChange', {});
+         arr = [1,1,1]
+         arr.shift()
+         arr.push(1)
+        */
+        //shift heap
+        self.chartData.heap.data[0][0]=Number.NaN;
+        self.chartData.heap.data[1][0]=Number.NaN;
+        self.chartData.heap.data[2][0]=Number.NaN;
+        //shift nonHeap
+        self.chartData.nonHeap.data[0][0]=Number.NaN;
+        self.chartData.nonHeap.data[1][0]=Number.NaN;
+        self.chartData.nonHeap.data[2][0]=Number.NaN;
+        //shift thread
+        self.chartData.thread.data[0][0]=Number.NaN;
+        self.chartData.thread.data[1][0]=Number.NaN;
+        //shift cpu
+        self.chartData.cpu.data[0][0]=Number.NaN;
+        self.chartData.cpu.data[1][0]=Number.NaN;
+        //shift swap
+        self.chartData.swap.data[0][0]=Number.NaN;
+        self.chartData.swap.data[1][0]=Number.NaN;
+        //shift mem
+        self.chartData.physicalMemory.data[0][0]=Number.NaN;
+        self.chartData.physicalMemory.data[1][0]=Number.NaN;
+
+        $timeout(function(){
+            //shift heap
+            self.chartData.heap.data[0].shift();
+            self.chartData.heap.data[1].shift();
+            self.chartData.heap.data[2].shift();
+            //shift nonHeap
+            self.chartData.nonHeap.data[0].shift();
+            self.chartData.nonHeap.data[1].shift();
+            self.chartData.nonHeap.data[2].shift();
+            //shift thread
+            self.chartData.thread.data[0].shift();
+            self.chartData.thread.data[1].shift();
+            //shift cpu
+            self.chartData.cpu.data[0].shift();
+            self.chartData.cpu.data[1].shift();
+            //shift swap
+            self.chartData.swap.data[0].shift();
+            self.chartData.swap.data[1].shift();
+            //shift mem
+            self.chartData.physicalMemory.data[0].shift();
+            self.chartData.physicalMemory.data[1].shift();
+
+            //heap
+            self.chartData.heap.data[0].push(data.memory.HeapMemoryUsage.used);
+            self.chartData.heap.data[1].push(data.memory.HeapMemoryUsage.committed);
+            self.chartData.heap.data[2].push(data.memory.HeapMemoryUsage.max);
+            //non-heap
+            self.chartData.nonHeap.data[0].push(data.memory.NonHeapMemoryUsage.used);
+            self.chartData.nonHeap.data[1].push(data.memory.NonHeapMemoryUsage.committed);
+            self.chartData.nonHeap.data[2].push((data.memory.NonHeapMemoryUsage.max <= 0) ? Number.NaN : data.memory.NonHeapMemoryUsage.max);
+            //thread
+            self.chartData.thread.data[0].push(data.thread.ThreadCount);
+            self.chartData.thread.data[1].push(data.thread.PeakThreadCount);
+            //cpu
+            self.chartData.cpu.data[0].push((data.os.ProcessCpuLoad == -1) ? Number.NaN : Math.round(data.os.ProcessCpuLoad * 100));
+            self.chartData.cpu.data[1].push((data.os.SystemCpuLoad == -1) ? Number.NaN : Math.round(data.os.SystemCpuLoad * 100));
+            //swap
+            self.chartData.swap.data[0].push((data.os.SystemCpuLoad == -1) ? Number.NaN : data.os.TotalSwapSpaceSize - data.os.FreeSwapSpaceSize);
+            self.chartData.swap.data[1].push((data.os.TotalSwapSpaceSize == -1) ? Number.NaN : data.os.TotalSwapSpaceSize);
+            //physicalMemory
+            self.chartData.physicalMemory.data[0].push((data.os.FreePhysicalMemorySize == -1 || data.os.TotalPhysicalMemorySize == -1) ? Number.NaN : data.os.TotalPhysicalMemorySize - data.os.FreePhysicalMemorySize);
+            self.chartData.physicalMemory.data[1].push((data.os.TotalPhysicalMemorySize == -1) ? Number.NaN : data.os.TotalPhysicalMemorySize);
+        });
+
     }
 
     var ws = $websocket((window.location.protocol.startsWith("https") ? "wss://" : "ws://") + window.location.host + '/ws', null, { reconnectIfNotNormalClose: true });

@@ -19,9 +19,6 @@ import java.util.List;
 public class DashboardUpdate {
 
     @Autowired
-    private JolokiaClient jolokiaClient;
-
-    @Autowired
     private WsHandler ws;
 
     @Scheduled(fixedDelay=3000)
@@ -41,7 +38,7 @@ public class DashboardUpdate {
             );
             J4pReadRequest threadReq = new J4pReadRequest("java.lang:type=Threading","ThreadCount","PeakThreadCount");
             J4pReadRequest memoryHeapReq = new J4pReadRequest("java.lang:type=Memory","HeapMemoryUsage", "NonHeapMemoryUsage");
-            List<J4pResponse<J4pRequest>> responseList = jolokiaClient.getClient().execute(osReq, threadReq, memoryHeapReq);
+            List<J4pResponse<J4pRequest>> responseList = JolokiaClient.getInstance().execute(osReq, threadReq, memoryHeapReq);
 
             result.put("os", responseList.get(0).getValue());
             result.put("thread", responseList.get(1).getValue());

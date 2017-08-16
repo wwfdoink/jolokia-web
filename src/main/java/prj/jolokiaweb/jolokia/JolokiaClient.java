@@ -1,17 +1,24 @@
 package prj.jolokiaweb.jolokia;
 
 import org.jolokia.client.J4pClient;
+import org.jolokia.client.J4pClientBuilderFactory;
 import org.springframework.stereotype.Service;
 import prj.jolokiaweb.JolokiaApp;
 
-@Service
 public class JolokiaClient {
-    private J4pClient client;
+    private static J4pClient instance;
 
-    public J4pClient getClient() {
-        if (client == null) {
-            client = new J4pClient(JolokiaApp.getJolokiaUrl());
+    private JolokiaClient(){
+    }
+
+    public static synchronized J4pClient getInstance() {
+        if (instance == null) {
+            instance = J4pClientBuilderFactory
+                        .url(JolokiaApp.getJolokiaUrl())
+                        .maxTotalConnections(2)
+                        .build();
+            ;
         }
-        return client;
+        return instance;
     }
 }

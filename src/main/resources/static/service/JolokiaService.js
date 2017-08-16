@@ -30,4 +30,8 @@ app.service("JolokiaService", function($http){
             data: paramArray
         });
     }
+    // Run garbage collector
+    this.gcRun = function(){
+        return $http.get("/api/gcRun");
+    }
 });

@@ -7,6 +7,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -29,8 +30,8 @@ public class WsHandler extends TextWebSocketHandler {
             if (session.isOpen()) {
                 try {
                     session.sendMessage(msg.toTextMessage());
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (IOException e) {
+                    //ignore if user closing his browser while sending data
                 }
             }
         }
