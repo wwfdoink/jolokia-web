@@ -20,12 +20,7 @@ angular.module("myApp").component('swapChart', {
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    ticks: {
-                        beginAtZero:true,
-                        callback: function(label, index, labels) {
-                            return UtilService.formatBytes(label, 0);
-                        }
-                    },
+                    ticks: UtilService.chartTicks(Math.pow(1024,3)), // 1 GiB
                     scaleLabel:{
                         display: true,
                         labelString: 'Swap usage',
@@ -38,7 +33,7 @@ angular.module("myApp").component('swapChart', {
                 mode: 'label',
                 callbacks: {
                     label: function (tooltipItems, data) {
-                        return data.datasets[tooltipItems.datasetIndex].label + ': ' + UtilService.formatBytes(tooltipItems.yLabel, 0);
+                        return data.datasets[tooltipItems.datasetIndex].label + ': ' + UtilService.formatBytes(tooltipItems.yLabel, 2);
                     }
                 }
             },

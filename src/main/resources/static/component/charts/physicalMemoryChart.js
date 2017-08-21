@@ -19,12 +19,7 @@ angular.module("myApp").component('physicalMemoryChart', {
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    ticks: {
-                        beginAtZero:true,
-                        callback: function(label, index, labels) {
-                            return UtilService.formatBytes(label, 0);
-                        }
-                    },
+                    ticks: UtilService.chartTicks(Math.pow(1024,2)*512), // 512 MiB,
                     scaleLabel:{
                         display: true,
                         labelString: 'Physical Memory usage',
@@ -37,7 +32,7 @@ angular.module("myApp").component('physicalMemoryChart', {
                 mode: 'label',
                 callbacks: {
                     label: function (tooltipItems, data) {
-                        return data.datasets[tooltipItems.datasetIndex].label + ': ' + UtilService.formatBytes(tooltipItems.yLabel, 0);
+                        return data.datasets[tooltipItems.datasetIndex].label + ': ' + UtilService.formatBytes(tooltipItems.yLabel, 2);
                     }
                 }
             },

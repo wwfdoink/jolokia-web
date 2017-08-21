@@ -1,20 +1,20 @@
 <div class="col-sm-12">
-    <div class="loading" ng-show="loading">
+    <div class="$ctrl.loading" ng-show="$ctrl.loading">
         <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
     </div>
 
-    <div ng-show="error && !loading" class="alert alert-danger" role="alert">
-        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{error}}
+    <div ng-show="$ctrl.error && !$ctrl.loading" class="alert alert-danger" role="alert">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{$ctrl.error}}
     </div>
 
-    <div ng-show="!loading && !error">
+    <div ng-show="!$ctrl.loading && !$ctrl.error">
         <h1 class="page-header">Runtime</h1>
         <table class="table table-striped">
             <tr>
                 <th>#</th>
                 <th>Value</th>
             </tr>
-            <tr ng-repeat="item in runtimeData">
+            <tr ng-repeat="item in $ctrl.runtimeData">
                 <td>{{item.key}}</td>
                 <td><value-inspector value="item.value"></value-inspector></td>
             </tr>
@@ -25,7 +25,7 @@
                 <th>#</th>
                 <th>Value</th>
             </tr>
-            <tr ng-repeat="item in versionData">
+            <tr ng-repeat="item in $ctrl.versionData">
                 <td>{{item.key}}</td>
                 <td><value-inspector value="item.value"></value-inspector></td>
             </tr>

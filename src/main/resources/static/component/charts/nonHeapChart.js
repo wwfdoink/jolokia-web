@@ -20,12 +20,7 @@ angular.module("myApp").component('nonHeapChart', {
                     type: 'linear',
                     display: true,
                     position: 'left',
-                    ticks: {
-                        beginAtZero:true,
-                        callback: function(label, index, labels) {
-                            return UtilService.formatBytes(label, 0);
-                        }
-                    },
+                    ticks: UtilService.chartTicks(Math.pow(1024,2)*16), // 16 MiB
                     scaleLabel:{
                         display: true,
                         labelString: 'Memory usage',
@@ -38,7 +33,7 @@ angular.module("myApp").component('nonHeapChart', {
                 mode: 'label',
                 callbacks: {
                     label: function (tooltipItems, data) {
-                        return data.datasets[tooltipItems.datasetIndex].label + ': ' + UtilService.formatBytes(tooltipItems.yLabel, 0);
+                        return data.datasets[tooltipItems.datasetIndex].label + ': ' + UtilService.formatBytes(tooltipItems.yLabel, 2);
                     }
                 }
             },

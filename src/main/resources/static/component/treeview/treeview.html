@@ -1,0 +1,26 @@
+<ul>
+    <li ng-repeat="node in $ctrl.treeModel">
+        <i class="collapsed"
+           ng-show="node.children.length && !node.isOpen"
+           ng-click="$ctrl.selectNodeHead(node)">
+        </i>
+
+        <i class="expanded"
+           ng-show="node.children.length && node.isOpen"
+           ng-click="$ctrl.selectNodeHead(node)">
+        </i>
+
+        <i class="normal" ng-hide="node.children.length"></i>
+
+        <span ng-class="node.selected"
+              ng-click="$ctrl.selectNodeLabel(node)">
+            {{node.name}}
+        </span>
+
+        <treeview
+             ng-hide="!node.isOpen"
+             tree-model="node.children"
+             current-node="$ctrl.currentNode">
+        </treeview>
+    </li>
+</ul>

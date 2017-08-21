@@ -1,19 +1,15 @@
-var app = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'angular-websocket', 'chart.js', 'angularTreeview']);
+var app = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'angular-websocket', 'chart.js']);
 
 app.config(function($routeProvider) {
-    var tplDir = "/static/tpl";
   $routeProvider
   .when('/', {
-    templateUrl : tplDir+'/dashboard.html',
-    controller  : 'DashboardController'
+    template: "<dashboard-page></dashboard-page>",
   })
   .when('/mbean', {
-    templateUrl : tplDir+'/mbean.html',
-    controller  : 'MbeanController'
+    template: "<mbean-page></mbean-page>",
   })
   .when('/version', {
-    templateUrl : tplDir+'/version.html',
-    controller  : 'VersionController'
+    template: "<version-page></version-page>",
   })
   .otherwise({redirectTo: '/'});
 });

@@ -12,7 +12,7 @@ angular.module("myApp").component('valueInspectorTextModal', {
             $ctrl.value = $ctrl.resolve.value;
         };
         this.getType = function() {
-            if (($ctrl.value.indexOf("  ") > -1) && (($ctrl.value.indexOf("\t") > -1) || ($ctrl.value.indexOf("\n") > -1))) {
+            if (($ctrl.value.indexOf("\t") > -1) || ($ctrl.value.indexOf("\n") > -1)) {
                 return 'preformatted'
             }
             return 'text';
