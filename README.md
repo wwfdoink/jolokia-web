@@ -20,7 +20,7 @@ JolokiaApp app = new JolokiaApp.Builder()
     .port(8080) // tomcat listening port
     .contextPath("jolokiaweb") // webapp contextPath, default is the root path
     .jolokiaUrl("http://localhost:8778/jolokia") // connect to your already running jolokia-jvm-agent
-    .policy(JolokiaPolicy.READ, JolokiaPolicy.WRITE, JolokiaPolicy.EXECUTE) // default is rwx
+    .policy(/*JolokiaPolicy.NONE,*/ JolokiaPolicy.READ, JolokiaPolicy.WRITE, JolokiaPolicy.EXECUTE) // default is rwx, NONE means dashboard only
     .build();
 app.start();
 //app.startAndWait(); //blocking
@@ -32,6 +32,6 @@ $ java -jar jolokia-web-all.jar
   --port=8080
   --contextPath=jolokiaweb
   --jolokiaUrl=http://localhost:8778/jolokia
-  --policy=rwx
+  --policy=rwxn # n means none so its dashboard only
 ```
 Open your browser and navigate to http://yourhost:8080/
