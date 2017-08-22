@@ -17,9 +17,9 @@ This will create the fatJar `build/libs/jolokia-web-all.jar`
 import prj.jolokiaweb.JolokiaApp;
 
 JolokiaApp app = new JolokiaApp.Builder()
-    .port(8080)
-    //.contextPath("jolokiaweb") // if you don't want to deploy it to the root path /
-    //.jolokiaUrl("http://localhost:8778/jolokia") // if you want to connect to your already running jolokia-jvm-agent
+    .port(8080) // tomcat listening port
+  //.contextPath("jolokiaweb") // webapp contextPath, default is /
+  //.jolokiaUrl("http://localhost:8778/jolokia") // connect to your already running jolokia-jvm-agent
     .build();
 app.start();
 //app.startAndWait(); //blocking
@@ -27,6 +27,8 @@ app.start();
 Open your browser and navigate to http://yourhost:8080/
 ### CLI Usage
 ```sh
-$ java -jar jolokia-web-all.jar --port=8080 #--contextPath=jolokiaweb --jolokiaUrl=http://localhost:8778/jolokia
+$ java -jar jolokia-web-all.jar --port=8080
+ # --contextPath=jolokiaweb
+ # --jolokiaUrl=http://localhost:8778/jolokia
 ```
 Open your browser and navigate to http://yourhost:8080/

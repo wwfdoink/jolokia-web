@@ -126,6 +126,9 @@ public class JolokiaApp {
             }
             if (line.hasOption("jolokiaUrl") ) {
                 jolokiaUrl = line.getOptionValue("jolokiaUrl");
+                if (!jolokiaUrl.endsWith("/")) {
+                    jolokiaUrl += "/";
+                }
                 URL urlCheck = new URL(jolokiaUrl); // check url
             }
 
@@ -233,7 +236,7 @@ public class JolokiaApp {
          * @return this Builder
          */
         public Builder jolokiaUrl(final String url) throws MalformedURLException {
-            this.jolokiaUrl = new URL(url);
+            this.jolokiaUrl = new URL((url.endsWith("/") ? url : url+"/"));
             return this;
         }
 
