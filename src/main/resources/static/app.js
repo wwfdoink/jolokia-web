@@ -1,6 +1,5 @@
-var app = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'angular-websocket', 'chart.js']);
-
-app.config(function($routeProvider) {
+angular.module('jolokiaWeb', ['ngRoute', 'ui.bootstrap', 'angular-websocket', 'chart.js'])
+.config(function($routeProvider) {
   $routeProvider
   .when('/', {
     template: "<dashboard-page></dashboard-page>",
@@ -12,7 +11,11 @@ app.config(function($routeProvider) {
     template: "<version-page></version-page>",
   })
   .otherwise({redirectTo: '/'});
-});
-
-app.run(function(DashboardService){
+})
+.constant('jsPath', {
+  component: './static/component',
+  api: './api',
+  ws: (window.location.protocol.startsWith("https") ? "wss://" : "ws://") + window.location.host + window.location.pathname + ((window.location.pathname.endsWith("/")) ? "ws" : "/ws")
+})
+.run(function(DashboardService){
 });

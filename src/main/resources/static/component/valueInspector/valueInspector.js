@@ -1,5 +1,7 @@
-angular.module("myApp").component('valueInspector', {
-    templateUrl: '/static/component/valueInspector/valueInspector.html',
+angular.module("jolokiaWeb").component('valueInspector', {
+    templateUrl: function(jsPath) { 
+        return jsPath.component + '/valueInspector/valueInspector.html';
+    },
     bindings: {
         value: '<'
     },

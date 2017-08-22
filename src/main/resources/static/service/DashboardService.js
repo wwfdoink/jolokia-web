@@ -1,6 +1,4 @@
-var app = angular.module('myApp');
-
-app.service("DashboardService", function($http, $timeout, $rootScope, $websocket, JolokiaService, UtilService){
+angular.module('jolokiaWeb').service("DashboardService", function($http, $timeout, $rootScope, $websocket, JolokiaService, UtilService, jsPath){
     var self = this;
 
     self.chartData = {
@@ -153,7 +151,7 @@ app.service("DashboardService", function($http, $timeout, $rootScope, $websocket
 
     }
 
-    var ws = $websocket((window.location.protocol.startsWith("https") ? "wss://" : "ws://") + window.location.host + '/ws', null, { reconnectIfNotNormalClose: true });
+    var ws = $websocket(jsPath.ws, null, { reconnectIfNotNormalClose: true });
     ws.onOpen(function() {
         $rootScope.$apply();
     });

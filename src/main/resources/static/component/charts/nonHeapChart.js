@@ -1,5 +1,7 @@
-angular.module("myApp").component('nonHeapChart', {
-    templateUrl: '/static/component/charts/simpleChart.html',
+angular.module("jolokiaWeb").component('nonHeapChart', {
+    templateUrl: function(jsPath) { 
+        return jsPath.component + '/charts/simpleChart.html';
+    },
     bindings: {
     },
     controllerAs: 'ctx',

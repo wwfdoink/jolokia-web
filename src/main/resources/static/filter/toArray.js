@@ -1,4 +1,4 @@
-angular.module('myApp').filter('toArray', function() {
+angular.module('jolokiaWeb').filter('toArray', function() {
   return function (obj, addKey) {
     if (!(obj instanceof Object)) {
       return obj;

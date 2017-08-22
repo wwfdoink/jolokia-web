@@ -1,5 +1,7 @@
-angular.module("myApp").component('gcButton', {
-    templateUrl: '/static/component/gcButton/gcButton.html',
+angular.module("jolokiaWeb").component('gcButton', {
+    templateUrl: function(jsPath) { 
+        return jsPath.component + '/gcButton/gcButton.html';
+    },
     bindings: {
     },
     controller: function($scope, JolokiaService) {

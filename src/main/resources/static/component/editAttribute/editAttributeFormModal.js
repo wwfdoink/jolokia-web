@@ -1,5 +1,7 @@
-angular.module("myApp").component('editAttributeFormModal', {
-    templateUrl: '/static/component/editAttribute/editAttributeFormModal.html',
+angular.module("jolokiaWeb").component('editAttributeFormModal', {
+    templateUrl: function(jsPath) { 
+        return jsPath.component + '/editAttribute/editAttributeFormModal.html';
+    },
     bindings: {
         resolve: '<',
         close: '&',

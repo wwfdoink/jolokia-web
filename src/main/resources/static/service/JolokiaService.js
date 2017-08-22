@@ -1,20 +1,18 @@
-var app = angular.module('myApp');
-
-app.service("JolokiaService", function($http){
+angular.module('jolokiaWeb').service("JolokiaService", function($http, jsPath){
     this.dashboard = function(){
-        return $http.get("/api/dashboard");
+        return $http.get(jsPath.api + "/dashboard");
     }
     this.version = function(){
-        return $http.get("/api/version");
+        return $http.get(jsPath.api + "/version");
     }
     this.getMbeanTree = function(){
-        return $http.get("/api/beans");
+        return $http.get(jsPath.api + "/beans");
     }
     this.read = function(path){
-        return $http.post("/api/read", {mbean: path});
+        return $http.post(jsPath.api + "/read", {mbean: path});
     }
     this.write = function(mbean, attribute, value){
-        return $http.post("/api/write",{
+        return $http.post(jsPath.api + "/write",{
             mbean: mbean,
             attribute: attribute,
             value: value
@@ -24,7 +22,7 @@ app.service("JolokiaService", function($http){
         if (!_.isArray(paramArray)) {
             throw "paramArray is not an array..";
         }
-        return $http.post("/api/execute", {
+        return $http.post(jsPath.api + "/execute", {
             mbean: mbean,
             operation: operation,
             data: paramArray
@@ -32,6 +30,6 @@ app.service("JolokiaService", function($http){
     }
     // Run garbage collector
     this.gcRun = function(){
-        return $http.get("/api/gcRun");
+        return $http.get(jsPath.api + "/gcRun");
     }
 });

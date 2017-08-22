@@ -18,13 +18,15 @@ import prj.jolokiaweb.JolokiaApp;
 
 JolokiaApp app = new JolokiaApp.Builder()
     .port(8080)
+    //.contextPath("jolokiaweb") // if you don't want to deploy it to the root path /
+    //.jolokiaUrl("http://localhost:8778/jolokia") // if you want to connect to your already running jolokia-jvm-agent
     .build();
 app.start();
 //app.startAndWait(); //blocking
 ```
 Open your browser and navigate to http://yourhost:8080/
-### CLI Usage for testing purposes
+### CLI Usage
 ```sh
-$ java -jar jolokia-web-all.jar --port=8080
+$ java -jar jolokia-web-all.jar --port=8080 #--contextPath=jolokiaweb --jolokiaUrl=http://localhost:8778/jolokia
 ```
 Open your browser and navigate to http://yourhost:8080/

@@ -1,12 +1,10 @@
-var app = angular.module('myApp');
-
-app.service("UtilService", function(){
+angular.module('jolokiaWeb').service("UtilService", function(){
     var self = this;
     this.getTimeString = function(){
         var date = new Date();
         return ("0000" + date.getHours()).slice(-2) + ":" + ("0000" + date.getMinutes()).slice(-2) + ":" + ("0000" + date.getSeconds()).slice(-2);
     }
-    this.formatBytes = function(bytes,decimals) {
+    this.formatBytes = function(bytes, decimals) {
        if (bytes <= 1) return '0';
        var k = 1024,
            dm = ((typeof decimals == "undefined") || (decimals === null)) ? 2 : decimals,
@@ -17,16 +15,12 @@ app.service("UtilService", function(){
     }
     this.chartTicks = function(stepSize){
         return {
-            beginAtZero:true,
+            beginAtZero: true,
             stepSize: stepSize,
             autoSkip: true,
             //maxTicksLimit: 10, this is not working
             callback: function(label, index, labels) {
-            /*
-                var labelNum = labels.length;
-                if ((labelNum < 8) || (index == labelNum-1)) {
-                    return self.formatBytes(label, 2);
-                } else*/ if (!(index % parseInt(labels.length / 8))) {
+                if (!(index % parseInt(labels.length / 8))) {
                     return self.formatBytes(label, 2);
                 }
             }

@@ -1,5 +1,7 @@
-angular.module("myApp").component('dashboardPage', {
-    templateUrl: '/static/component/page/dashboard/dashboardPage.html',
+angular.module("jolokiaWeb").component('dashboardPage', {
+    templateUrl: function(jsPath) { 
+        return jsPath.component + '/page/dashboard/dashboardPage.html';
+    },
     bindings: {
     },
     controller: function(){

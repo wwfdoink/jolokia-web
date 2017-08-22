@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import prj.jolokiaweb.JolokiaApp;
 
 public class JolokiaClient {
+    private static final int MAX_CONNECTIONS = 2;
     private static J4pClient instance;
 
     private JolokiaClient(){
@@ -15,7 +16,7 @@ public class JolokiaClient {
         if (instance == null) {
             instance = J4pClientBuilderFactory
                         .url(JolokiaApp.getJolokiaUrl())
-                        .maxTotalConnections(2)
+                        .maxTotalConnections(MAX_CONNECTIONS)
                         .build();
             ;
         }

@@ -1,5 +1,7 @@
-angular.module("myApp").component('swapChart', {
-    templateUrl: '/static/component/charts/simpleChart.html',
+angular.module("jolokiaWeb").component('swapChart', {
+    templateUrl: function(jsPath) { 
+        return jsPath.component + '/charts/simpleChart.html';
+    },
     bindings: {
     },
     controllerAs: 'ctx',

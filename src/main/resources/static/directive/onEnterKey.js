@@ -1,4 +1,4 @@
-angular.module("myApp").directive('onEnterKey', function() {
+angular.module("jolokiaWeb").directive('onEnterKey', function() {
     return function(scope, element, attrs) {
         element.bind("keypress", function(e) {
             if (e.which === 13) {

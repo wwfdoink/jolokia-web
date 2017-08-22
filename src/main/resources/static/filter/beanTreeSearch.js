@@ -1,4 +1,4 @@
-angular.module('myApp').filter('beanTreeSearch', function() {
+angular.module('jolokiaWeb').filter('beanTreeSearch', function() {
 
     function isMatching(text, searchText){
         return text.toLowerCase().indexOf(searchText.toLowerCase()) !== -1;

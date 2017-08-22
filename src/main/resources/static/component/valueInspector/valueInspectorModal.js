@@ -1,5 +1,7 @@
-angular.module("myApp").component('valueInspectorModal', {
-    templateUrl: '/static/component/valueInspector/valueInspectorModal.html',
+angular.module("jolokiaWeb").component('valueInspectorModal', {
+    templateUrl: function(jsPath) { 
+        return jsPath.component + '/valueInspector/valueInspectorModal.html';
+    },
     bindings: {
         resolve: '<',
         close: '&',

@@ -1,5 +1,7 @@
-angular.module("myApp").component('valueInput', {
-    templateUrl: '/static/component/valueInput/valueInput.html',
+angular.module("jolokiaWeb").component('valueInput', {
+    templateUrl: function(jsPath) { 
+        return jsPath.component + '/valueInput/valueInput.html';
+    },
     bindings: {
         arg: '='
     },

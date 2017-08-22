@@ -1,5 +1,7 @@
-angular.module("myApp").component('mbeanPage', {
-    templateUrl: '/static/component/page/mbean/mbeanPage.html',
+angular.module("jolokiaWeb").component('mbeanPage', {
+    templateUrl: function(jsPath) { 
+        return jsPath.component + '/page/mbean/mbeanPage.html';
+    },
     bindings: {
     },
     controllerAs: "$ctrl",

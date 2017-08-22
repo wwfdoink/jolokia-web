@@ -1,5 +1,7 @@
-angular.module("myApp").component('executeFormModal', {
-    templateUrl: '/static/component/execute/executeFormModal.html',
+angular.module("jolokiaWeb").component('executeFormModal', {
+    templateUrl: function(jsPath) { 
+        return jsPath.component + '/execute/executeFormModal.html';
+    },
     bindings: {
         resolve: '<',
         close: '&',

@@ -1,4 +1,4 @@
-angular.module('myApp').filter('beanTree', function() {
+angular.module('jolokiaWeb').filter('beanTree', function() {
  
     function keySplitter(text){
         // name=mapped,type=BufferPool

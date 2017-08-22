@@ -1,5 +1,7 @@
-angular.module("myApp").component('executeSimpleModal', {
-    templateUrl: '/static/component/execute/executeSimpleModal.html',
+angular.module("jolokiaWeb").component('executeSimpleModal', {
+    templateUrl: function(jsPath) { 
+        return jsPath.component + '/execute/executeSimpleModal.html';
+    },
     bindings: {
         resolve: '<',
         close: '&',

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="myApp" lang="en">
+<html ng-app="jolokiaWeb" lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,21 +7,28 @@
 
     <title>Jolokia Web</title>
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7-1/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="/webjars/angular-ui-bootstrap/2.5.0/dist/ui-bootstrap-csp.css">
-    <link rel="stylesheet" href="/webjars/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/static/css/treeview.css">
-    <link rel="stylesheet" href="/static/css/style.css">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.7-1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.7-1/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="webjars/angular-ui-bootstrap/2.5.0/dist/ui-bootstrap-csp.css">
+    <link rel="stylesheet" href="webjars/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <!-- Angular -->
-    <script src="/webjars/angularjs/1.6.5/angular.min.js"></script>
-    <script src="/webjars/angular-route/1.6.5/angular-route.min.js"></script>
-    <script src="/webjars/angular-ui-bootstrap/2.5.0/dist/ui-bootstrap-tpls.js"></script>
-    <script src="/webjars/angular-websocket/2.0.0/dist/angular-websocket.min.js"></script>
-    <script src="/webjars/chartjs/2.6.0/dist/Chart.min.js"></script>
-    <script src="/webjars/angular-chart.js/1.1.1/angular-chart.min.js"></script>
+    <!-- own css -->
+    <link rel="stylesheet" href="static/css/treeview.css">
+    <link rel="stylesheet" href="static/css/style.css">
+
+    <!-- libs -->
+    <script src="webjars/jquery/3.2.1/jquery.min.js"></script>
+    <script src="webjars/underscorejs/1.8.3/underscore-min.js"></script>
+    <script src="webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+
+    <!-- angular -->
+    <script src="webjars/angularjs/1.6.5/angular.min.js"></script>
+    <script src="webjars/angular-route/1.6.5/angular-route.min.js"></script>
+    <script src="webjars/angular-ui-bootstrap/2.5.0/dist/ui-bootstrap-tpls.js"></script>
+    <script src="webjars/angular-websocket/2.0.0/dist/angular-websocket.min.js"></script>
+    <script src="webjars/chartjs/2.6.0/dist/Chart.min.js"></script>
+    <script src="webjars/angular-chart.js/1.1.1/angular-chart.min.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -54,45 +61,42 @@
         </div>
     </div>
 
-    <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
-    <script src="/webjars/underscorejs/1.8.3/underscore-min.js"></script>
-    <script src="/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
-    <script src="/static/app.js"></script>
-    <script src="/static/directive/onEnterKey.js"></script>
+    <script src="static/app.js"></script>
+    <script src="static/directive/onEnterKey.js"></script>
 
-    <script src="/static/filter/toArray.js"></script>
-    <script src="/static/filter/beanTree.js"></script>
-    <script src="/static/filter/beanTreeSearch.js"></script>
+    <script src="static/filter/toArray.js"></script>
+    <script src="static/filter/beanTree.js"></script>
+    <script src="static/filter/beanTreeSearch.js"></script>
 
-    <script src="/static/service/DashboardService.js"></script>
-    <script src="/static/service/JolokiaService.js"></script>
-    <script src="/static/service/UtilService.js"></script>
+    <script src="static/service/DashboardService.js"></script>
+    <script src="static/service/JolokiaService.js"></script>
+    <script src="static/service/UtilService.js"></script>
 
-    <script src="/static/component/treeview/treeview.js"></script>
+    <script src="static/component/treeview/treeview.js"></script>
 
-    <script src="/static/component/charts/cpuChart.js"></script>
-    <script src="/static/component/charts/heapChart.js"></script>
-    <script src="/static/component/charts/nonHeapChart.js"></script>
-    <script src="/static/component/charts/threadChart.js"></script>
-    <script src="/static/component/charts/swapChart.js"></script>
-    <script src="/static/component/charts/physicalMemoryChart.js"></script>
+    <script src="static/component/charts/cpuChart.js"></script>
+    <script src="static/component/charts/heapChart.js"></script>
+    <script src="static/component/charts/nonHeapChart.js"></script>
+    <script src="static/component/charts/threadChart.js"></script>
+    <script src="static/component/charts/swapChart.js"></script>
+    <script src="static/component/charts/physicalMemoryChart.js"></script>
 
-    <script src="/static/component/valueInput/valueInput.js"></script>
+    <script src="static/component/valueInput/valueInput.js"></script>
 
-    <script src="/static/component/execute/executeFormModal.js"></script>
-    <script src="/static/component/execute/executeButton.js"></script>
-    <script src="/static/component/execute/executeSimpleModal.js"></script>
+    <script src="static/component/execute/executeFormModal.js"></script>
+    <script src="static/component/execute/executeButton.js"></script>
+    <script src="static/component/execute/executeSimpleModal.js"></script>
 
-    <script src="/static/component/editAttribute/editAttributeFormModal.js"></script>
-    <script src="/static/component/editAttribute/editAttributeButton.js"></script>
+    <script src="static/component/editAttribute/editAttributeFormModal.js"></script>
+    <script src="static/component/editAttribute/editAttributeButton.js"></script>
 
-    <script src="/static/component/valueInspector/valueInspectorModal.js"></script>
-    <script src="/static/component/valueInspector/valueInspectorTextModal.js"></script>
-    <script src="/static/component/valueInspector/valueInspector.js"></script>
-    <script src="/static/component/gcButton/gcButton.js"></script>
+    <script src="static/component/valueInspector/valueInspectorModal.js"></script>
+    <script src="static/component/valueInspector/valueInspectorTextModal.js"></script>
+    <script src="static/component/valueInspector/valueInspector.js"></script>
+    <script src="static/component/gcButton/gcButton.js"></script>
 
-    <script src="/static/component/page/dashboard/dashboardPage.js"></script>
-    <script src="/static/component/page/mbean/mbeanPage.js"></script>
-    <script src="/static/component/page/version/versionPage.js"></script>
+    <script src="static/component/page/dashboard/dashboardPage.js"></script>
+    <script src="static/component/page/mbean/mbeanPage.js"></script>
+    <script src="static/component/page/version/versionPage.js"></script>
 </body>
 </html>

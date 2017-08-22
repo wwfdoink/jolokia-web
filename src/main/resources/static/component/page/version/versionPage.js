@@ -1,5 +1,7 @@
-angular.module("myApp").component('versionPage', {
-    templateUrl: '/static/component/page/version/versionPage.html',
+angular.module("jolokiaWeb").component('versionPage', {
+    templateUrl: function(jsPath) { 
+        return jsPath.component + '/page/version/versionPage.html';
+    },
     bindings: {
     },
     controller: function(JolokiaService, $filter) {

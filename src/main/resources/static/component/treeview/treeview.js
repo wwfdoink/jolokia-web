@@ -1,5 +1,7 @@
-angular.module("myApp").component('treeview', {
-    templateUrl: '/static/component/treeview/treeview.html',
+angular.module("jolokiaWeb").component('treeview', {
+    templateUrl: function(jsPath) { 
+        return jsPath.component + '/treeview/treeview.html';
+    },
     bindings: {
     	treeModel: "=",
     	nodeId: "@",

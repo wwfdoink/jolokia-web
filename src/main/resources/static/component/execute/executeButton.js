@@ -1,5 +1,7 @@
-angular.module("myApp").component('executeButton', {
-    templateUrl: '/static/component/execute/executeButton.html',
+angular.module("jolokiaWeb").component('executeButton', {
+    templateUrl: function(jsPath) { 
+        return jsPath.component + '/execute/executeButton.html';
+    },
     bindings: {
         bean: '<',
         operation: '<'
