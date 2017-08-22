@@ -18,11 +18,11 @@ angular.module('jolokiaWeb', ['ngRoute', 'ui.bootstrap', 'angular-websocket', 'c
   ws: (window.location.protocol.startsWith("https") ? "wss://" : "ws://") + window.location.host + window.location.pathname + ((window.location.pathname.endsWith("/")) ? "ws" : "/ws")
 })
 .run(function(DashboardService, JolokiaService, $rootScope){
-  $rootScope.policyList = [];
-  $rootScope.hasPolicy = function(arg){
-    return (_.indexOf($rootScope.policyList, arg) > -1);
+  $rootScope.permissionsList = [];
+  $rootScope.hasPermission = function(arg){
+    return (_.indexOf($rootScope.permissionsList, arg) > -1);
   }
   JolokiaService.checkPolicy().then(function(result){
-    $rootScope.policyList = result.data.policy;
+    $rootScope.permissionsList = result.data.permissions;
   });
 });

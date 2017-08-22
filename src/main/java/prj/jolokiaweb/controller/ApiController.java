@@ -1,13 +1,9 @@
 package prj.jolokiaweb.controller;
 
-import org.jolokia.client.J4pClient;
-import org.jolokia.client.J4pClientBuilder;
-import org.jolokia.client.J4pClientBuilderFactory;
 import org.jolokia.client.exception.J4pException;
 import org.jolokia.client.request.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,16 +23,16 @@ import java.util.*;
 @RestController
 public class ApiController {
 
-    @RequestMapping(value = "/api/checkPolicy", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<JSONObject> checkPolicy() {
+    @RequestMapping(value = "/api/checkPermissions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<JSONObject> checkPermissions() {
         JSONObject result = new JSONObject();
         JSONArray arr = new JSONArray();
-        result.put("policy", arr);
+        result.put("permissions", arr);
 
         if (JolokiaApp.getBeanPermissions().size() < 1) {
-            arr.add(JolokiaApp.JolokiaPolicy.NONE);
+            arr.add(JolokiaApp.JolokiaPermission.NONE);
         } else {
-            for (JolokiaApp.JolokiaPolicy p: JolokiaApp.getBeanPermissions()) {
+            for (JolokiaApp.JolokiaPermission p: JolokiaApp.getBeanPermissions()) {
                 arr.add(p);
             }
         }
@@ -46,7 +42,7 @@ public class ApiController {
     @RequestMapping(value = "/api/beans", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JSONObject> beanTree() {
         JSONObject result = new JSONObject();
-        if (!JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPolicy.READ)) {
+        if (!JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPermission.READ)) {
             result.put("error", "Access denied");
             return ResponseEntity.badRequest().body(result);
         }
@@ -64,7 +60,7 @@ public class ApiController {
     @RequestMapping(value = "/api/version", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JSONObject> version() {
         JSONObject result = new JSONObject();
-        if (!JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPolicy.READ)) {
+        if (!JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPermission.READ)) {
             result.put("error", "Access denied");
             return ResponseEntity.badRequest().body(result);
         }
@@ -86,7 +82,7 @@ public class ApiController {
     @RequestMapping(value = "/api/read", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JSONObject> read(@RequestBody ReadForm readForm) {
         JSONObject result = new JSONObject();
-        if (!JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPolicy.READ)) {
+        if (!JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPermission.READ)) {
             result.put("error", "Access denied");
             return ResponseEntity.badRequest().body(result);
         }
@@ -111,7 +107,7 @@ public class ApiController {
     @RequestMapping(value = "/api/execute", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JSONObject> execute(@RequestBody ExecForm execForm) {
         JSONObject result = new JSONObject();
-        if (!JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPolicy.EXECUTE)) {
+        if (!JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPermission.EXECUTE)) {
             result.put("error", "Access denied");
             return ResponseEntity.badRequest().body(result);
         }
@@ -139,7 +135,7 @@ public class ApiController {
     @RequestMapping(value = "/api/write", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JSONObject> write(@RequestBody WriteForm form) {
         JSONObject result = new JSONObject();
-        if (!JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPolicy.WRITE)) {
+        if (!JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPermission.WRITE)) {
             result.put("error", "Access denied");
             return ResponseEntity.badRequest().body(result);
         }

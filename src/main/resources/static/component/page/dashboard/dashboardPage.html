@@ -41,7 +41,7 @@
         <div class="col-xs-12 col-sm-6 col-lg-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-area-chart" aria-hidden="true"></i> HeapMemory <gc-button ng-if="$root.hasPolicy('EXECUTE')" class="pull-right"></gc-button>
+                    <i class="fa fa-area-chart" aria-hidden="true"></i> HeapMemory <gc-button ng-if="$root.hasPermission('EXECUTE')" class="pull-right"></gc-button>
                 </div>
                 <div class="panel-body">
                     <heap-chart></heap-chart>

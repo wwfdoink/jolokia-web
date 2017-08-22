@@ -20,11 +20,11 @@ public class JolokiaRestrictor implements Restrictor {
         if (RequestType.READ.equals(pType)) {
             return true;
         } else if (RequestType.LIST.equals(pType) || RequestType.SEARCH.equals(pType)) {
-            return JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPolicy.READ);
+            return JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPermission.READ);
         } else if (RequestType.WRITE.equals(pType)) {
-            return JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPolicy.WRITE);
+            return JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPermission.WRITE);
         } else if (RequestType.EXEC.equals(pType)) {
-            return JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPolicy.EXECUTE);
+            return JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPermission.EXECUTE);
         }
         // we allow all other types
         return true;
@@ -32,7 +32,7 @@ public class JolokiaRestrictor implements Restrictor {
 
     @Override
     public boolean isAttributeReadAllowed(ObjectName pName, String pAttribute) {
-        if (JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPolicy.READ)) {
+        if (JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPermission.READ)) {
             return true;
         }
 

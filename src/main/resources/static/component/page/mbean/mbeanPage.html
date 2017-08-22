@@ -62,7 +62,7 @@
                 <table class="table table-responsive table-striped" ng-hide="$ctrl.beanLoading">
                     <thead>
                     <tr>
-                        <th ng-if="$root.hasPolicy('WRITE')" style="width:100px">
+                        <th ng-if="$root.hasPermission('WRITE')" style="width:100px">
                             <button class="btn btn-warning btn-xs btn-search" ng-class="{'btn-danger': $ctrl.showSearchAttribute}" ng-click="$ctrl.showSearchAttribute = !$ctrl.showSearchAttribute"><i class="fa fa-search"></i> Search</button>
                         </th>
                         <th>Attribute</th>
@@ -86,7 +86,7 @@
                         </td>
                     </tr>
                     <tr ng-repeat="attr in $ctrl.currentNode.attr | filter:{name:$ctrl.searchAttribute,desc:$ctrl.searchAttribute} | orderBy:'name'">
-                        <td ng-if="$root.hasPolicy('WRITE')"><edit-attribute-button bean="$ctrl.currentNode" attr="attr"></edit-attribute-button></td>
+                        <td ng-if="$root.hasPermission('WRITE')"><edit-attribute-button bean="$ctrl.currentNode" attr="attr"></edit-attribute-button></td>
                         <td>{{attr.name}}</td>
                         <td><value-inspector value="attr.value"></value-inspector></td>
                         <td>{{attr.type}}</td>
@@ -112,7 +112,7 @@
                     <table class="table table-striped operation-table">
                         <thead>
                         <tr>
-                            <th ng-if="$root.hasPolicy('EXECUTE')" style="width:100px">
+                            <th ng-if="$root.hasPermission('EXECUTE')" style="width:100px">
                                 <button class="btn btn-warning btn-xs btn-search" ng-class="{'btn-danger': $ctrl.showSearchOperation}" ng-click="$ctrl.showSearchOperation = !$ctrl.showSearchOperation"><i class="fa fa-search"></i> Search</button>
                             </th>
                             <th>Function</th>
@@ -135,7 +135,7 @@
                             </td>
                         </tr>
                         <tr ng-repeat="o in $ctrl.currentNode.op | filter:{name:$ctrl.searchOperation,desc:$ctrl.searchOperation} | orderBy:'name'">
-                            <td ng-if="$root.hasPolicy('EXECUTE')"><execute-button bean="$ctrl.currentNode" operation="o"></execute-button></td>
+                            <td ng-if="$root.hasPermission('EXECUTE')"><execute-button bean="$ctrl.currentNode" operation="o"></execute-button></td>
                             <td>{{o.name}} <span class="badge" ng-repeat="ar in o.args">{{ar.name}}:{{ar.type}}</span></td>
                             <td>{{o.ret}}</td>
                             <td>{{o.desc}}</td>

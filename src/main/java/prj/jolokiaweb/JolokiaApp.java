@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class JolokiaApp {
-    public enum JolokiaPolicy {
+    public enum JolokiaPermission {
         NONE,READ,WRITE,EXECUTE
     }
     private static final int DEFAULT_PORT = 8080;
@@ -26,13 +26,13 @@ public class JolokiaApp {
     private static String jolokiaUrl;
     private static String contextPath;
 
-    private static final Set<JolokiaPolicy> beanPermissions = new HashSet<>();
+    private static final Set<JolokiaPermission> beanPermissions = new HashSet<>();
 
     /**
      * @param tomcatPort Web server listening port
      * @param beanPermissions Permissions for MBean tab READ,WRITE,EXEC
      */
-    public JolokiaApp(final Integer tomcatPort, final String contextPath, final String jolokiaUrl, final JolokiaPolicy ... beanPermissions) throws ServletException {
+    public JolokiaApp(final Integer tomcatPort, final String contextPath, final String jolokiaUrl, final JolokiaPermission... beanPermissions) throws ServletException {
         int port = (tomcatPort == null) ? DEFAULT_PORT : tomcatPort;
         tomcat = new Tomcat();
         tomcat.setPort(port);
@@ -67,10 +67,10 @@ public class JolokiaApp {
                 .build());
         options.addOption(Option.builder()
                 .argName("rwxd")
-                .longOpt("policy")
+                .longOpt("permissions")
                 .optionalArg(true)
                 .hasArg()
-                .desc("MBean policy, r:read, w:write, e:execute, d:only dashboard read, default is: rwx")
+                .desc("r:read, w:write, e:execute, n:none (only dashboard read), default is: rwx")
                 .build());
         options.addOption(Option.builder()
                 .argName("")
@@ -92,7 +92,7 @@ public class JolokiaApp {
         int port = DEFAULT_PORT;
         String contextPath = DEFAULT_CONTEXT_PATH;
         String jolokiaUrl = null;
-        Set<JolokiaPolicy> beanPermissions = new HashSet<>();
+        Set<JolokiaPermission> beanPermissions = new HashSet<>();
 
         try {
             CommandLine line = parser.parse(options, args);
@@ -106,23 +106,23 @@ public class JolokiaApp {
                 System.out.println("Using default port: " + port);
             }
 
-            if (line.hasOption("policy") ) {
-                String permStr = line.getOptionValue("policy");
+            if (line.hasOption("permissions") ) {
+                String permStr = line.getOptionValue("permissions");
                 if (permStr.contains("r")) {
-                    beanPermissions.add(JolokiaPolicy.READ);
+                    beanPermissions.add(JolokiaPermission.READ);
                 }
                 if (permStr.contains("w")) {
-                    beanPermissions.add(JolokiaPolicy.WRITE);
+                    beanPermissions.add(JolokiaPermission.WRITE);
                 }
                 if (permStr.contains("x")) {
-                    beanPermissions.add(JolokiaPolicy.EXECUTE);
+                    beanPermissions.add(JolokiaPermission.EXECUTE);
                 }
             } else {
                 //default behavior
                 beanPermissions.addAll(new ArrayList<>(Arrays.asList(
-                        JolokiaPolicy.READ,
-                        JolokiaPolicy.WRITE,
-                        JolokiaPolicy.EXECUTE
+                        JolokiaPermission.READ,
+                        JolokiaPermission.WRITE,
+                        JolokiaPermission.EXECUTE
                 )));
             }
 
@@ -140,7 +140,7 @@ public class JolokiaApp {
                 URL urlCheck = new URL(jolokiaUrl); // check url
             }
 
-            JolokiaApp app = new JolokiaApp(port, contextPath, jolokiaUrl, beanPermissions.toArray(new JolokiaPolicy[beanPermissions.size()]));
+            JolokiaApp app = new JolokiaApp(port, contextPath, jolokiaUrl, beanPermissions.toArray(new JolokiaPermission[beanPermissions.size()]));
             app.startAndWait();
         } catch(Exception e) {
             System.out.println("Invalid input:" + e.getMessage());
@@ -149,7 +149,7 @@ public class JolokiaApp {
         }
     }
 
-    public static Set<JolokiaPolicy> getBeanPermissions() {
+    public static Set<JolokiaPermission> getBeanPermissions() {
         return beanPermissions;
     }
 
@@ -213,7 +213,7 @@ public class JolokiaApp {
         private Integer port;
         private String contextPath;
         private URL jolokiaUrl;
-        private Set<JolokiaPolicy> beanPermissions = new HashSet<>();
+        private Set<JolokiaPermission> beanPermissions = new HashSet<>();
 
         public Builder() {
             this.port = 8080;
@@ -252,7 +252,7 @@ public class JolokiaApp {
          * @param permissionArray Permissions for MBean tab READ,WRITE,EXEC
          * @return
          */
-        public Builder policy(JolokiaPolicy ... permissionArray) {
+        public Builder permissions(JolokiaPermission... permissionArray) {
             this.beanPermissions.clear();
             this.beanPermissions.addAll(Arrays.asList(permissionArray));
             return this;
