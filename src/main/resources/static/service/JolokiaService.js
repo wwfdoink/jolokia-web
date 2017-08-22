@@ -1,6 +1,6 @@
 angular.module('jolokiaWeb').service("JolokiaService", function($http, jsPath){
-    this.dashboard = function(){
-        return $http.get(jsPath.api + "/dashboard");
+    this.checkPolicy = function(){
+        return $http.get(jsPath.api + "/checkPolicy");
     }
     this.version = function(){
         return $http.get(jsPath.api + "/version");

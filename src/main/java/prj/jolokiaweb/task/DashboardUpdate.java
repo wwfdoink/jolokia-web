@@ -28,6 +28,7 @@ public class DashboardUpdate {
         }
         JSONObject result = new JSONObject();
         try {
+            // Don't forget to update the JolokiaRestrictor if you get different mbeans
             J4pReadRequest osReq = new J4pReadRequest("java.lang:type=OperatingSystem",
                     "ProcessCpuLoad",
                     "SystemCpuLoad",

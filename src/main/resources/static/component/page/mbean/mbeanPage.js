@@ -12,7 +12,7 @@ angular.module("jolokiaWeb").component('mbeanPage', {
         self.$onInit = function () {
             self.tree = [];
             self.loading = true;
-            self.currentNode = {};
+            self.currentNode = null;
             self.searchTree = null;
 
             $scope.$watch(function() { return self.searchTree; }, function(text) {
@@ -66,7 +66,6 @@ angular.module("jolokiaWeb").component('mbeanPage', {
         }
 
         self.toggleTree = function(status){
-            console.log(status);
             setTreeOpenStatus(self.tree, status);
         };
 

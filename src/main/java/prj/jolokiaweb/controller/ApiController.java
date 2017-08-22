@@ -5,6 +5,7 @@ import org.jolokia.client.J4pClientBuilder;
 import org.jolokia.client.J4pClientBuilderFactory;
 import org.jolokia.client.exception.J4pException;
 import org.jolokia.client.request.*;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -26,9 +27,29 @@ import java.util.*;
 @RestController
 public class ApiController {
 
+    @RequestMapping(value = "/api/checkPolicy", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<JSONObject> checkPolicy() {
+        JSONObject result = new JSONObject();
+        JSONArray arr = new JSONArray();
+        result.put("policy", arr);
+
+        if (JolokiaApp.getBeanPermissions().size() < 1) {
+            arr.add(JolokiaApp.JolokiaPolicy.NONE);
+        } else {
+            for (JolokiaApp.JolokiaPolicy p: JolokiaApp.getBeanPermissions()) {
+                arr.add(p);
+            }
+        }
+        return ResponseEntity.ok(result);
+    }
+
     @RequestMapping(value = "/api/beans", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JSONObject> beanTree() {
         JSONObject result = new JSONObject();
+        if (!JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPolicy.READ)) {
+            result.put("error", "Access denied");
+            return ResponseEntity.badRequest().body(result);
+        }
 
         try {
             String path = null; // null means full tree
@@ -43,6 +64,10 @@ public class ApiController {
     @RequestMapping(value = "/api/version", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JSONObject> version() {
         JSONObject result = new JSONObject();
+        if (!JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPolicy.READ)) {
+            result.put("error", "Access denied");
+            return ResponseEntity.badRequest().body(result);
+        }
 
         try {
             J4pReadRequest runtimeReq = new J4pReadRequest("java.lang:type=Runtime");
@@ -61,6 +86,10 @@ public class ApiController {
     @RequestMapping(value = "/api/read", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JSONObject> read(@RequestBody ReadForm readForm) {
         JSONObject result = new JSONObject();
+        if (!JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPolicy.READ)) {
+            result.put("error", "Access denied");
+            return ResponseEntity.badRequest().body(result);
+        }
 
         try {
             J4pReadRequest readReq = new J4pReadRequest(readForm.getMbean());
@@ -82,6 +111,10 @@ public class ApiController {
     @RequestMapping(value = "/api/execute", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JSONObject> execute(@RequestBody ExecForm execForm) {
         JSONObject result = new JSONObject();
+        if (!JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPolicy.EXECUTE)) {
+            result.put("error", "Access denied");
+            return ResponseEntity.badRequest().body(result);
+        }
 
         try {
             J4pExecRequest execReq;
@@ -106,6 +139,10 @@ public class ApiController {
     @RequestMapping(value = "/api/write", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JSONObject> write(@RequestBody WriteForm form) {
         JSONObject result = new JSONObject();
+        if (!JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPolicy.WRITE)) {
+            result.put("error", "Access denied");
+            return ResponseEntity.badRequest().body(result);
+        }
 
         try {
             J4pWriteRequest writeReq = new J4pWriteRequest(form.getMbean(), form.getAttribute(), form.getValue());

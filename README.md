@@ -18,8 +18,9 @@ import prj.jolokiaweb.JolokiaApp;
 
 JolokiaApp app = new JolokiaApp.Builder()
     .port(8080) // tomcat listening port
-  //.contextPath("jolokiaweb") // webapp contextPath, default is /
-  //.jolokiaUrl("http://localhost:8778/jolokia") // connect to your already running jolokia-jvm-agent
+    .contextPath("jolokiaweb") // webapp contextPath, default is the root path
+    .jolokiaUrl("http://localhost:8778/jolokia") // connect to your already running jolokia-jvm-agent
+    .policy(JolokiaPolicy.READ, JolokiaPolicy.WRITE, JolokiaPolicy.EXECUTE) // default is rwx
     .build();
 app.start();
 //app.startAndWait(); //blocking
@@ -27,8 +28,10 @@ app.start();
 Open your browser and navigate to http://yourhost:8080/
 ### CLI Usage
 ```sh
-$ java -jar jolokia-web-all.jar --port=8080
- # --contextPath=jolokiaweb
- # --jolokiaUrl=http://localhost:8778/jolokia
+$ java -jar jolokia-web-all.jar
+  --port=8080
+  --contextPath=jolokiaweb
+  --jolokiaUrl=http://localhost:8778/jolokia
+  --policy=rwx
 ```
 Open your browser and navigate to http://yourhost:8080/

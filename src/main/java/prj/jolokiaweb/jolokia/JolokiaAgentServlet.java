@@ -1,7 +1,9 @@
 package prj.jolokiaweb.jolokia;
 
+import org.jolokia.config.Configuration;
 import org.jolokia.http.AgentServlet;
 import org.jolokia.config.ConfigKey;
+import org.jolokia.restrictor.Restrictor;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -109,5 +111,10 @@ public class JolokiaAgentServlet extends AgentServlet {
             }
         }
         return false;
+    }
+
+    @Override
+    protected Restrictor createRestrictor(Configuration config) {
+        return new JolokiaRestrictor();
     }
 }
