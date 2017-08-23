@@ -8,15 +8,15 @@
     <title>Jolokia Web</title>
 
     <!-- bootstrap -->
-    <link rel="stylesheet" href="webjars/bootstrap/3.3.7-1/css/bootstrap.min.css">
+    <link rel="stylesheet" ng-href="{{($root.isMinView() ? 'static/css/bootstrap-small.min.css' : 'webjars/bootstrap/3.3.7-1/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="webjars/bootstrap/3.3.7-1/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="webjars/angular-ui-bootstrap/2.5.0/dist/ui-bootstrap-csp.css">
     <link rel="stylesheet" href="webjars/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- own css -->
     <link rel="stylesheet" href="static/css/treeview.css">
-    <link rel="stylesheet" href="static/css/style.css">
-
+    <link rel="stylesheet" ng-href="{{($root.isMinView() ? 'static/css/style-small.css' : 'static/css/style.css')}}">
+    
     <!-- libs -->
     <script src="webjars/jquery/3.2.1/jquery.min.js"></script>
     <script src="webjars/underscorejs/1.8.3/underscore-min.js"></script>
@@ -30,7 +30,7 @@
     <script src="webjars/chartjs/2.6.0/dist/Chart.min.js"></script>
     <script src="webjars/angular-chart.js/1.1.1/angular-chart.min.js"></script>
 </head>
-<body>
+<body class="ng-cloak">
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -47,6 +47,7 @@
                     <li><a href="#!/">Dashboard</a></li>
                     <li ng-if="$root.hasPermission('READ')"><a href="#!/mbean">MBeans</a></li>
                     <li ng-if="$root.hasPermission('READ')"><a href="#!/version">Version</a></li>
+                    <li><a href="#!/settings">Settings</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li ng-show="!$root.wsConnected()" class="ws-error">
@@ -70,7 +71,8 @@
     <script src="static/service/DashboardService.js"></script>
     <script src="static/service/JolokiaService.js"></script>
     <script src="static/service/UtilService.js"></script>
-
+    <script src="static/service/LocalStorageService.js"></script>
+    
     <script src="static/component/treeview/treeview.js"></script>
 
     <script src="static/component/charts/cpuChart.js"></script>
@@ -97,5 +99,6 @@
     <script src="static/component/page/dashboard/dashboardPage.js"></script>
     <script src="static/component/page/mbean/mbeanPage.js"></script>
     <script src="static/component/page/version/versionPage.js"></script>
+    <script src="static/component/page/settings/settingsPage.js"></script>
 </body>
 </html>

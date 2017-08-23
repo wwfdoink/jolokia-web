@@ -5,7 +5,7 @@ angular.module("jolokiaWeb").component('mbeanPage', {
     bindings: {
     },
     controllerAs: "$ctrl",
-    controller: function($scope, JolokiaService, $filter) {
+    controller: function($scope, $filter, JolokiaService, LocalStorageService) {
         var self = this;
 
         var origTree = [];
@@ -14,7 +14,8 @@ angular.module("jolokiaWeb").component('mbeanPage', {
             self.loading = true;
             self.currentNode = null;
             self.searchTree = null;
-
+            self.showOperationParamTypes = LocalStorageService.get("showOperationParamTypes");
+            
             $scope.$watch(function() { return self.searchTree; }, function(text) {
                 self.tree = $filter('beanTreeSearch')(origTree, text);
                 if (text && text.length > 0) {
@@ -78,6 +79,17 @@ angular.module("jolokiaWeb").component('mbeanPage', {
                     setTreeOpenStatus(item[i].children, status);
                 }
             }
+        }
+
+        self.toggleAttributeSearch = function(){
+            self.showAttributeSearch = !self.showAttributeSearch;
+        }
+        self.toggleOperationSearch = function(){
+            self.showOperationSearch = !self.showOperationSearch;
+        }
+        self.toggleOperationParamTypes = function(){
+            self.showOperationParamTypes = !self.showOperationParamTypes;
+            LocalStorageService.set("showOperationParamTypes", self.showOperationParamTypes);
         }
     }
 });

@@ -10,6 +10,9 @@ angular.module('jolokiaWeb', ['ngRoute', 'ui.bootstrap', 'angular-websocket', 'c
   .when('/version', {
     template: "<version-page></version-page>",
   })
+  .when('/settings', {
+    template: "<settings-page></settings-page>",
+  })
   .otherwise({redirectTo: '/'});
 })
 .constant('jsPath', {
@@ -17,8 +20,11 @@ angular.module('jolokiaWeb', ['ngRoute', 'ui.bootstrap', 'angular-websocket', 'c
   api: './api',
   ws: (window.location.protocol.startsWith("https") ? "wss://" : "ws://") + window.location.host + window.location.pathname + ((window.location.pathname.endsWith("/")) ? "ws" : "/ws")
 })
-.run(function(DashboardService, JolokiaService, $rootScope){
+.run(function(DashboardService, JolokiaService, LocalStorageService, $rootScope){
   $rootScope.permissionsList = [];
+  $rootScope.isMinView = function(){
+    return LocalStorageService.get("minView");
+  }
   $rootScope.hasPermission = function(arg){
     return (_.indexOf($rootScope.permissionsList, arg) > -1);
   }

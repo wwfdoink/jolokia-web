@@ -1,0 +1,16 @@
+<div class="col-sm-12">
+
+    <div ng-show="!$ctrl.loading && !$ctrl.error">
+        <h1 class="page-header">Settings</h1>
+        <table class="table table-striped">
+            <tr>
+                <td style="width:200px;">Screen space optimization</td>
+                <td>
+                    <button type="button" class="btn btn-xs" ng-class="($ctrl.minView) ? 'btn-success' : 'btn-default'" ng-click="$ctrl.toggleMinView()">
+                        {{(($ctrl.minView) ? 'Enabled' : 'Disabled')}}
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
