@@ -8,14 +8,16 @@
     <title>Jolokia Web</title>
 
     <!-- bootstrap -->
-    <link rel="stylesheet" ng-href="{{($root.isMinView() ? 'static/css/bootstrap-small.min.css' : 'webjars/bootstrap/3.3.7-1/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.7-1/css/bootstrap.min.css">
+    <link rel="stylesheet" ng-if="$root.isMinView()" href="static/css/bootstrap-small.min.css">
     <link rel="stylesheet" href="webjars/bootstrap/3.3.7-1/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="webjars/angular-ui-bootstrap/2.5.0/dist/ui-bootstrap-csp.css">
     <link rel="stylesheet" href="webjars/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- own css -->
     <link rel="stylesheet" href="static/css/treeview.css">
-    <link rel="stylesheet" ng-href="{{($root.isMinView() ? 'static/css/style-small.css' : 'static/css/style.css')}}">
+    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" ng-if="$root.isMinView()" href="static/css/style-small.css">
     
     <!-- libs -->
     <script src="webjars/jquery/3.2.1/jquery.min.js"></script>

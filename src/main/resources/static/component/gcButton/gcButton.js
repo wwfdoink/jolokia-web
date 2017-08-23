@@ -13,7 +13,7 @@ angular.module("jolokiaWeb").component('gcButton', {
 
             JolokiaService.gcRun().then(function(){
             }).catch(function(err){
-                alert(err.data);
+                alert((err.data) ? JSON.stringify(err.data) : "Failed to load resource: [" + err.config.method + "] " + err.config.url);
             }).finally(function(){
                 $scope.loading = false;
             });

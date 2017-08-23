@@ -151,7 +151,11 @@ angular.module('jolokiaWeb').service("DashboardService", function($http, $timeou
 
     }
 
-    var ws = $websocket(jsPath.ws, null, { reconnectIfNotNormalClose: true });
+    var ws = $websocket(jsPath.ws, null, { 
+        reconnectIfNotNormalClose: true,
+        maxTimeout: 10,
+        initialTimeout: 5
+    });
     ws.onOpen(function() {
         $rootScope.$apply();
     });
@@ -159,7 +163,6 @@ angular.module('jolokiaWeb').service("DashboardService", function($http, $timeou
         $rootScope.$apply();
     });
     ws.onError(function(err) {
-        console.error(err);
         $rootScope.$apply();
     });
     ws.onMessage(function(res) {

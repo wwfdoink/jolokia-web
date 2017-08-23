@@ -1,5 +1,8 @@
 <div class="col-sm-12">
     <!--<h1 class="page-header">Dashboard</h1>-->
+    <div ng-show="!$root.wsConnected()" class="alert alert-danger" role="alert">
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Websocket connection lost! [ {{$ctrl.wsUrl}} ]
+    </div>
 
     <div class="row dashboard-charts" style="margin-top:15px;">
         <div class="col-xs-12 col-sm-6 col-lg-4">

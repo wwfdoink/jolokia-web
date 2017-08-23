@@ -119,7 +119,7 @@
                             <th ng-if="$root.hasPermission('EXECUTE')" style="width:100px">
                                 <button class="btn btn-xs btn-search" ng-class="{'btn-warning': $ctrl.showOperationSearch,'btn-default': !$ctrl.showOperationSearch}" ng-click="$ctrl.toggleOperationSearch()"><i class="fa fa-search"></i> Search</button>
                             </th>
-                            <th>Function <button class="btn btn-xs pull-right" ng-class="{'btn-warning': $ctrl.showOperationParamTypes, 'btn-default':!$ctrl.showOperationParamTypes}" ng-click="$ctrl.toggleOperationParamTypes()"><i class="fa fa-search"></i> Show parameter types</button></th>
+                            <th>Function <button class="btn btn-xs pull-right" ng-class="{'btn-warning': $ctrl.showOperationParamTypes, 'btn-default':!$ctrl.showOperationParamTypes}" ng-click="$ctrl.toggleOperationParamTypes()"><i class="fa fa-search"></i> {{($ctrl.showOperationParamTypes) ? 'Hide' : 'Show'}} parameter types</button></th>
                             <th>ReturnType</th>
                             <th>Description</th>
                         </tr>

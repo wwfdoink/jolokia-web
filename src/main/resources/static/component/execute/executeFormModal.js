@@ -42,7 +42,8 @@ angular.module("jolokiaWeb").component('executeFormModal', {
                 $ctrl.openResultModal($ctrl.operation.name, res.data, false);
             }).catch(function(err){
                 if (_.isObject(err.data)) { $scope.error = err.data.error; }
-                else { $scope.error = err.data; }
+                else if (err.data) { self.error = err.data; }
+                else { self.error = "Failed to load resource: [" + err.config.method + "] " + err.config.url }
                 $ctrl.openResultModal($ctrl.operation.name, $scope.error, true, $scope.error);
             }).finally(function(){
                 $scope.loading = false;

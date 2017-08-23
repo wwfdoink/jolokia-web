@@ -32,10 +32,11 @@ angular.module("jolokiaWeb").component('mbeanPage', {
         JolokiaService.getMbeanTree().then(function(res){
             self.tree = $filter('beanTree')(res.data.value);
             origTree = angular.copy(self.tree);
-            self.loading = false;
-        },function(err){
+        }).catch(function(err){
             if (_.isObject(err.data)) { self.error = err.data.error; }
-            else { self.error = err.data; }
+            else if (err.data) { self.error = err.data; }
+            else { self.error = "Failed to load resource: [" + err.config.method + "] " + err.config.url }
+        }).finally(function(){
             self.loading = false;
         });
 
@@ -59,7 +60,8 @@ angular.module("jolokiaWeb").component('mbeanPage', {
                     }
                 }).catch(function(err){
                     if (_.isObject(err.data)) { self.error = err.data.error; }
-                    else { self.error = err.data; }
+                    else if (err.data) { self.error = err.data; }
+                    else { self.error = "Failed to load resource: [" + err.config.method + "] " + err.config.url }
                 }).finally(function(){
                     self.beanLoading = false;
                 });

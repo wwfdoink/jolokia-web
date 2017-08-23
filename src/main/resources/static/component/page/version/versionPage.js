@@ -25,7 +25,8 @@ angular.module("jolokiaWeb").component('versionPage', {
             self.runtimeData = runArr;
         }).catch(function(err) {
             if (_.isObject(err.data)) { self.error = err.data.error; }
-            else { self.error = err.data; }
+            else if (err.data) { self.error = err.data; }
+            else { self.error = "Failed to load resource: [" + err.config.method + "] " + err.config.url }
         }).finally(function(){
             self.loading = false;
         });

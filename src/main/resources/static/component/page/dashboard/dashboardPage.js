@@ -4,6 +4,7 @@ angular.module("jolokiaWeb").component('dashboardPage', {
     },
     bindings: {
     },
-    controller: function(){
+    controller: function(jsPath){
+        this.wsUrl = jsPath.ws;
     }
 });
