@@ -20,8 +20,40 @@ body {
   padding: 8px 10px;
 }
 
+.sidebar {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+@media (min-width: 768px) {
+  .sidebar {
+    top: 31px;
+    padding: 10px;
+  }
+}
+
+.sidebar > .input-group {
+  margin-bottom: 10px;
+}
+
 .sidebar > div > ul > li {
     padding-left:0;
+}
+
+/*
+ * Main content
+ */
+
+.main {
+  padding: 10px;
+}
+@media (min-width: 768px) {
+  .main {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+}
+.main .page-header {
+  margin-top: 0;
 }
 
 .page-header {

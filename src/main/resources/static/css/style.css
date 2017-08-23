@@ -38,19 +38,23 @@ body {
 }
 @media (min-width: 768px) {
   .sidebar {
-    position: fixed;
     top: 51px;
+    position: fixed;
     bottom: 0;
     left: 0;
     z-index: 1000;
     display: block;
-    padding: 20px;
+    padding: 15px;
     margin-top: 0;
     overflow-x: hidden;
     overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
     background-color: #f5f5f5;
     border-right: 1px solid #eee;
   }
+}
+
+.sidebar > .input-group {
+  margin-bottom: 10px;
 }
 
 /* Sidebar navigation */
@@ -76,12 +80,12 @@ body {
  */
 
 .main {
-  padding: 20px;
+  padding: 15px;
 }
 @media (min-width: 768px) {
   .main {
-    padding-right: 40px;
-    padding-left: 40px;
+    padding-right: 15px;
+    padding-left: 15px;
   }
 }
 .main .page-header {
