@@ -9,26 +9,31 @@
 
     <div ng-show="!$ctrl.loading && !$ctrl.error">
         <h1 class="page-header">Runtime</h1>
-        <table class="table table-striped">
-            <tr>
-                <th>#</th>
-                <th>Value</th>
-            </tr>
-            <tr ng-repeat="item in $ctrl.runtimeData">
-                <td>{{item.key}}</td>
-                <td><value-inspector value="item.value"></value-inspector></td>
-            </tr>
-        </table>
+        <div class="table-responsive">    
+            <table class="table table-striped">
+                <tr>
+                    <th>#</th>
+                    <th>Value</th>
+                </tr>
+                <tr ng-repeat="item in $ctrl.runtimeData">
+                    <td>{{item.key}}</td>
+                    <td><value-inspector value="item.value"></value-inspector></td>
+                </tr>
+            </table>
+        </div>
+
         <h1 class="page-header">Jolokia Version</h1>
-        <table class="table table-striped">
-            <tr>
-                <th>#</th>
-                <th>Value</th>
-            </tr>
-            <tr ng-repeat="item in $ctrl.versionData">
-                <td>{{item.key}}</td>
-                <td><value-inspector value="item.value"></value-inspector></td>
-            </tr>
-        </table>
+        <div class="table-responsive">    
+            <table class="table table-striped">
+                <tr>
+                    <th>#</th>
+                    <th>Value</th>
+                </tr>
+                <tr ng-repeat="item in $ctrl.versionData">
+                    <td>{{item.key}}</td>
+                    <td><value-inspector value="item.value"></value-inspector></td>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>

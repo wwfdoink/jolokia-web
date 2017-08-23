@@ -63,41 +63,43 @@
 
             <div ng-if="$ctrl.currentNode" ng-show="$ctrl.currentNode.attr">
                 <h2 class="sub-header">Attributes <button class="btn btn-primary btn-xs" ng-click="$ctrl.getBeanValue()" ng-disabled="$ctrl.beanLoading"><i class="fa fa-refresh" ng-class="{'fa-spin': $ctrl.beanLoading}"></i> Reload</button></h2>
-                <table class="table table-responsive table-striped" ng-hide="$ctrl.beanLoading">
-                    <thead>
-                    <tr>
-                        <th ng-if="$root.hasPermission('WRITE')" style="width:100px">
-                            <button class="btn btn-xs btn-search" ng-class="{'btn-warning': $ctrl.showAttributeSearch, 'btn-default': !$ctrl.showAttributeSearch}" ng-click="$ctrl.toggleAttributeSearch()"><i class="fa fa-search"></i> Search</button>
-                        </th>
-                        <th>Attribute</th>
-                        <th>Value</th>
-                        <th>Type</th>
-                        <th>Description</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-show="$ctrl.showAttributeSearch">
-                        <td colspan="5">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="fa fa-search"></i>
-                                </span>
-                                <input type="text" class="form-control" ng-model="$ctrl.searchAttribute" placeholder="Search for attribute...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" ng-click="$ctrl.searchAttribute = ''"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                                </span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr ng-repeat="attr in $ctrl.currentNode.attr | filter:{name:$ctrl.searchAttribute,desc:$ctrl.searchAttribute} | orderBy:'name'">
-                        <td ng-if="$root.hasPermission('WRITE')"><edit-attribute-button bean="$ctrl.currentNode" attr="attr"></edit-attribute-button></td>
-                        <td>{{attr.name}}</td>
-                        <td><value-inspector value="attr.value"></value-inspector></td>
-                        <td>{{attr.type}}</td>
-                        <td>{{attr.desc}}</td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-striped" ng-hide="$ctrl.beanLoading">
+                        <thead>
+                        <tr>
+                            <th ng-if="$root.hasPermission('WRITE')" style="width:100px">
+                                <button class="btn btn-xs btn-search" ng-class="{'btn-warning': $ctrl.showAttributeSearch, 'btn-default': !$ctrl.showAttributeSearch}" ng-click="$ctrl.toggleAttributeSearch()"><i class="fa fa-search"></i> Search</button>
+                            </th>
+                            <th>Attribute</th>
+                            <th>Value</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-show="$ctrl.showAttributeSearch">
+                            <td colspan="5">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-search"></i>
+                                    </span>
+                                    <input type="text" class="form-control" ng-model="$ctrl.searchAttribute" placeholder="Search for attribute...">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button" ng-click="$ctrl.searchAttribute = ''"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr ng-repeat="attr in $ctrl.currentNode.attr | filter:{name:$ctrl.searchAttribute,desc:$ctrl.searchAttribute} | orderBy:'name'">
+                            <td ng-if="$root.hasPermission('WRITE')"><edit-attribute-button bean="$ctrl.currentNode" attr="attr"></edit-attribute-button></td>
+                            <td>{{attr.name}}</td>
+                            <td><value-inspector value="attr.value"></value-inspector></td>
+                            <td>{{attr.type}}</td>
+                            <td>{{attr.desc}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </uib-tab>
 

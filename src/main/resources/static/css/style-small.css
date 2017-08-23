@@ -31,15 +31,15 @@ body {
 /*
  * Sidebar
  */
-
-/* Hide for mobile, show later */
 .sidebar {
-  display: none;
+  margin-top: 15px;
 }
+/* Hide for mobile, show later */
 @media (min-width: 768px) {
   .sidebar {
     position: fixed;
     top: 31px;
+    margin-top:0;
     bottom: 0;
     left: 0;
     z-index: 1000;
@@ -68,7 +68,9 @@ body {
   color: #fff;
   background-color: #428bca;
 }
-
+.navbar-toggle {
+  padding: 8px 10px;
+}
 
 /*
  * Main content

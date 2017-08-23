@@ -31,11 +31,10 @@ body {
 /*
  * Sidebar
  */
-
-/* Hide for mobile, show later */
-.sidebar {
-  display: none;
+ .sidebar {
+  margin-top: 15px;
 }
+/* Hide for mobile, show later */
 @media (min-width: 768px) {
   .sidebar {
     position: fixed;
@@ -43,6 +42,7 @@ body {
     bottom: 0;
     left: 0;
     z-index: 1000;
+    margin-top:0;
     display: block;
     padding: 20px;
     overflow-x: hidden;

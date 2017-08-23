@@ -46,10 +46,10 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="#!/">Dashboard</a></li>
-                    <li ng-if="$root.hasPermission('READ')"><a href="#!/mbean">MBeans</a></li>
-                    <li ng-if="$root.hasPermission('READ')"><a href="#!/version">Version</a></li>
-                    <li><a href="#!/settings">Settings</a></li>
+                    <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#!/">Dashboard</a></li>
+                    <li ng-if="$root.hasPermission('READ')"><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#!/mbean">MBeans</a></li>
+                    <li ng-if="$root.hasPermission('READ')"><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#!/version">Version</a></li>
+                    <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#!/settings">Settings</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li ng-show="!$root.wsConnected()" class="ws-error">
