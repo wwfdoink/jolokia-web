@@ -72,8 +72,8 @@
                             </th>
                             <th>Attribute</th>
                             <th>Value</th>
-                            <th>Type</th>
-                            <th>Description</th>
+                            <th class="visible-lg">Type</th>
+                            <th class="visible-lg">Description</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -94,8 +94,8 @@
                             <td ng-if="$root.hasPermission('WRITE')"><edit-attribute-button bean="$ctrl.currentNode" attr="attr"></edit-attribute-button></td>
                             <td>{{attr.name}}</td>
                             <td><value-inspector value="attr.value"></value-inspector></td>
-                            <td>{{attr.type}}</td>
-                            <td>{{attr.desc}}</td>
+                            <td class="visible-lg">{{attr.type}}</td>
+                            <td class="visible-lg">{{attr.desc}}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -122,8 +122,8 @@
                                 <button class="btn btn-xs btn-search" ng-class="{'btn-warning': $ctrl.showOperationSearch,'btn-default': !$ctrl.showOperationSearch}" ng-click="$ctrl.toggleOperationSearch()"><i class="fa fa-search"></i> Search</button>
                             </th>
                             <th>Function <button class="btn btn-xs pull-right" ng-class="{'btn-warning': $ctrl.showOperationParamTypes, 'btn-default':!$ctrl.showOperationParamTypes}" ng-click="$ctrl.toggleOperationParamTypes()"><i class="fa fa-search"></i> {{($ctrl.showOperationParamTypes) ? 'Hide' : 'Show'}} parameter types</button></th>
-                            <th>ReturnType</th>
-                            <th>Description</th>
+                            <th class="visible-lg">ReturnType</th>
+                            <th class="visible-lg">Description</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -143,8 +143,8 @@
                         <tr ng-repeat="o in $ctrl.currentNode.op | filter:{name:$ctrl.searchOperation,desc:$ctrl.searchOperation} | orderBy:'name'">
                             <td ng-if="$root.hasPermission('EXECUTE')"><execute-button bean="$ctrl.currentNode" operation="o"></execute-button></td>
                             <td>{{o.name}} <span class="badge" ng-repeat="ar in o.args">{{ar.name}}<font ng-show="$ctrl.showOperationParamTypes">:{{ar.type}}</font></span></td>
-                            <td>{{o.ret}}</td>
-                            <td>{{o.desc}}</td>
+                            <td class="visible-lg">{{o.ret}}</td>
+                            <td class="visible-lg">{{o.desc}}</td>
                         </tr>
                         </tbody>
                     </table>
