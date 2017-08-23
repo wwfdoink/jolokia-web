@@ -3,7 +3,7 @@
         <span class="input-group-addon">
             <i class="fa fa-search" aria-hidden="true"></i>
         </span>
-        <input type="text" class="form-control" ng-model="$ctrl.searchTree" placeholder="Search for MBean...">
+        <input type="text" class="form-control" ng-model="$ctrl.searchTree" placeholder="Search by MBean path...">
         <span class="input-group-btn">
             <button class="btn btn-default" type="button"><i class="fa fa-trash-o" aria-hidden="true" ng-click="$ctrl.searchTree = ''"></i></button>
         </span>
@@ -26,11 +26,11 @@
         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{$ctrl.error}}
     </div>
 
-    <div ng-hide="$ctrl.error || $ctrl.loading || $ctrl.currentNode" class="alert alert-info" role="alert">
+    <div ng-hide="$ctrl.error || $ctrl.loading || $ctrl.isBeanNode()" class="alert alert-info" role="alert">
         <i class="fa fa-info-circle" aria-hidden="true"></i> No MBean selected...
     </div>
 
-    <uib-tabset active="active" ng-show="$ctrl.currentNode">
+    <uib-tabset active="active" ng-show="$ctrl.isBeanNode()">
         <uib-tab index="0" select="$ctrl.getBeanValue()">
             <uib-tab-heading>
                 <i class="fa fa-file-text-o"></i> Attributes
@@ -47,6 +47,10 @@
                         <tr>
                             <td>Description</td>
                             <td>{{$ctrl.currentNode.desc}}</td>
+                        </tr>
+                        <tr>
+                            <td>Path</td>
+                            <td>{{$ctrl.currentNode.id}}</td>
                         </tr>
                     </table>
                 </div>

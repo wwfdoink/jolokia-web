@@ -49,7 +49,9 @@ public class ApiController {
 
         try {
             String path = null; // null means full tree
-            result = JolokiaClient.getInstance().execute(new J4pListRequest(path)).asJSONObject();
+            Map<J4pQueryParameter,String> params = new HashMap<>();;
+            params.put(J4pQueryParameter.CANONICAL_NAMING,"false");
+            result = JolokiaClient.getInstance().execute(new J4pListRequest(path), params).asJSONObject();
         } catch(Exception e) {
             result.put("error", e.getMessage());
             return ResponseEntity.badRequest().body(result);
@@ -90,7 +92,7 @@ public class ApiController {
         try {
             J4pReadRequest readReq = new J4pReadRequest(readForm.getMbean());
             readReq.setPreferredHttpMethod("POST");
-            Map<J4pQueryParameter,String> params = new HashMap<>();;
+            Map<J4pQueryParameter,String> params = new HashMap<>();
             params.put(J4pQueryParameter.IGNORE_ERRORS,"true");
             J4pReadResponse readRes = JolokiaClient.getInstance().execute(readReq, params);
             result = readRes.getValue();

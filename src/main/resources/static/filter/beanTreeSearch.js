@@ -5,7 +5,7 @@ angular.module('jolokiaWeb').filter('beanTreeSearch', function() {
     }
 
     function checkNode(parent, node, searchText) {
-        var matching = isMatching(node.name, searchText);
+        var matching = isMatching(node.id, searchText);
         var cNode = angular.copy(node);
         cNode.children = [];
 

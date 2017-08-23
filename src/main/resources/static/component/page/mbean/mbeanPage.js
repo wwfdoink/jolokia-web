@@ -64,7 +64,9 @@ angular.module("jolokiaWeb").component('mbeanPage', {
                 });
             }
         }
-
+        self.isBeanNode = function(){
+            return (self.currentNode && (self.currentNode.hasOwnProperty("class")))
+        }
         self.toggleTree = function(status){
             setTreeOpenStatus(self.tree, status);
         };
