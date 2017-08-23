@@ -10,7 +10,7 @@
            ng-click="$ctrl.selectNodeHead(node)">
         </i>
 
-        <i class="normal" ng-hide="node.children.length"></i>
+        <i class="normal" ng-hide="!node.hasOwnProperty('class')" ng-click="$ctrl.selectNodeLabel(node)"></i>
 
         <span ng-class="node.selected"
               ng-click="$ctrl.selectNodeLabel(node)">

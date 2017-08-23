@@ -28,6 +28,68 @@ angular.module('jolokiaWeb').filter('beanTree', function() {
         return arr;
     }
 
+    function fillAll(node, bean){
+        node = fillBasicInfo(node,bean);
+        node = fillAttributes(node,bean);
+        node = fillOperations(node,bean);
+        return node;
+    }
+
+    function fillBasicInfo(node, bean){
+        if (bean.hasOwnProperty("class")) {
+            node.class = bean.class;
+            node.desc = bean.desc;
+        }
+        return node;
+    }
+
+    function fillAttributes(node, bean){
+        if (bean.hasOwnProperty("attr")) {
+            node.attr = [];
+
+            for (var attrKey in bean.attr){
+                node.attr.push({
+                    name: attrKey,
+                    rw: bean.attr[attrKey].rw,
+                    desc: bean.attr[attrKey].desc,
+                    type: getTypeName(bean.attr[attrKey].type),
+                    typeOrig: bean.attr[attrKey].type
+                });
+            }
+        }
+        return node;
+    }
+
+    function fillOperations(node, bean){
+        if (bean.hasOwnProperty("op")) {
+            node.op = [];
+            for (var opName in bean.op){
+                //it's an array if the function has multiple param variants
+                if (!Array.isArray(bean.op[opName])) {
+                    bean.op[opName] = [bean.op[opName]];
+                }
+                bean.op[opName].forEach(function(fnc){
+                    var operation = {
+                        name: opName,
+                        args: [],
+                    }
+                    operation.ret = getTypeName(fnc.ret);
+                    operation.desc = fnc.desc;
+                    fnc.args.forEach(function(argument){
+                        operation.args.push({
+                            name: argument.name,
+                            type: getTypeName(argument.type),
+                            typeOrig: argument.type,
+                        });									
+                    });
+                    node.op.push(operation);									
+                });
+            }
+        }
+        return node;
+    }
+
+
     function getDomainNode(arr, text){
         return _.findWhere(arr, {name: text});
     }
@@ -62,63 +124,23 @@ angular.module('jolokiaWeb').filter('beanTree', function() {
                     if (existingNode) {
                         // already registered path node
                         currentPathNode = existingNode;
+
+                        // If this is the last path segment then this is an MBean with a child MBean in the tree
+                        if (bean.pathArr.length-1 == i){
+                            currentPathNode = fillAll(currentPathNode, bean);
+                        }
                     } else {
+                        // create a new node
                         var insertNode = {
                             id: pathId,
                             name: bean.pathArr[i][1], // eg: ["type","Valve"]
                             children: []
                         }
-
-                        // If its the last path segment we add the operations and attributes
+                        // If this is the last path segment
                         if (bean.pathArr.length-1 == i){
-                            // Dealing with basic info
-                            insertNode.class = bean.class;
-                            insertNode.desc = bean.desc;
-
-                            // Dealing with Attributes
-                            if (bean.hasOwnProperty("attr")) {
-                                insertNode.attr = [];
-
-                                for (var attrKey in bean.attr){
-                                    insertNode.attr.push({
-                                        name: attrKey,
-                                        rw: bean.attr[attrKey].rw,
-                                        desc: bean.attr[attrKey].desc,
-                                        type: getTypeName(bean.attr[attrKey].type),
-                                        typeOrig: bean.attr[attrKey].type
-                                    });
-                                }
-                            }
-
-                            // Dealing with Operations
-                            if (bean.hasOwnProperty("op")) {
-                                insertNode.op = [];
-                                for (var opName in bean.op){
-                                    //it's an array if the function has multiple param variants
-                                    if (!Array.isArray(bean.op[opName])) {
-                                        bean.op[opName] = [bean.op[opName]];
-                                    }
-                                    bean.op[opName].forEach(function(fnc){
-                                        var operation = {
-                                            name: opName,
-                                            args: [],
-                                        }
-                                        operation.ret = getTypeName(fnc.ret);
-                                        operation.desc = fnc.desc;
-                                        fnc.args.forEach(function(argument){
-                                            operation.args.push({
-                                                name: argument.name,
-                                                type: getTypeName(argument.type),
-                                                typeOrig: argument.type,
-                                            });									
-                                        });
-                                        insertNode.op.push(operation);									
-                                    });
-                                    
-                                }
-                            }
+                            insertNode = fillAll(insertNode, bean);
                         }
-                            
+
                         currentPathNode.children.push(insertNode);
                         currentPathNode = insertNode;
                     }
