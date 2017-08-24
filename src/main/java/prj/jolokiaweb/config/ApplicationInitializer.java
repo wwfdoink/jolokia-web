@@ -7,6 +7,7 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.servlet.DispatcherServlet;
 import prj.jolokiaweb.JolokiaApp;
 import prj.jolokiaweb.jolokia.JolokiaAgentServlet;
+import prj.jolokiaweb.jolokia.JolokiaClient;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -23,7 +24,7 @@ public class ApplicationInitializer implements WebApplicationInitializer {
         /*
         * Jolokia Servlet
         */
-        if (JolokiaApp.isLocalJolokiaAgent()) {
+        if (JolokiaClient.getAgentInfo().isLocalAgent()) {
             ServletRegistration.Dynamic jolokiaDispatcher = servletContext.addServlet("jolokia", new JolokiaAgentServlet());
             jolokiaDispatcher.setLoadOnStartup(1);
             jolokiaDispatcher.addMapping("/jolokia/*");

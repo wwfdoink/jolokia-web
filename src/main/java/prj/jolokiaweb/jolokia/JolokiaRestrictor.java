@@ -8,6 +8,7 @@ import prj.jolokiaweb.JolokiaApp;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 import java.util.ArrayList;
+import java.util.Set;
 
 public class JolokiaRestrictor implements Restrictor {
     @Override
@@ -17,14 +18,16 @@ public class JolokiaRestrictor implements Restrictor {
 
     @Override
     public boolean isTypeAllowed(RequestType pType) {
+        Set<AgentInfo.JolokiaPermission> permissions = JolokiaClient.getAgentInfo().getBeanPermissions();
+
         if (RequestType.READ.equals(pType)) {
             return true;
         } else if (RequestType.LIST.equals(pType) || RequestType.SEARCH.equals(pType)) {
-            return JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPermission.READ);
+            return permissions.contains(AgentInfo.JolokiaPermission.READ);
         } else if (RequestType.WRITE.equals(pType)) {
-            return JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPermission.WRITE);
+            return permissions.contains(AgentInfo.JolokiaPermission.WRITE);
         } else if (RequestType.EXEC.equals(pType)) {
-            return JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPermission.EXECUTE);
+            return permissions.contains(AgentInfo.JolokiaPermission.EXECUTE);
         }
         // we allow all other types
         return true;
@@ -32,7 +35,7 @@ public class JolokiaRestrictor implements Restrictor {
 
     @Override
     public boolean isAttributeReadAllowed(ObjectName pName, String pAttribute) {
-        if (JolokiaApp.getBeanPermissions().contains(JolokiaApp.JolokiaPermission.READ)) {
+        if (JolokiaClient.getAgentInfo().getBeanPermissions().contains(AgentInfo.JolokiaPermission.READ)) {
             return true;
         }
 

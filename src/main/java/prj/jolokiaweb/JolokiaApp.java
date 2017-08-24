@@ -5,34 +5,27 @@ import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.commons.cli.*;
 import org.apache.tomcat.websocket.server.WsSci;
+import prj.jolokiaweb.jolokia.AgentInfo;
+import prj.jolokiaweb.jolokia.JolokiaClient;
 
 import javax.servlet.ServletException;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 public class JolokiaApp {
-    public enum JolokiaPermission {
-        NONE,READ,WRITE,EXECUTE
-    }
     private static final int DEFAULT_PORT = 8080;
     private static final String DEFAULT_CONTEXT_PATH = "";
     private static Tomcat tomcat;
     private static String baseUrl;
-    private static String jolokiaUrl;
     private static String contextPath;
-
-    private static final Set<JolokiaPermission> beanPermissions = new HashSet<>();
 
     /**
      * @param tomcatPort Web server listening port
-     * @param beanPermissions Permissions for MBean tab READ,WRITE,EXEC
+     * @param contextPath Tomcat context path
+     * @param agentInfo Jolokia AgentInfo
      */
-    public JolokiaApp(final Integer tomcatPort, final String contextPath, final String jolokiaUrl, final JolokiaPermission... beanPermissions) throws ServletException {
+    public JolokiaApp(final Integer tomcatPort, final String contextPath, final AgentInfo agentInfo) throws ServletException {
         int port = (tomcatPort == null) ? DEFAULT_PORT : tomcatPort;
         tomcat = new Tomcat();
         tomcat.setPort(port);
@@ -41,7 +34,6 @@ public class JolokiaApp {
         Context ctx = tomcat.addWebapp(contextPath, new File(System.getProperty("java.io.tmpdir")).getAbsolutePath());
         ctx.addServletContainerInitializer(new WsSci(), null);
 
-        //TODO fix this
         StringBuilder urlBuilder = new StringBuilder();
         urlBuilder.append("http://");
         urlBuilder.append(tomcat.getServer().getAddress());
@@ -50,9 +42,13 @@ public class JolokiaApp {
 
         this.baseUrl = urlBuilder.toString();
         this.contextPath = contextPath;
-        this.jolokiaUrl = jolokiaUrl;
-
-        this.beanPermissions.addAll(Arrays.asList(beanPermissions));
+        if (agentInfo.getUrl() == null) {
+            agentInfo.setLocalAgent(true);
+            agentInfo.setUrl(getContextUrl() + "/jolokia/");
+        } else {
+            agentInfo.setLocalAgent(false);
+        }
+        JolokiaClient.init(agentInfo);
     }
 
     public static void main(String[] args) throws Exception {
@@ -70,7 +66,7 @@ public class JolokiaApp {
                 .longOpt("permissions")
                 .optionalArg(true)
                 .hasArg()
-                .desc("r:read, w:write, e:execute, n:none (only dashboard read), default is: rwx")
+                .desc("r:read, w:write, x:execute, n:none, default is: rwx")
                 .build());
         options.addOption(Option.builder()
                 .argName("")
@@ -81,18 +77,31 @@ public class JolokiaApp {
                 .build());
         options.addOption(Option.builder()
                 .argName("")
-                .longOpt("jolokiaUrl")
+                .longOpt("remoteAgentUrl")
                 .optionalArg(true)
                 .hasArg()
                 .desc("Remote jolokia-jvm-agent url")
+                .build());
+        options.addOption(Option.builder()
+                .argName("")
+                .longOpt("remoteAgentUsername")
+                .optionalArg(true)
+                .hasArg()
+                .desc("Remote jolokia-jvm-agent username")
+                .build());
+        options.addOption(Option.builder()
+                .argName("")
+                .longOpt("remoteAgentPassword")
+                .optionalArg(true)
+                .hasArg()
+                .desc("Remote jolokia-jvm-agent password")
                 .build());
 
         CommandLineParser parser = new DefaultParser();
 
         int port = DEFAULT_PORT;
         String contextPath = DEFAULT_CONTEXT_PATH;
-        String jolokiaUrl = null;
-        Set<JolokiaPermission> beanPermissions = new HashSet<>();
+        AgentInfo agentInfo = new AgentInfo();
 
         try {
             CommandLine line = parser.parse(options, args);
@@ -109,21 +118,21 @@ public class JolokiaApp {
             if (line.hasOption("permissions") ) {
                 String permStr = line.getOptionValue("permissions");
                 if (permStr.contains("r")) {
-                    beanPermissions.add(JolokiaPermission.READ);
+                    agentInfo.addPermission(AgentInfo.JolokiaPermission.READ);
                 }
                 if (permStr.contains("w")) {
-                    beanPermissions.add(JolokiaPermission.WRITE);
+                    agentInfo.addPermission(AgentInfo.JolokiaPermission.WRITE);
                 }
                 if (permStr.contains("x")) {
-                    beanPermissions.add(JolokiaPermission.EXECUTE);
+                    agentInfo.addPermission(AgentInfo.JolokiaPermission.EXECUTE);
                 }
             } else {
                 //default behavior
-                beanPermissions.addAll(new ArrayList<>(Arrays.asList(
-                        JolokiaPermission.READ,
-                        JolokiaPermission.WRITE,
-                        JolokiaPermission.EXECUTE
-                )));
+                agentInfo.addPermission(
+                    AgentInfo.JolokiaPermission.READ,
+                    AgentInfo.JolokiaPermission.WRITE,
+                    AgentInfo.JolokiaPermission.EXECUTE
+                );
             }
 
             if (line.hasOption("contextPath") ) {
@@ -132,25 +141,28 @@ public class JolokiaApp {
                     contextPath = "/" + contextPath;
                 }
             }
-            if (line.hasOption("jolokiaUrl") ) {
-                jolokiaUrl = line.getOptionValue("jolokiaUrl");
-                if (!jolokiaUrl.endsWith("/")) {
-                    jolokiaUrl += "/";
+            if (line.hasOption("agentUrl") ) {
+                String url = line.getOptionValue("agentUrl");
+                if (!url.endsWith("/")) {
+                    url += "/";
                 }
-                URL urlCheck = new URL(jolokiaUrl); // check url
+                URL urlCheck = new URL(url); // check url
+                agentInfo.setUrl(url);
+            }
+            if (line.hasOption("agentUsername") ) {
+                agentInfo.setUsername(line.getOptionValue("agentUsername"));
+            }
+            if (line.hasOption("agentPassword") ) {
+                agentInfo.setPassword(line.getOptionValue("agentPassword"));
             }
 
-            JolokiaApp app = new JolokiaApp(port, contextPath, jolokiaUrl, beanPermissions.toArray(new JolokiaPermission[beanPermissions.size()]));
+            JolokiaApp app = new JolokiaApp(port, contextPath, agentInfo);
             app.startAndWait();
         } catch(Exception e) {
             System.out.println("Invalid input:" + e.getMessage());
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp( "java -jar jolokiaweb-all.jar", options);
         }
-    }
-
-    public static Set<JolokiaPermission> getBeanPermissions() {
-        return beanPermissions;
     }
 
     /**
@@ -195,16 +207,6 @@ public class JolokiaApp {
         }
         return baseUrl;
     }
-    public static boolean isLocalJolokiaAgent(){
-        return (jolokiaUrl == null);
-    }
-    public static String getJolokiaUrl() {
-        if (jolokiaUrl == null) {
-            return getContextUrl() + "/jolokia/"; // jolokia needs the trailing slash
-        } else {
-            return jolokiaUrl;
-        }
-    }
 
     /**
      * Builder class for JolokiaApp
@@ -212,11 +214,10 @@ public class JolokiaApp {
     public static class Builder {
         private Integer port;
         private String contextPath;
-        private URL jolokiaUrl;
-        private Set<JolokiaPermission> beanPermissions = new HashSet<>();
+        private AgentInfo agentInfo = new AgentInfo();
 
         public Builder() {
-            this.port = 8080;
+            this.port = DEFAULT_PORT;
         }
 
         /**
@@ -240,11 +241,22 @@ public class JolokiaApp {
         }
 
         /**
-         * @param url Remote jolokia agent url
+         * @param url Remote jolokia-agent url
          * @return this Builder
          */
-        public Builder jolokiaUrl(final String url) throws MalformedURLException {
-            this.jolokiaUrl = new URL((url.endsWith("/") ? url : url+"/"));
+        public Builder agentUrl(final String url) throws MalformedURLException {
+            this.agentInfo.setUrl(url.endsWith("/") ? url : url+"/");
+            return this;
+        }
+
+        /**
+         * @param username Remote jolokia-agent username
+         * @param password Remote jolokia-agent password
+         * @return this Builder
+         */
+        public Builder agentAuth(final String username, final String password) {
+            this.agentInfo.setUsername(username);
+            this.agentInfo.setPassword(password);
             return this;
         }
 
@@ -252,9 +264,9 @@ public class JolokiaApp {
          * @param permissionArray Permissions for MBean tab READ,WRITE,EXEC
          * @return
          */
-        public Builder permissions(JolokiaPermission... permissionArray) {
-            this.beanPermissions.clear();
-            this.beanPermissions.addAll(Arrays.asList(permissionArray));
+        public Builder permissions(AgentInfo.JolokiaPermission... permissionArray) {
+            agentInfo.clearPermission();
+            agentInfo.addPermission(permissionArray);
             return this;
         }
 
@@ -262,7 +274,7 @@ public class JolokiaApp {
          * @return new JolokiaApp instance
          */
         public JolokiaApp build() throws ServletException {
-            return new JolokiaApp(this.port, contextPath, jolokiaUrl.toString());
+            return new JolokiaApp(this.port, contextPath, agentInfo);
         }
     }
 }

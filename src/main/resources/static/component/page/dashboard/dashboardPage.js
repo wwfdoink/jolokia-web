@@ -4,7 +4,13 @@ angular.module("jolokiaWeb").component('dashboardPage', {
     },
     bindings: {
     },
-    controller: function(jsPath){
-        this.wsUrl = jsPath.ws;
+    controller: function(jsPath, DashboardService){
+        var self = this;
+
+        self.wsUrl = jsPath.ws;
+
+        self.hideError = function(){
+            DashboardService.clearError();
+        }
     }
 });

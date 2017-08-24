@@ -76,7 +76,7 @@ public class DashboardUpdate {
             result.put("thread", responseList.get(1).getValue());
             result.put("memory", responseList.get(2).getValue());
         } catch (Exception e) {
-            result.put("error", e.getMessage());
+            result.put("error", "J4pClient error: " + e.getMessage());
             return new Message(Message.EVENT_ERROR, result);
         }
         return new Message(Message.EVENT_DASHBOARD_UPDATE, result);

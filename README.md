@@ -15,15 +15,18 @@ This will create the fatJar `build/libs/jolokia-web-all.jar`
 ### Lib Usage example
 ```java
 import prj.jolokiaweb.JolokiaApp;
+import prj.jolokiaweb.jolokia.AgentInfo;
 
 JolokiaApp app = new JolokiaApp.Builder()
-    .port(8080)                                  // tomcat listening port, default: 8080
-    .contextPath("jolokiaweb")                   // webapp contextPath, default is the root path
-    .jolokiaUrl("http://localhost:8778/jolokia") // connect to your already running jolokia-jvm-agent
-    .permissions(JolokiaPermission.NONE,         // NONE means dashboard only
-            JolokiaPermission.READ,
-            JolokiaPermission.WRITE,
-            JolokiaPermission.EXECUTE
+    .port(8080)                                // tomcat listening port, default: 8080
+    .contextPath("jolokiaweb")                 // webapp contextPath, default is the root path
+    .agentUrl("http://localhost:8778/jolokia") // connect to your already running jolokia-jvm-agent
+    .agentAuth("user","password")              // remote agent credentials
+    .permissions(
+        AgentInfo.JolokiaPermission.NONE,      // NONE means dashboard only
+        AgentInfo.JolokiaPermission.READ,
+        AgentInfo.JolokiaPermission.WRITE,
+        AgentInfo.JolokiaPermission.EXECUTE
     ) // default is rwx
     .build();
 app.start();
@@ -37,7 +40,9 @@ Open your browser and navigate to http://yourhost:8080/
 $ java -jar jolokia-web-all.jar
   --port=8080
   --contextPath=jolokiaweb
-  --jolokiaUrl=http://localhost:8778/jolokia
   --permissions=rwxn
+  --agentUrl=http://localhost:8778/jolokia
+  --agentUsername=user
+  --agentPassword=password
 ```
 Open your browser and navigate to http://yourhost:8080/

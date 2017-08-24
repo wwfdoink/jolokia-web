@@ -173,7 +173,10 @@ angular.module('jolokiaWeb').service("DashboardService", function($http, $timeou
         var msg = JSON.parse(res.data);
         if (msg.event == "dashboard") {
             self.processDashboardStats(msg.data);
+        } else if (msg.event == "error") {
+            self.clientError = msg.data.error;
         }
+        $rootScope.$apply();
     });
     self.updateDashboardDelay = function(delay){
         if (ws.readyState === 1) {
@@ -187,6 +190,13 @@ angular.module('jolokiaWeb').service("DashboardService", function($http, $timeou
             ));
         }
     }
+    // TODO: make it observable
+    $rootScope.getError = function(){
+        return self.clientError;
+    }
+    $rootScope.clearError = function(){
+        self.clientError = null;
+    }    
     $rootScope.wsConnected = function(){
         return ws.readyState === 1;
     }
