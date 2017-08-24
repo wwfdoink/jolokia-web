@@ -1,4 +1,4 @@
-angular.module('jolokiaWeb').service("DashboardService", function($http, $timeout, $rootScope, $websocket, JolokiaService, UtilService, jsPath){
+angular.module('jolokiaWeb').service("DashboardService", function($http, $timeout, $rootScope, $websocket, JolokiaService, LocalStorageService, UtilService, jsPath){
     var self = this;
 
     self.chartData = {
@@ -157,6 +157,10 @@ angular.module('jolokiaWeb').service("DashboardService", function($http, $timeou
         initialTimeout: 5
     });
     ws.onOpen(function() {
+        var delay = LocalStorageService.get("dashboardUpdateDelay");
+        if (delay != null) {
+            self.updateDashboardDelay(delay);
+        }
         $rootScope.$apply();
     });
     ws.onClose(function() {
@@ -171,6 +175,18 @@ angular.module('jolokiaWeb').service("DashboardService", function($http, $timeou
             self.processDashboardStats(msg.data);
         }
     });
+    self.updateDashboardDelay = function(delay){
+        if (ws.readyState === 1) {
+            ws.send(JSON.stringify(
+                { 
+                    event: 'settings.changeDashboardDelay',
+                    data: { 
+                        delay: delay
+                    }
+                }
+            ));
+        }
+    }
     $rootScope.wsConnected = function(){
         return ws.readyState === 1;
     }

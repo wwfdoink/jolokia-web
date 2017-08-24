@@ -1,50 +1,55 @@
 package prj.jolokiaweb.websocket;
 
-import org.json.simple.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jdk.nashorn.internal.ir.ObjectNode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.ConcurrentSkipListSet;
+
+import java.util.concurrent.ConcurrentHashMap;
+
 
 @Component
 public class WsHandler extends TextWebSocketHandler {
 
-    private ConcurrentSkipListSet<WebSocketSession> sessionList = new ConcurrentSkipListSet(new WebSocketSessionComparator());
+    private ConcurrentHashMap<WebSocketSession, WsClient> clients = new ConcurrentHashMap();
 
     public int getClientNum(){
-        return sessionList.size();
+        return clients.size();
     }
 
-    public void sendDashboardStats(Message msg) {
-        Iterator<WebSocketSession> itr = sessionList.iterator();
-        while (itr.hasNext()){
-            WebSocketSession session = itr.next();
-            if (session.isOpen()) {
-                try {
-                    session.sendMessage(msg.toTextMessage());
-                } catch (IOException e) {
-                    //ignore if user closing his browser while sending data
-                }
-            }
-        }
+    public ConcurrentHashMap<WebSocketSession, WsClient> getClients() {
+        return clients;
     }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        sessionList.add(session);
+        clients.put(session, new WsClient());
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        sessionList.remove(session);
+        clients.remove(session);
     }
 
+    @Override
+    protected void handleTextMessage(WebSocketSession session, TextMessage result) throws Exception {
+        String payload = result.getPayload();
+        ObjectMapper mapper = new ObjectMapper();
+
+        Message message = mapper.readValue(payload, Message.class);
+        if (Message.EVENT_SETTINGS_CHANGE_DASHBOARD_DELAY.equals(message.getEvent())) {
+            WsClient client = clients.get(session);
+            if (client != null) {
+                Integer delay = (Integer)message.getData().get("delay");
+                if (delay > 0) {
+                    client.setDashboardDelay(delay);
+                    client.clearDashboardTick();
+                }
+            }
+        }
+    }
 }

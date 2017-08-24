@@ -4,8 +4,15 @@ import org.json.simple.JSONObject;
 import org.springframework.web.socket.TextMessage;
 
 public class Message {
+    public static final String EVENT_ERROR = "error";
+    public static final String EVENT_DASHBOARD_UPDATE = "dashboard";
+    public static final String EVENT_SETTINGS_CHANGE_DASHBOARD_DELAY = "settings.changeDashboardDelay";
+
     private String event;
     private JSONObject data;
+
+    public Message(){
+    }
 
     public Message(String event, JSONObject data) {
         this.event = event;

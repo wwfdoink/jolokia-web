@@ -8,12 +8,18 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.WebSocketSession;
 import prj.jolokiaweb.jolokia.JolokiaClient;
+import prj.jolokiaweb.websocket.WsClient;
 import prj.jolokiaweb.websocket.WsHandler;
 import prj.jolokiaweb.websocket.Message;
 
 import javax.management.MalformedObjectNameException;
+import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class DashboardUpdate {
@@ -21,11 +27,36 @@ public class DashboardUpdate {
     @Autowired
     private WsHandler ws;
 
-    @Scheduled(fixedDelay=3000)
-    public void publishUpdates(){
+    @Scheduled(fixedDelay=1000)
+    public void dashboardUpdateTick(){
         if (ws.getClientNum() < 1) {
             return;
         }
+
+        // tick all clients and check who need to be updated
+        Set<WebSocketSession> updatableSessions = new HashSet<>();
+        for (ConcurrentHashMap.Entry<WebSocketSession, WsClient> clientEntry: ws.getClients().entrySet()) {
+            WsClient client = clientEntry.getValue();
+            client.incDashboardTick();
+            if (client.timeToUpdate()) {
+                updatableSessions.add(clientEntry.getKey());
+            }
+        }
+
+        // if someone needs to be updated
+        if (updatableSessions.size() > 0) {
+            Message dashboardMessagee = getUpdateJson();
+            for (WebSocketSession session : updatableSessions) {
+                try {
+                    session.sendMessage(dashboardMessagee.toTextMessage());
+                } catch (IOException e) {
+                    //ignore if user closing his browser while sending data
+                }
+            }
+        }
+    }
+
+    public Message getUpdateJson(){
         JSONObject result = new JSONObject();
         try {
             // Don't forget to update the JolokiaRestrictor if you get different mbeans
@@ -44,12 +75,10 @@ public class DashboardUpdate {
             result.put("os", responseList.get(0).getValue());
             result.put("thread", responseList.get(1).getValue());
             result.put("memory", responseList.get(2).getValue());
-
-            ws.sendDashboardStats(new Message("dashboard", result));
-        } catch (MalformedObjectNameException e) {
-            System.err.println(e.getMessage());
-        } catch (J4pException e) {
-            System.err.println(e.getMessage());
+        } catch (Exception e) {
+            result.put("error", e.getMessage());
+            return new Message(Message.EVENT_ERROR, result);
         }
+        return new Message(Message.EVENT_DASHBOARD_UPDATE, result);
     }
 }
