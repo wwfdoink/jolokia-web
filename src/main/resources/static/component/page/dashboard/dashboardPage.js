@@ -4,13 +4,21 @@ angular.module("jolokiaWeb").component('dashboardPage', {
     },
     bindings: {
     },
-    controller: function(jsPath, DashboardService){
+    controller: function(jsPath, WebsocketService){
         var self = this;
+        self.$onInit = function(){
+            self.wsUrl = jsPath.ws;
+            
+            self.errorSub = WebsocketService.messageEvent.subscribe(
+                function(data) {}, // all messages
+                function(data) {   // error messages
+                    self.clientError = data.error;
+                },
+            );
+        }
 
-        self.wsUrl = jsPath.ws;
-
-        self.hideError = function(){
-            DashboardService.clearError();
+        self.$onDestroy = function(){
+            self.errorSub.unsubscribe();
         }
     }
 });

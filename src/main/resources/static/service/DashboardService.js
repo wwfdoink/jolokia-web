@@ -1,4 +1,4 @@
-angular.module('jolokiaWeb').service("DashboardService", function($http, $timeout, $rootScope, $websocket, JolokiaService, LocalStorageService, UtilService, jsPath){
+angular.module('jolokiaWeb').service("DashboardService", function($http, $timeout, $rootScope, $websocket, JolokiaService, WebsocketService, LocalStorageService, UtilService, jsPath){
     var self = this;
 
     self.chartData = {
@@ -151,53 +151,31 @@ angular.module('jolokiaWeb').service("DashboardService", function($http, $timeou
 
     }
 
-    var ws = $websocket(jsPath.ws, null, { 
-        reconnectIfNotNormalClose: true,
-        maxTimeout: 10,
-        initialTimeout: 5
-    });
-    ws.onOpen(function() {
+    self.updateDashboardDelay = function(delay){
+        WebsocketService.send(JSON.stringify(
+            { 
+                event: 'settings.changeDashboardDelay',
+                data: { 
+                    delay: delay
+                }
+            }
+        ));
+    }
+
+    WebsocketService.openEvent.subscribe(function() { 
+        $rootScope.wsConnected = true;
         var delay = LocalStorageService.get("dashboardUpdateDelay");
         if (delay != null) {
-            self.updateDashboardDelay(delay);
+            self.updateDashboardDelay(delay);            
         }
         $rootScope.$apply();
     });
-    ws.onClose(function() {
+    WebsocketService.closeEvent.subscribe(function() { 
+        $rootScope.wsConnected = false;
         $rootScope.$apply();
     });
-    ws.onError(function(err) {
-        $rootScope.$apply();
+    WebsocketService.dashboardUpdateEvent.subscribe(function(data) { 
+        self.processDashboardStats(data);
     });
-    ws.onMessage(function(res) {
-        var msg = JSON.parse(res.data);
-        if (msg.event == "dashboard") {
-            self.processDashboardStats(msg.data);
-        } else if (msg.event == "error") {
-            self.clientError = msg.data.error;
-        }
-        $rootScope.$apply();
-    });
-    self.updateDashboardDelay = function(delay){
-        if (ws.readyState === 1) {
-            ws.send(JSON.stringify(
-                { 
-                    event: 'settings.changeDashboardDelay',
-                    data: { 
-                        delay: delay
-                    }
-                }
-            ));
-        }
-    }
-    // TODO: make it observable
-    $rootScope.getError = function(){
-        return self.clientError;
-    }
-    $rootScope.clearError = function(){
-        self.clientError = null;
-    }    
-    $rootScope.wsConnected = function(){
-        return ws.readyState === 1;
-    }
+        
 });

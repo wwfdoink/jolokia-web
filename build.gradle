@@ -36,6 +36,7 @@ dependencies {
             "org.webjars.bower:angular-route:1.6.5",
             'org.webjars.npm:angular-ui-bootstrap:2.5.0',
             "org.webjars.bower:angular-websocket:2.0.0",
+            "org.webjars.npm:rxjs:5.4.3",
             "org.webjars.bower:chartjs:2.6.0",
             "org.webjars:angular-chart.js:1.1.1",
             "org.webjars.bower:angular-chart.js:1.1.1",

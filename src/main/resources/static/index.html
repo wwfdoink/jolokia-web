@@ -29,6 +29,7 @@
     <script src="webjars/angular-route/1.6.5/angular-route.min.js"></script>
     <script src="webjars/angular-ui-bootstrap/2.5.0/dist/ui-bootstrap-tpls.js"></script>
     <script src="webjars/angular-websocket/2.0.0/dist/angular-websocket.min.js"></script>
+    <script src="webjars/rxjs/5.4.3/bundles/Rx.min.js"></script>
     <script src="webjars/chartjs/2.6.0/dist/Chart.min.js"></script>
     <script src="webjars/angular-chart.js/1.1.1/angular-chart.min.js"></script>
 </head>
@@ -52,7 +53,7 @@
                     <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#!/settings">Settings</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li ng-show="!$root.wsConnected()" class="ws-error">
+                    <li ng-show="!$root.wsConnected" class="ws-error">
                         <a href><i class="fa fa-plug"></i> Connecting...</a>
                     </li>
                 </ul>
@@ -72,8 +73,9 @@
 
     <script src="static/service/DashboardService.js"></script>
     <script src="static/service/JolokiaService.js"></script>
-    <script src="static/service/UtilService.js"></script>
     <script src="static/service/LocalStorageService.js"></script>
+    <script src="static/service/UtilService.js"></script>
+    <script src="static/service/WebsocketService.js"></script>
     
     <script src="static/component/treeview/treeview.js"></script>
 

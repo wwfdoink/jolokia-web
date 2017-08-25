@@ -1,12 +1,12 @@
 <div class="col-sm-12">
     <!--<h1 class="page-header">Dashboard</h1>-->
-    <div ng-show="!$root.wsConnected()" class="alert alert-danger" role="alert">
+    <div ng-show="!$root.wsConnected" class="alert alert-danger" role="alert">
         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Websocket connection lost! ( {{$ctrl.wsUrl}} )
     </div>
 
-    <div ng-show="$root.getError()" class="alert alert-danger" role="alert">
-        <a href class="close" aria-label="close" title="close" ng-click="$root.clearError()">×</a>
-        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{$root.getError()}}
+    <div ng-show="$ctrl.clientError" class="alert alert-danger" role="alert">
+        <a href class="close" aria-label="close" title="close" ng-click="$ctrl.clientError = null">×</a>
+        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{$ctrl.clientError}}
     </div>
 
     <div class="row dashboard-charts" style="margin-top:15px;">
