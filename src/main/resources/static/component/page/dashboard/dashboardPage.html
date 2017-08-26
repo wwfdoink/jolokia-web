@@ -1,14 +1,5 @@
 <div class="col-sm-12">
     <!--<h1 class="page-header">Dashboard</h1>-->
-    <div ng-show="!$root.wsConnected" class="alert alert-danger" role="alert">
-        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Websocket connection lost! ( {{$ctrl.wsUrl}} )
-    </div>
-
-    <div ng-show="$ctrl.clientError" class="alert alert-danger" role="alert">
-        <a href class="close" aria-label="close" title="close" ng-click="$ctrl.clientError = null">×</a>
-        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{$ctrl.clientError}}
-    </div>
-
     <div class="row dashboard-charts" style="margin-top:15px;">
         <div class="col-xs-12 col-sm-6 col-lg-4">
 
@@ -49,7 +40,7 @@
         <div class="col-xs-12 col-sm-6 col-lg-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <i class="fa fa-area-chart" aria-hidden="true"></i> HeapMemory <gc-button ng-if="$root.hasPermission('EXECUTE')" class="pull-right"></gc-button>
+                    <i class="fa fa-area-chart" aria-hidden="true"></i> HeapMemory <gc-button ng-if="$ctrl.hasPermission('EXECUTE')" class="pull-right"></gc-button>
                 </div>
                 <div class="panel-body">
                     <heap-chart></heap-chart>
@@ -78,5 +69,6 @@
                 </div>
             </div>
         </div>
+
     </div>
 </div>

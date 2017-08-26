@@ -1,6 +1,15 @@
 angular.module('jolokiaWeb').service("JolokiaService", function($http, jsPath){
-    this.checkPolicy = function(){
+    var permissionsList = [];
+    var checkPolicy = function(){
         return $http.get(jsPath.api + "/checkPermissions");
+    }
+    // resolve permissions on init
+    checkPolicy().then(function(result){
+        permissionsList = result.data.permissions;
+    });
+
+    this.hasPermission = function(arg){
+        return (_.indexOf(permissionsList, arg) > -1);
     }
     this.version = function(){
         return $http.get(jsPath.api + "/version");

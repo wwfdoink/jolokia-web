@@ -1,9 +1,11 @@
 angular.module('jolokiaWeb').service("UtilService", function(){
     var self = this;
+
     this.getTimeString = function(){
         var date = new Date();
         return ("0000" + date.getHours()).slice(-2) + ":" + ("0000" + date.getMinutes()).slice(-2) + ":" + ("0000" + date.getSeconds()).slice(-2);
     }
+
     this.formatBytes = function(bytes, decimals) {
        if (bytes <= 1) return '0';
        var k = 1024,
@@ -13,6 +15,7 @@ angular.module('jolokiaWeb').service("UtilService", function(){
 
        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
     }
+
     this.chartTicks = function(stepSize){
         return {
             beginAtZero: true,
@@ -26,6 +29,7 @@ angular.module('jolokiaWeb').service("UtilService", function(){
             }
         }
     }
+    
     this.chartColor = function(r,g,b){
         return {
             backgroundColor: "rgba("+r+","+g+","+b+",0.3)",
@@ -35,4 +39,19 @@ angular.module('jolokiaWeb').service("UtilService", function(){
             pointHoverBorderColor: "rgba("+r+","+g+","+b+",1)"
         }
     }
+
+    this.fillEmptyChartData = function(chartData) {
+        for (var i=0; i<50;i++) {
+            chartData.labels.push("");
+            if (chartData.series.length > 1) {
+                for(var j=0;j<chartData.series.length; j++) {
+                    chartData.data[j].push(Number.NaN);
+                }
+            } else {
+                chartData.data.push(Number.NaN);
+            }
+        }
+        return chartData;
+    }
+
 });

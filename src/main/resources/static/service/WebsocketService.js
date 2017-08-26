@@ -1,4 +1,4 @@
-angular.module('jolokiaWeb').service("WebsocketService", function($websocket, JolokiaService, LocalStorageService, jsPath){
+angular.module('jolokiaWeb').service("WebsocketService", function($websocket, jsPath){
     var self = this;
 
     var ws = $websocket(jsPath.ws, null, { 
@@ -7,24 +7,27 @@ angular.module('jolokiaWeb').service("WebsocketService", function($websocket, Jo
         initialTimeout: 5
     });
 
-    // WS open
-    self.openEvent = Rx.Observable.create((observer) => {
-        ws.onOpen(() => { observer.next(); });
+    // WS status
+    self.wsStatusEvent = new Rx.BehaviorSubject(false);
+    ws.onOpen(() => { 
+        self.wsStatusEvent.next(true);
     });
-    // WS close
-    self.closeEvent = Rx.Observable.create((observer) => {
-        ws.onClose(() => { observer.next(); });
+    ws.onClose(() => { 
+        self.wsStatusEvent.next(false);
     });
+
     // WS error
-    self.errorEvent = Rx.Observable.create((observer) => {
+    self.wsErrorEvent = Rx.Observable.create((observer) => {
         ws.onError(() => { observer.next(); });
     });
 
     // All Messages
     self.messageEvent = new Rx.Subject();
+    // Error messages sent over ws
+    self.errorMessageEvent = new Rx.Subject();
     // Dashboard update messages
-    self.dashboardUpdateEvent = new Rx.Subject();
-    
+    self.dashboardUpdateEvent = new Rx.Subject(),
+
     ws.onMessage(function(res) {
         var msg = JSON.parse(res.data);
         self.messageEvent.next(msg);
@@ -33,6 +36,7 @@ angular.module('jolokiaWeb').service("WebsocketService", function($websocket, Jo
             self.dashboardUpdateEvent.next(msg.data);
         } else if (msg.event == "error") {
             self.messageEvent.error(msg.data);
+            self.errorMessageEvent.next(msg.data);
         }
     });
 

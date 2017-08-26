@@ -34,36 +34,7 @@
     <script src="webjars/angular-chart.js/1.1.1/angular-chart.min.js"></script>
 </head>
 <body class="ng-cloak">
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#/">JolokiaWeb</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#!/">Dashboard</a></li>
-                    <li ng-if="$root.hasPermission('READ')"><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#!/mbean">MBeans</a></li>
-                    <li ng-if="$root.hasPermission('READ')"><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#!/version">Version</a></li>
-                    <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#!/settings">Settings</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li ng-show="!$root.wsConnected" class="ws-error">
-                        <a href><i class="fa fa-plug"></i> Connecting...</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <div class="container-fluid">
-        <div class="row" ng-view>
-        </div>
-    </div>
+    <app></app>
 
     <script src="static/app.js"></script>
     <script src="static/directive/onEnterKey.js"></script>
@@ -100,6 +71,7 @@
     <script src="static/component/valueInspector/valueInspector.js"></script>
     <script src="static/component/gcButton/gcButton.js"></script>
 
+    <script src="static/component/page/app.js"></script>
     <script src="static/component/page/dashboard/dashboardPage.js"></script>
     <script src="static/component/page/mbean/mbeanPage.js"></script>
     <script src="static/component/page/version/versionPage.js"></script>

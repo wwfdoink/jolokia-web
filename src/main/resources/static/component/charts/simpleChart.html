@@ -1,12 +1,11 @@
 <div>
     <canvas id="line"
             class="chart chart-line"
-            chart-data="ctx.data"
-            chart-labels="ctx.labels"
-            chart-series="ctx.series"
-            chart-options="ctx.options"
-            chart-dataset-override="ctx.datasetOverride"
-            chart-click="ctx.onClick"
+            chart-data="$ctrl.chartData.data"
+            chart-labels="$ctrl.chartData.labels"
+            chart-series="$ctrl.chartData.series"
+            chart-options="$ctrl.options"
+            chart-dataset-override="$ctrl.datasetOverride"
     >
     </canvas>
 </div>
