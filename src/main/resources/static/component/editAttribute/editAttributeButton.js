@@ -6,11 +6,11 @@ angular.module("jolokiaWeb").component('editAttributeButton', {
         bean: '<',
         attr: '<'
     },
-    controller: function($scope, JolokiaService, $uibModal) {
-        var $ctrl = this;
-        $scope.loading = false;
+    controller: function(JolokiaService, $uibModal) {
+        var self = this;
+
         this.$onInit = function(){
-            $scope.loading = false;
+            self.loading = false;
         }
 
         this.openForm = function() {

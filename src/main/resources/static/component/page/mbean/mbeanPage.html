@@ -3,9 +3,9 @@
         <span class="input-group-addon">
             <i class="fa fa-search" aria-hidden="true"></i>
         </span>
-        <input type="text" class="form-control" ng-model="$ctrl.searchTree" placeholder="Search by MBean path...">
+        <input type="text" class="form-control" ng-change="$ctrl.onSearchTextChange()" ng-model="$ctrl.treeSearchText" ng-model-options='{ debounce: 300 }' placeholder="Search by MBean path...">
         <span class="input-group-btn">
-            <button class="btn btn-default" type="button"><i class="fa fa-trash-o" aria-hidden="true" ng-click="$ctrl.searchTree = ''"></i></button>
+            <button class="btn btn-default" type="button"><i class="fa fa-trash-o" aria-hidden="true" ng-click="$ctrl.clearSearchText()"></i></button>
         </span>
     </div>
 
@@ -67,7 +67,7 @@
                     <table class="table table-striped" ng-hide="$ctrl.beanLoading">
                         <thead>
                         <tr>
-                            <th ng-if="$root.hasPermission('WRITE')" style="width:100px">
+                            <th ng-if="$ctrl.hasPermission('WRITE')" style="width:100px">
                                 <button class="btn btn-xs btn-search" ng-class="{'btn-warning': $ctrl.showAttributeSearch, 'btn-default': !$ctrl.showAttributeSearch}" ng-click="$ctrl.toggleAttributeSearch()"><i class="fa fa-search"></i> Search</button>
                             </th>
                             <th>Attribute</th>
@@ -90,9 +90,9 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr ng-repeat="attr in $ctrl.currentNode.attr | filter:{name:$ctrl.searchAttribute,desc:$ctrl.searchAttribute} | orderBy:'name'">
-                            <td ng-if="$root.hasPermission('WRITE')"><edit-attribute-button bean="$ctrl.currentNode" attr="attr"></edit-attribute-button></td>
-                            <td>{{attr.name}}</td>
+                        <tr ng-repeat="attr in $ctrl.currentNode.attr | filter:{name:$ctrl.searchAttribute} | orderBy:'name'">
+                            <td ng-if="$ctrl.hasPermission('WRITE')"><edit-attribute-button bean="$ctrl.currentNode" attr="attr"></edit-attribute-button></td>
+                            <td><chart-subscribe-button bean="$ctrl.currentNode" attr="attr"></chart-subscribe-button> {{attr.name}}</td>
                             <td><value-inspector value="attr.value"></value-inspector></td>
                             <td class="visible-lg">{{attr.type}}</td>
                             <td class="visible-lg">{{attr.desc}}</td>
@@ -118,7 +118,7 @@
                     <table class="table table-striped operation-table">
                         <thead>
                         <tr>
-                            <th ng-if="$root.hasPermission('EXECUTE')" style="width:100px">
+                            <th ng-if="$ctrl.hasPermission('EXECUTE')" style="width:100px">
                                 <button class="btn btn-xs btn-search" ng-class="{'btn-warning': $ctrl.showOperationSearch,'btn-default': !$ctrl.showOperationSearch}" ng-click="$ctrl.toggleOperationSearch()"><i class="fa fa-search"></i> Search</button>
                             </th>
                             <th>Function <button class="btn btn-xs pull-right" ng-class="{'btn-warning': $ctrl.showOperationParamTypes, 'btn-default':!$ctrl.showOperationParamTypes}" ng-click="$ctrl.toggleOperationParamTypes()"><i class="fa fa-search"></i> {{($ctrl.showOperationParamTypes) ? 'Hide' : 'Show'}} parameter types</button></th>
@@ -140,8 +140,8 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr ng-repeat="o in $ctrl.currentNode.op | filter:{name:$ctrl.searchOperation,desc:$ctrl.searchOperation} | orderBy:'name'">
-                            <td ng-if="$root.hasPermission('EXECUTE')"><execute-button bean="$ctrl.currentNode" operation="o"></execute-button></td>
+                        <tr ng-repeat="o in $ctrl.currentNode.op | filter:{name:$ctrl.searchOperation} | orderBy:'name'">
+                            <td ng-if="$ctrl.hasPermission('EXECUTE')"><execute-button bean="$ctrl.currentNode" operation="o"></execute-button></td>
                             <td>{{o.name}} <span class="badge" ng-repeat="ar in o.args">{{ar.name}}<font ng-show="$ctrl.showOperationParamTypes">:{{ar.type}}</font></span></td>
                             <td class="visible-lg">{{o.ret}}</td>
                             <td class="visible-lg">{{o.desc}}</td>

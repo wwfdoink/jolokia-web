@@ -10,6 +10,8 @@ angular.module("jolokiaWeb").component('settingsPage', {
         self.$onInit = function () {
             self.minView = LocalStorageService.get("minView");
 
+            self.trackedAttributes = LocalStorageService.get("trackedAttributes");
+
             var delay = LocalStorageService.get("dashboardUpdateDelay");
             self.dashboardUpdateDelay = (delay === null) ? 3 : parseInt(delay);
 
@@ -18,7 +20,6 @@ angular.module("jolokiaWeb").component('settingsPage', {
                 function(status) { self.wsStatus = status; }
             );
         }
-
         self.toggleMinView = function(){
             self.minView = !self.minView;
             LocalStorageService.set("minView", self.minView);
@@ -32,6 +33,11 @@ angular.module("jolokiaWeb").component('settingsPage', {
             DashboardService.updateDashboardDelay(self.dashboardUpdateDelay);
         }
 
+        self.removeAttributeSubscription = function(attr){
+            DashboardService.unTrackAttribute(attr.id,attr.name);
+            self.trackedAttributes = LocalStorageService.get("trackedAttributes");
+        }
+        
         self.$onDestroy = function(){
             self.wsStatusSub.unsubscribe();
         }

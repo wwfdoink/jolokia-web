@@ -70,5 +70,16 @@
             </div>
         </div>
 
+        <div class="col-xs-12 col-sm-6 col-lg-4" ng-repeat="attr in $ctrl.trackedAttributes">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-star" aria-hidden="true"></i> {{attr.id}} <span class="badge">{{attr.name}}</span>
+                </div>
+                <div class="panel-body">
+                    <attribute-chart id="attr.id" name="attr.name"></attribute-chart>
+                </div>
+            </div>
+        </div>
+    
     </div>
 </div>

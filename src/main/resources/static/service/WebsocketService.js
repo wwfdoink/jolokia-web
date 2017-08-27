@@ -8,37 +8,38 @@ angular.module('jolokiaWeb').service("WebsocketService", function($websocket, js
     });
 
     // WS status
-    self.wsStatusEvent = new Rx.BehaviorSubject(false);
-    ws.onOpen(() => { 
-        self.wsStatusEvent.next(true);
+    var wsStatusEvent = new Rx.BehaviorSubject(false);
+    ws.onOpen(function(){ 
+        wsStatusEvent.next(true);
     });
-    ws.onClose(() => { 
-        self.wsStatusEvent.next(false);
+    ws.onClose(function(){ 
+        wsStatusEvent.next(false);
     });
+    self.wsStatusEvent = wsStatusEvent.asObservable();
+
 
     // WS error
-    self.wsErrorEvent = Rx.Observable.create((observer) => {
-        ws.onError(() => { observer.next(); });
+    self.wsErrorEvent = Rx.Observable.create(function(observer) {
+        ws.onError(function() { observer.next(); });
     });
 
     // All Messages
-    self.messageEvent = new Rx.Subject();
+    var messageEvent = new Rx.Subject();
     // Error messages sent over ws
-    self.errorMessageEvent = new Rx.Subject();
-    // Dashboard update messages
-    self.dashboardUpdateEvent = new Rx.Subject(),
+    var errorMessageEvent = new Rx.Subject();
 
     ws.onMessage(function(res) {
         var msg = JSON.parse(res.data);
-        self.messageEvent.next(msg);
+        messageEvent.next(msg);
 
-        if (msg.event == "dashboard") {
-            self.dashboardUpdateEvent.next(msg.data);
-        } else if (msg.event == "error") {
-            self.messageEvent.error(msg.data);
-            self.errorMessageEvent.next(msg.data);
+        if (msg.event == "error") {
+            messageEvent.error(msg);
+            errorMessageEvent.next(msg.data);
         }
     });
+    // Expose
+    self.messageEvent = messageEvent.asObservable();
+    self.errorMessageEvent = errorMessageEvent.asObservable();
 
     self.send = function(data) {
         if (ws.readyState === 1) {

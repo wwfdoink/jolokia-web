@@ -4,26 +4,19 @@ angular.module("jolokiaWeb").component('mbeanPage', {
     },
     bindings: {
     },
-    controllerAs: "$ctrl",
     controller: function($scope, $filter, JolokiaService, LocalStorageService) {
         var self = this;
-
+        // cache for original tree model
         var origTree = [];
+
         self.$onInit = function () {
+            self.hasPermission = JolokiaService.hasPermission;   
             self.tree = [];
             self.loading = true;
             self.currentNode = null;
             self.searchTree = null;
             self.showOperationParamTypes = LocalStorageService.get("showOperationParamTypes");
             
-            $scope.$watch(function() { return self.searchTree; }, function(text) {
-                self.tree = $filter('beanTreeSearch')(origTree, text);
-                if (text && text.length > 0) {
-                    self.toggleTree(true);
-                } else {
-                    self.toggleTree(false);
-                }
-            });
             $scope.$watch(function() { return self.currentNode; }, function() {
                 self.getBeanValue();
             }, false);
@@ -42,10 +35,7 @@ angular.module("jolokiaWeb").component('mbeanPage', {
 
         self.getBeanValue = function(){
             self.error = null;
-            if (angular.isObject(self.currentNode)) {
-                if (!self.currentNode.class) {
-                    return;
-                }
+            if (angular.isObject(self.currentNode) && self.currentNode.class) {
                 var bean = self.currentNode;
                 self.beanLoading = true;
                 JolokiaService.read(bean.id).then(function(res) {
@@ -73,6 +63,19 @@ angular.module("jolokiaWeb").component('mbeanPage', {
         self.toggleTree = function(status){
             setTreeOpenStatus(self.tree, status);
         };
+
+        self.clearSearchText = function(){
+            self.treeSearchText = '';
+            self.onSearchTextChange();
+        }
+        self.onSearchTextChange = function(){
+            self.tree = $filter('beanTreeSearch')(origTree, self.treeSearchText);
+            if (self.treeSearchText && self.treeSearchText.length > 0) {
+                self.toggleTree(true);
+            } else {
+                self.toggleTree(false);
+            }
+        }
 
         var setTreeOpenStatus = function(item, status){
             for(var i=0;i<item.length;i++) {

@@ -22,5 +22,21 @@
                     <span ng-show="!$ctrl.wsStatus">WebSocket connection lost...</span>
                 </td>
             </tr>
+            <tr>
+                <td>Attribute Subscriptions</td>
+                <td><span>You don't have any subscriptions...</span>
+                    <table class="table table-striped table-responsive" ng-show="$ctrl.trackedAttributes.length > 0">
+                        <tr ng-repeat="attr in $ctrl.trackedAttributes">
+                            <td style="width:80px;">
+                                <button class="btn btn-primary btn-xs" ng-click="$ctrl.removeAttributeSubscription(attr)">
+                                    <i class="fa fa-trash"></i> Remove
+                                </button>
+                            </td>
+                            <td>{{attr.id}}</td>
+                            <td>{{attr.name}}</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
         </table>
 </div>

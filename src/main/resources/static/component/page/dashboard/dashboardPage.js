@@ -4,10 +4,16 @@ angular.module("jolokiaWeb").component('dashboardPage', {
     },
     bindings: {
     },
-    controller: function(JolokiaService, WebsocketService){
+    controller: function(JolokiaService, LocalStorageService, WebsocketService){
         var self = this;
+
         self.$onInit = function(){
-            self.hasPermission = JolokiaService.hasPermission;            
+            self.hasPermission = JolokiaService.hasPermission;
+
+            self.trackedAttributes = LocalStorageService.get("trackedAttributes");
+            if (self.trackedAttributes == null) {
+                self.trackedAttributes = [];
+            }
         }
     }
 });

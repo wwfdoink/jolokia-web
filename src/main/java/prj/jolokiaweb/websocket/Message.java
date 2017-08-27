@@ -5,11 +5,12 @@ import org.springframework.web.socket.TextMessage;
 
 public class Message {
     public static final String EVENT_ERROR = "error";
-    public static final String EVENT_DASHBOARD_UPDATE = "dashboard";
     public static final String EVENT_SETTINGS_CHANGE_DASHBOARD_DELAY = "settings.changeDashboardDelay";
+    public static final String EVENT_SETTINGS_TRACK_ATTRIBUTE = "settings.trackAttribute";
+    public static final String EVENT_SETTINGS_UNTRACK_ATTRIBUTE = "settings.unTrackAttribute";
 
-    private String event;
-    private JSONObject data;
+    protected String event;
+    protected JSONObject data;
 
     public Message(){
     }

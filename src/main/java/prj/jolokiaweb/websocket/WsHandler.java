@@ -44,11 +44,21 @@ public class WsHandler extends TextWebSocketHandler {
         if (Message.EVENT_SETTINGS_CHANGE_DASHBOARD_DELAY.equals(message.getEvent())) {
             WsClient client = clients.get(session);
             if (client != null) {
-                Integer delay = (Integer)message.getData().get("delay");
+                Integer delay = (Integer) message.getData().get("delay");
                 if (delay > 0) {
                     client.setDashboardDelay(delay);
                     client.clearDashboardTick();
                 }
+            }
+        } else if (Message.EVENT_SETTINGS_TRACK_ATTRIBUTE.equals(message.getEvent())) {
+            WsClient client = clients.get(session);
+            if (client != null) {
+                client.trackAttribute((String)message.getData().get("id"), (String)message.getData().get("name"));
+            }
+        } else if (Message.EVENT_SETTINGS_UNTRACK_ATTRIBUTE.equals(message.getEvent())) {
+            WsClient client = clients.get(session);
+            if (client != null) {
+                client.unTrackAttribute((String)message.getData().get("id"), (String)message.getData().get("name"));
             }
         }
     }

@@ -1,0 +1,7 @@
+<button class="btn btn-xs"
+        ng-disabled="!$ctrl.isTrackable()"
+        ng-class="{'btn-primary': $ctrl.isTrackable(), 'btn-success': $ctrl.alreadyTracking()}"
+        ng-click="$ctrl.trackAttribute()"
+        uib-tooltip="{{$ctrl.tooltipMessage()}}">
+    <i class="fa fa-area-chart"></i>
+</button>

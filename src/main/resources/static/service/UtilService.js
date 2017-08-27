@@ -48,7 +48,7 @@ angular.module('jolokiaWeb').service("UtilService", function(){
                     chartData.data[j].push(Number.NaN);
                 }
             } else {
-                chartData.data.push(Number.NaN);
+                chartData.data[0].push(Number.NaN);
             }
         }
         return chartData;

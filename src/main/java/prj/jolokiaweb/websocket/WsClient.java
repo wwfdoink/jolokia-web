@@ -1,11 +1,19 @@
 package prj.jolokiaweb.websocket;
 
 
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class WsClient {
     public static final int DEFAULT_DASHBOARD_DELAY = 3; //3 SEC
 
     private int dashboardDelay = DEFAULT_DASHBOARD_DELAY;
     private int dashboardTick = 0;
+    private Map<String, Set<String>> trackedAttributes = new ConcurrentHashMap<>();
+
+    public Map<String, Set<String>> getTrackedAttributes() {
+        return trackedAttributes;
+    }
 
     public WsClient() {
     }
@@ -28,5 +36,25 @@ public class WsClient {
             return true;
         }
         return false;
+    }
+
+    public synchronized void trackAttribute(String beanId, String attribute){
+        Set<String> beanAttrs = trackedAttributes.get(beanId);
+        if (beanAttrs == null) {
+            beanAttrs = new HashSet<>(Arrays.asList(attribute));
+        } else {
+            beanAttrs.add(attribute);
+        }
+        trackedAttributes.put(beanId, beanAttrs);
+    }
+
+    public synchronized void unTrackAttribute(String beanId, String attribute){
+        Set<String> beanAttrs = trackedAttributes.get(beanId);
+        if (beanAttrs != null) {
+            beanAttrs.remove(attribute);
+            if (beanAttrs.size() < 1) {
+                trackedAttributes.remove(beanId);
+            }
+        }
     }
 }
