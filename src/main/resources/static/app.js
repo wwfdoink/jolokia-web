@@ -1,4 +1,4 @@
-angular.module('jolokiaWeb', ['ngRoute', 'ui.bootstrap', 'angular-websocket', 'chart.js'])
+angular.module('jolokiaWeb', ['ngRoute', 'ui.bootstrap', 'angular-websocket', 'chart.js', 'ui-notification'])
 .config(function($routeProvider) {
   $routeProvider
   .when('/', {

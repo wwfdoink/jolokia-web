@@ -1,4 +1,19 @@
-<div ng-if="$ctrl.isType('simple')">
+<div ng-if="$ctrl.isNull()" class="value-inspector-empty">
+    <i class="fa fa-info-circle"></i> null
+</div>
+
+<div ng-if="$ctrl.isEmptyArray()" class="value-inspector-empty">
+    <i class="fa fa-info-circle"></i> Empty array
+</div>
+
+<div ng-if="$ctrl.isEmptyObject()" class="value-inspector-empty">
+    <i class="fa fa-info-circle"></i> Empty object
+</div>
+<div ng-if="$ctrl.isEmptyString()" class="value-inspector-empty">
+    <i class="fa fa-info-circle"></i> Empty string
+</div>
+
+<div ng-if="!$ctrl.isEmpty() && $ctrl.isType('simple')">
     <span ng-if="!$ctrl.isHugeText()" class="huge-text">{{$ctrl.value}}</span>
     <span ng-if="$ctrl.isHugeText()">
         <button class="btn btn-default btn-xs" ng-click="$ctrl.openTextModal()">
@@ -7,10 +22,10 @@
     </span>
 </div>
 
-<div ng-if="$ctrl.isType('number')">
+<div ng-if="!$ctrl.isEmpty() && $ctrl.isType('number')">
     <span>{{$ctrl.value | number}}</span>
 </div>
 
-<button class="btn btn-default btn-xs" ng-if="!($ctrl.isType('number') || $ctrl.isType('simple'))" ng-click="$ctrl.openModal()">
+<button class="btn btn-default btn-xs" ng-if="!$ctrl.isEmpty() && (!($ctrl.isType('number') || $ctrl.isType('simple')))" ng-click="$ctrl.openModal()">
     <i class="fa fa-search"></i> Inspect value
 </button>

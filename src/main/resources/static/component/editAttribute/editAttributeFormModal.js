@@ -7,30 +7,30 @@ angular.module("jolokiaWeb").component('editAttributeFormModal', {
         close: '&',
         dismiss: '&'
     },
-    controller: function ($scope, JolokiaService, $uibModal) {
-        var $ctrl = this;
+    controller: function (JolokiaService, $uibModal) {
+        var self = this;
 
-        $ctrl.$onInit = function () {
-            $ctrl.bean = $ctrl.resolve.bean;
-            $ctrl.attr = angular.copy($ctrl.resolve.attr);
+        self.$onInit = function () {
+            self.bean = self.resolve.bean;
+            self.attr = angular.copy(self.resolve.attr);
         };
 
-        $ctrl.cancel = function () {
-            $ctrl.dismiss({$value: 'cancel'});
+        self.cancel = function () {
+            self.dismiss({$value: 'cancel'});
         };
 
-        $ctrl.save = function(){
-            $ctrl.error = null;
+        self.save = function(){
+            self.error = null;
 
-            $scope.loading = true;
-            JolokiaService.write($ctrl.bean.id, $ctrl.attr.name, $ctrl.attr.value).then(function(res) {
-                $ctrl.resolve.attr.value = $ctrl.attr.value;
-                $ctrl.cancel();
+            self.loading = true;
+            JolokiaService.write(self.bean.id, self.attr.name, self.attr.value).then(function(res) {
+                self.resolve.attr.value = self.attr.value;
+                self.cancel();
             }).catch(function(err){
-                if (_.isObject(err.data)) { $ctrl.error = err.data.error; }
-                else { $ctrl.error = err.data; }
+                if (_.isObject(err.data)) { self.error = err.data.error; }
+                else { self.error = err.data; }
             }).finally(function(){
-                $scope.loading = false;
+                self.loading = false;
             });
         }
     }

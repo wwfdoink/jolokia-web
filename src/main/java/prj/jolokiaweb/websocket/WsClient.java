@@ -1,6 +1,8 @@
 package prj.jolokiaweb.websocket;
 
 
+import org.jolokia.client.request.J4pReadRequest;
+
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -35,6 +37,17 @@ public class WsClient {
             dashboardTick = 0;
             return true;
         }
+        return false;
+    }
+
+    public boolean isTracking(String chartId) {
+        for (Map.Entry<String, Set<String>> beanEntry : trackedAttributes.entrySet()) {
+            for (String attrName : beanEntry.getValue()) {
+                if (chartId.equals(beanEntry.getKey() + ":" + attrName)) {
+                    return true;
+                }
+            }
+        };
         return false;
     }
 

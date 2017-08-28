@@ -26,15 +26,16 @@ angular.module("jolokiaWeb").component('mbeanPage', {
             self.tree = $filter('beanTree')(res.data.value);
             origTree = angular.copy(self.tree);
         }).catch(function(err){
-            if (_.isObject(err.data)) { self.error = err.data.error; }
-            else if (err.data) { self.error = err.data; }
-            else { self.error = "Failed to load resource: [" + err.config.method + "] " + err.config.url }
+            var errorText;
+            if (_.isObject(err.data)) { errorText = err.data.error; }
+            else if (err.data) { errorText = err.data; }
+            else { errorText = "Failed to load resource: [" + err.config.method + "] " + err.config.url }
+            Notification.error({title: '<i class="fa fa-exclamation-triangle"></i> Request error', message: errorText, delay: 10000});
         }).finally(function(){
             self.loading = false;
         });
 
         self.getBeanValue = function(){
-            self.error = null;
             if (angular.isObject(self.currentNode) && self.currentNode.class) {
                 var bean = self.currentNode;
                 self.beanLoading = true;
@@ -49,9 +50,11 @@ angular.module("jolokiaWeb").component('mbeanPage', {
                         }
                     }
                 }).catch(function(err){
-                    if (_.isObject(err.data)) { self.error = err.data.error; }
-                    else if (err.data) { self.error = err.data; }
-                    else { self.error = "Failed to load resource: [" + err.config.method + "] " + err.config.url }
+                    var errorText;
+                    if (_.isObject(err.data)) { errorText = err.data.error; }
+                    else if (err.data) { errorText = err.data; }
+                    else { errorText = "Failed to load resource: [" + err.config.method + "] " + err.config.url }
+                    Notification.error({title: '<i class="fa fa-exclamation-triangle"></i> Request error', message: errorText, delay: 10000});
                 }).finally(function(){
                     self.beanLoading = false;
                 });
@@ -68,6 +71,7 @@ angular.module("jolokiaWeb").component('mbeanPage', {
             self.treeSearchText = '';
             self.onSearchTextChange();
         }
+        
         self.onSearchTextChange = function(){
             self.tree = $filter('beanTreeSearch')(origTree, self.treeSearchText);
             if (self.treeSearchText && self.treeSearchText.length > 0) {

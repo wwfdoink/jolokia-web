@@ -19,9 +19,7 @@
 
     <!-- simple array -->
     <div ng-switch-when="array">
-        <div class="alert alert-info" role="alert" ng-if="$ctrl.value.length < 1">
-            <i class="fa fa-info-circle" aria-hidden="true"></i> This array is empty...
-        </div>
+        <value-inspector value="$ctrl.value" ng-if="$ctrl.value.length < 1"></value-inspector>
         <table class="table table-striped" ng-if="$ctrl.value.length > 0">
             <tr ng-repeat="data in $ctrl.value track by $index">
                 <td><value-inspector value="data"></value-inspector></td>
@@ -31,6 +29,7 @@
 
     <!-- simple object -->
     <div ng-switch-when="object">
+        <value-inspector value="$ctrl.value" ng-if="Object.keys($ctrl.value).length < 1"></value-inspector>
         <table class="table table-striped">
             <tr ng-repeat="(key,data) in $ctrl.value">
                 <td>{{key}}</td>

@@ -21,6 +21,7 @@ import javax.management.ObjectName;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 @Component
 public class DashboardUpdate {
@@ -35,26 +36,38 @@ public class DashboardUpdate {
         }
 
         // tick all clients and check who need to be updated
-        Set<WebSocketSession> updatableSessions = new HashSet<>();
+        Map<WebSocketSession, WsClient> updatableClients = new HashMap<>();
         for (ConcurrentHashMap.Entry<WebSocketSession, WsClient> clientEntry: ws.getClients().entrySet()) {
             WsClient client = clientEntry.getValue();
             client.incDashboardTick();
             if (client.timeToUpdate()) {
-                updatableSessions.add(clientEntry.getKey());
+                updatableClients.put(clientEntry.getKey(), clientEntry.getValue());
             }
         }
 
         // if someone needs to be updated
-        if (updatableSessions.size() > 0) {
-            List<Message> dashboardMessage = getDashboardUpdateMessages();
-            List<Message> trackedAttributeMessagee = getTrackedAttributeMessages();
-            for (WebSocketSession session : updatableSessions) {
+        if (updatableClients.size() > 0) {
+            List<Message> dashboardMessageList = getDashboardUpdateMessages();
+            List<Message> trackedAttributeMessageList = getTrackedAttributeMessages();
+
+            for (ConcurrentHashMap.Entry<WebSocketSession, WsClient> clientEntry : updatableClients.entrySet()) {
                 try {
-                    for (Message msg : dashboardMessage) {
-                        session.sendMessage(msg.toTextMessage());
+                    //broadcast default chart data
+                    for (Message msg : dashboardMessageList) {
+                        clientEntry.getKey().sendMessage(msg.toTextMessage());
                     }
-                    for (Message msg : trackedAttributeMessagee) {
-                        session.sendMessage(msg.toTextMessage());
+                    //broadcast tracking attributes for charts
+                    for (Message msg : trackedAttributeMessageList) {
+                        if (msg instanceof ChartMessage) {
+                            ChartMessage chartMessage = (ChartMessage) msg;
+                            // only send this attribute info if the client is tracking it
+                            if (clientEntry.getValue().isTracking(chartMessage.getChartId())) {
+                                clientEntry.getKey().sendMessage(chartMessage.toTextMessage());
+                            }
+                        } else {
+                            // error message
+                            clientEntry.getKey().sendMessage(msg.toTextMessage());
+                        }
                     }
 
                 } catch (IOException e) {
@@ -114,11 +127,9 @@ public class DashboardUpdate {
                     } else {
                         obj.put(attrName, valueResponse.getValue());
                     }
-
                     result.add(new ChartMessage((((J4pReadResponse) valueResponse).getObjectNames().toArray()[0].toString()) + ":" + attrName, obj));
                 }
             }
-            //result.add(new ChartMessage("os", responseList.get(0).getValue()));
         } catch (Exception e) {
             JSONObject err = new JSONObject();
             err.put("error", "J4pClient error: " + e.getMessage());

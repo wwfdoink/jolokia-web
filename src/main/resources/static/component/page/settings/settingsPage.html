@@ -12,19 +12,22 @@
             <tr>
                 <td>Dashboard update delay</td>
                 <td>
-                    <div class="input-group input-group-xs" style="max-width: 130px" ng-hide="!$ctrl.wsStatus">
-                        <input type="number" class="form-control input-xs" min="1" max="3600" ng-model="$ctrl.dashboardUpdateDelay">
+                    <div class="input-group input-group-xs" style="max-width: 90px" ng-hide="!$ctrl.wsStatus">
+                        <input type="number" class="form-control input-xs" 
+                            min="1"
+                            max="3600"
+                            ng-model="$ctrl.dashboardUpdateDelay"
+                            ng-change="$ctrl.updateDashboardDelay()"
+                            ng-model-options='{ debounce: 1000 }'
+                        >
                         <div class="input-group-addon">sec</div>
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary btn-xs" type="button" ng-click="$ctrl.updateDashboardDelay()">Save</button>
-                        </span>
                     </div>
                     <span ng-show="!$ctrl.wsStatus">WebSocket connection lost...</span>
                 </td>
             </tr>
             <tr>
                 <td>Attribute Subscriptions</td>
-                <td><span>You don't have any subscriptions...</span>
+                <td><span ng-hide="$ctrl.trackedAttributes.length > 0">You don't have any subscriptions...</span>
                     <table class="table table-striped table-responsive" ng-show="$ctrl.trackedAttributes.length > 0">
                         <tr ng-repeat="attr in $ctrl.trackedAttributes">
                             <td style="width:80px;">

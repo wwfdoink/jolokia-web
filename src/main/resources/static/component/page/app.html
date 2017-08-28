@@ -29,11 +29,6 @@
         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Websocket connection lost! ( {{$ctrl.wsUrl}} )
     </div>
     
-    <div ng-show="$ctrl.clientError" class="alert alert-danger" role="alert">
-        <a href class="close" aria-label="close" title="close" ng-click="$ctrl.clientError = null">×</a>
-        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{$ctrl.clientError}}
-    </div>
-        
     <div class="row" ng-view>
     </div>
 </div>

@@ -6,7 +6,7 @@ angular.module("jolokiaWeb").component('chartSubscribeButton', {
         bean: '<',
         attr: '<'
     },
-    controller: function(DashboardService, LocalStorageService) {
+    controller: function(DashboardService, LocalStorageService, Notification) {
         var self = this;
 
         self.$onInit = function(){
@@ -20,8 +20,18 @@ angular.module("jolokiaWeb").component('chartSubscribeButton', {
         self.trackAttribute = function() {
             if (self.alreadyTracking()){
                 DashboardService.unTrackAttribute(self.bean.id, self.attr.name);
+                Notification.success({
+                    title: '<i class="fa fa-check"></i> Attribute tracking removed...',
+                    message: self.attr.name + '<br>' + self.bean.id,
+                    delay: 5000
+                });            
             } else {
                 DashboardService.trackAttribute(self.bean.id, self.attr.name);
+                Notification.success({
+                    title: '<i class="fa fa-check"></i> Attribute tracking added...',
+                    message: self.attr.name + '<br>' + self.bean.id,
+                    delay: 5000
+                });            
             }
         };
 

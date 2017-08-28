@@ -4,7 +4,7 @@ angular.module("jolokiaWeb").component('gcButton', {
     },
     bindings: {
     },
-    controller: function($scope, JolokiaService) {
+    controller: function($scope, JolokiaService, Notification) {
         var $ctrl = this;
         $scope.loading = false;
 
@@ -13,7 +13,8 @@ angular.module("jolokiaWeb").component('gcButton', {
 
             JolokiaService.gcRun().then(function(){
             }).catch(function(err){
-                alert((err.data) ? JSON.stringify(err.data) : "Failed to load resource: [" + err.config.method + "] " + err.config.url);
+                var errorText = (err.data) ? JSON.stringify(err.data) : "Failed to load resource: [" + err.config.method + "] " + err.config.url;
+                Notification.error({title: gcRun(), message: errorText, delay: 5000});
             }).finally(function(){
                 $scope.loading = false;
             });

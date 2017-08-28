@@ -4,8 +4,8 @@
             <i class="fa fa-search" aria-hidden="true"></i>
         </span>
         <input type="text" class="form-control" ng-change="$ctrl.onSearchTextChange()" ng-model="$ctrl.treeSearchText" ng-model-options='{ debounce: 300 }' placeholder="Search by MBean path...">
-        <span class="input-group-btn">
-            <button class="btn btn-default" type="button"><i class="fa fa-trash-o" aria-hidden="true" ng-click="$ctrl.clearSearchText()"></i></button>
+        <span class="input-group-btn" ng-click="$ctrl.clearSearchText()">
+            <button class="btn btn-default" type="button"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
         </span>
     </div>
 
@@ -22,11 +22,7 @@
         <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>
     </div>
 
-    <div ng-show="$ctrl.error && !$ctrl.loading" class="alert alert-danger" role="alert">
-        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{$ctrl.error}}
-    </div>
-
-    <div ng-hide="$ctrl.error || $ctrl.loading || $ctrl.isBeanNode()" class="alert alert-info" role="alert">
+    <div ng-hide="$ctrl.loading || $ctrl.isBeanNode()" class="alert alert-info" role="alert">
         <i class="fa fa-info-circle" aria-hidden="true"></i> No MBean selected...
     </div>
 

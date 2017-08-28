@@ -12,6 +12,10 @@ public class ChartMessage extends Message {
         this.chartId = chartId;
     }
 
+    public String getChartId() {
+        return chartId;
+    }
+
     @Override
     public String toString() {
         JSONObject ret = new JSONObject();

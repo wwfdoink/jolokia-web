@@ -166,3 +166,44 @@ pre.huge-text {
     font-size: 12px;
     line-height: 1.5;
 }
+
+.value-inspector-empty {
+  color: #31708f;
+}
+
+.ui-notification {
+  border-radius: 5px;
+  border: 1px;
+}
+
+.ui-notification > .message {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.ui-notification.primary {
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+  color: #31708f;
+}
+.ui-notification.primary h3 {
+  border-color: #31708f;  
+}
+
+.ui-notification.error {
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #a94442;
+}
+.ui-notification.error h3 {
+  border-color: #a94442;  
+}
+
+.ui-notification.success {
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  color: #3c763d;
+}
+.ui-notification.success h3 {
+  border-color: #3c763d;  
+}

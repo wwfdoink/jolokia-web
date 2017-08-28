@@ -17,8 +17,8 @@ angular.module("jolokiaWeb").component('editAttributeButton', {
             var modalInstance = $uibModal.open({
                 component: 'editAttributeFormModal',
                 resolve: {
-                    bean: function(){ return $ctrl.bean; },
-                    attr: function(){ return $ctrl.attr; }
+                    bean: function(){ return self.bean; },
+                    attr: function(){ return self.attr; }
                 }
             }, function() {
                 // Cancel

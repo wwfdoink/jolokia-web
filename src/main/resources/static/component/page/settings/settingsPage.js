@@ -4,7 +4,7 @@ angular.module("jolokiaWeb").component('settingsPage', {
     },
     bindings: {
     },
-    controller: function(DashboardService, LocalStorageService, WebsocketService) {
+    controller: function(DashboardService, LocalStorageService, WebsocketService, Notification) {
         var self = this;
 
         self.$onInit = function () {
@@ -26,16 +26,30 @@ angular.module("jolokiaWeb").component('settingsPage', {
         }
         self.updateDashboardDelay = function(){
             if (!self.dashboardUpdateDelay) {
-                alert("Invalid input!");
+                Notification.error({
+                    title: '<i class="fa fa-exclamation-triangle"></i> Dashboard update delay',
+                    message: 'Invalid value!',
+                    delay: 8000
+                });
                 return;
             }
             LocalStorageService.set("dashboardUpdateDelay", self.dashboardUpdateDelay);
             DashboardService.updateDashboardDelay(self.dashboardUpdateDelay);
+            Notification.success({
+                title: '<i class="fa fa-check"></i> Dashboard update delay',
+                message: 'New delay saved successfully...',
+                delay: 5000
+            });
         }
 
         self.removeAttributeSubscription = function(attr){
             DashboardService.unTrackAttribute(attr.id,attr.name);
             self.trackedAttributes = LocalStorageService.get("trackedAttributes");
+            Notification.success({
+                title: '<i class="fa fa-check"></i> Attribute is no longer tracked...',
+                message: attr.name + '<br>' + attr.id,
+                delay: 5000
+            });            
         }
         
         self.$onDestroy = function(){

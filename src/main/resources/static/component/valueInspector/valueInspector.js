@@ -6,34 +6,46 @@ angular.module("jolokiaWeb").component('valueInspector', {
         value: '<'
     },
     controller: function($scope, $uibModal) {
-        var $ctrl = this;
+        var self = this;
 
-        this.isType = function(type){
-            if (Array.isArray($ctrl.value)) {
+        self.isType = function(type){
+            if (Array.isArray(self.value)) {
                 return "array" === type;
-            } else if (_.isObject($ctrl.value)) {
+            } else if (_.isObject(self.value)) {
                 return "object" === type;
-            } else if (_.isNumber($ctrl.value)) {
+            } else if (_.isNumber(self.value)) {
                 return "number" === type;
             } else {
                 return "simple" === type;
             }
         }
-        this.isHugeText = function(){
-            if ((typeof $ctrl.value == "string") && ($ctrl.value.length > 200)) {
+        self.isHugeText = function(){
+            if ((typeof self.value == "string") && (self.value.length > 200)) {
                 return true;
             }
             return false;
         }
-        this.isEmptyArray = function(){
-            return $ctrl.isType("array") && $ctrl.value.length > 0;
+        self.isEmptyArray = function(){
+            return self.isType("array") && self.value.length < 1;
+        }
+        self.isEmptyObject = function(){
+            return self.isType("object") && Object.keys(self.value).length < 1;
+        }
+        self.isEmptyString = function(){
+            return (typeof self.value === 'string') && (self.value.length < 1);
+        }
+        self.isNull = function(){
+            return (self.value === null);
+        }
+        self.isEmpty = function(){
+            return (self.isNull() || self.isEmptyString() || self.isEmptyObject() || self.isEmptyArray());
         }
 
-        this.openModal = function() {
+        self.openModal = function() {
             var modalInstance = $uibModal.open({
                 component: 'valueInspectorModal',
                 resolve: {
-                    value: function(){ return $ctrl.value; }
+                    value: function(){ return self.value; }
                 },
                 size: 'lg'
             }, function() {
@@ -42,11 +54,11 @@ angular.module("jolokiaWeb").component('valueInspector', {
         };
 
         // Huge texts only
-        this.openTextModal = function() {
+        self.openTextModal = function() {
             var modalInstance = $uibModal.open({
                 component: 'valueInspectorTextModal',
                 resolve: {
-                    value: function(){ return $ctrl.value; }
+                    value: function(){ return self.value; }
                 },
                 size: 'lg'
             }, function() {

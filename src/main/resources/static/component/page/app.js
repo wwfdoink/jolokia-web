@@ -4,7 +4,7 @@ angular.module("jolokiaWeb").component('app', {
     },
     bindings: {
     },
-    controller: function(jsPath, JolokiaService, WebsocketService) {
+    controller: function(jsPath, JolokiaService, WebsocketService, Notification) {
         var self = this;
 
         self.$onInit = function(){
@@ -19,7 +19,13 @@ angular.module("jolokiaWeb").component('app', {
 
             self.clientError = null;
             self.clientErrorSub = WebsocketService.errorMessageEvent.subscribe(
-                function(message) { self.clientError = message; }
+                function(message) { 
+                    Notification.error({
+                        title: '<i class="fa fa-exclamation-triangle"></i> J4pClient has encountered a problem',
+                        message: message,
+                        delay: 10000
+                    });
+                }
             );
         }
 

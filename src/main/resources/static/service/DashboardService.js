@@ -1,4 +1,4 @@
-angular.module('jolokiaWeb').service("DashboardService", function(WebsocketService, LocalStorageService){
+angular.module('jolokiaWeb').service("DashboardService", function(WebsocketService, LocalStorageService, Notification){
     var self = this;
 
     self.updateDashboardDelay = function(delay){
@@ -15,7 +15,6 @@ angular.module('jolokiaWeb').service("DashboardService", function(WebsocketServi
         }
         trackedAttributes.push({id: beanId, name: attrName});
         LocalStorageService.set("trackedAttributes", trackedAttributes);
-
         self.initAttribute(beanId, attrName);
     }
 
@@ -43,6 +42,7 @@ angular.module('jolokiaWeb').service("DashboardService", function(WebsocketServi
             });
             LocalStorageService.set("trackedAttributes", trackedAttributes);
         }
+        chartEvents[chartId].unsubscribe();
         delete self.chartEvents[chartId];
     }
 
