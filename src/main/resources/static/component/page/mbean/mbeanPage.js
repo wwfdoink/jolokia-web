@@ -4,7 +4,7 @@ angular.module("jolokiaWeb").component('mbeanPage', {
     },
     bindings: {
     },
-    controller: function($scope, $filter, JolokiaService, LocalStorageService) {
+    controller: function($scope, $filter, Notification, JolokiaService, LocalStorageService) {
         var self = this;
         // cache for original tree model
         var origTree = [];

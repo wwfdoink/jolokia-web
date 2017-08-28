@@ -70,7 +70,7 @@
             </div>
         </div>
 
-        <div class="col-xs-12 col-sm-6 col-lg-4" ng-repeat="attr in $ctrl.trackedAttributes">
+        <div class="col-xs-12 col-sm-6 col-lg-4" ng-if="$ctrl.hasPermission('READ')" ng-repeat="attr in $ctrl.trackedAttributes">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <i class="fa fa-star" aria-hidden="true"></i> {{attr.name}} <span style="font-size:0.8em;margin-left:10px;">{{attr.id}}</span>

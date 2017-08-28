@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketSession;
+import prj.jolokiaweb.jolokia.AgentInfo;
 import prj.jolokiaweb.jolokia.JolokiaClient;
 import prj.jolokiaweb.websocket.ChartMessage;
 import prj.jolokiaweb.websocket.WsClient;
@@ -107,6 +108,11 @@ public class DashboardUpdate {
 
     public List<Message> getTrackedAttributeMessages() {
         List<Message> result = new ArrayList<>();
+
+        // if READ is not allowed, we just don't care
+        if (!JolokiaClient.getAgentInfo().getBeanPermissions().contains(AgentInfo.JolokiaPermission.READ)) {
+            return result;
+        }
 
         try {
             List<J4pReadRequest> requestList = new ArrayList<>();

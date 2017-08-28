@@ -4,12 +4,13 @@ angular.module("jolokiaWeb").component('settingsPage', {
     },
     bindings: {
     },
-    controller: function(DashboardService, LocalStorageService, WebsocketService, Notification) {
+    controller: function(DashboardService, JolokiaService, LocalStorageService, WebsocketService, Notification) {
         var self = this;
 
         self.$onInit = function () {
-            self.minView = LocalStorageService.get("minView");
+            self.hasPermission = JolokiaService.hasPermission;
 
+            self.minView = LocalStorageService.get("minView");
             self.trackedAttributes = LocalStorageService.get("trackedAttributes");
 
             var delay = LocalStorageService.get("dashboardUpdateDelay");

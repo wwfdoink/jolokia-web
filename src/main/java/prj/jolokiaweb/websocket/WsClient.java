@@ -2,6 +2,8 @@ package prj.jolokiaweb.websocket;
 
 
 import org.jolokia.client.request.J4pReadRequest;
+import prj.jolokiaweb.jolokia.AgentInfo;
+import prj.jolokiaweb.jolokia.JolokiaClient;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

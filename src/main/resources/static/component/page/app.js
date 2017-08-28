@@ -17,7 +17,6 @@ angular.module("jolokiaWeb").component('app', {
                 function(status) { self.wsStatus = status; }
             );
 
-            self.clientError = null;
             self.clientErrorSub = WebsocketService.errorMessageEvent.subscribe(
                 function(message) { 
                     Notification.error({
