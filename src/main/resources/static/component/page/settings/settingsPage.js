@@ -28,7 +28,8 @@ angular.module("jolokiaWeb").component('settingsPage', {
         self.updateDashboardDelay = function(){
             if (!self.dashboardUpdateDelay) {
                 Notification.error({
-                    title: '<i class="fa fa-exclamation-triangle"></i> Dashboard update delay',
+                    faIcon: 'fa-exclamation-triangle',
+                    title: 'Dashboard update delay',
                     message: 'Invalid value!',
                     delay: 8000
                 });
@@ -37,7 +38,8 @@ angular.module("jolokiaWeb").component('settingsPage', {
             LocalStorageService.set("dashboardUpdateDelay", self.dashboardUpdateDelay);
             DashboardService.updateDashboardDelay(self.dashboardUpdateDelay);
             Notification.success({
-                title: '<i class="fa fa-check"></i> Dashboard update delay',
+                faIcon: 'fa-check',
+                title: 'Dashboard update delay',
                 message: 'New delay saved successfully...',
                 delay: 5000
             });
@@ -47,8 +49,9 @@ angular.module("jolokiaWeb").component('settingsPage', {
             DashboardService.unTrackAttribute(attr.id,attr.name);
             self.trackedAttributes = LocalStorageService.get("trackedAttributes");
             Notification.success({
-                title: '<i class="fa fa-check"></i> Attribute is no longer tracked...',
-                message: attr.name + '<br>' + attr.id,
+                faIcon: 'fa-check',
+                title: 'Attribute is no longer tracked...',
+                message: attr.id + ":" + attr.name,
                 delay: 5000
             });            
         }

@@ -7,18 +7,17 @@ angular.module("jolokiaWeb").component('executeButton', {
         operation: '<'
     },
     controller: function($scope, JolokiaService, $uibModal) {
-        var $ctrl = this;
-        $scope.loading = false;
+        var self = this;
+        
         this.$onInit = function(){
-            $scope.loading = false;
         }
 
         this.openForm = function() {
             var modalInstance = $uibModal.open({
                 component: 'executeFormModal',
                 resolve: {
-                    bean: function(){ return $ctrl.bean; },
-                    operation: function(){ return $ctrl.operation; }
+                    bean: function(){ return self.bean; },
+                    operation: function(){ return self.operation; }
                 }
             }, function() {
                 // Cancel

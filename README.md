@@ -24,10 +24,15 @@ JolokiaApp app = new JolokiaApp.Builder()
     .agentAuth("user","password")              // remote agent credentials
     .permissions(
         AgentInfo.JolokiaPermission.NONE,      // NONE means dashboard only
-        AgentInfo.JolokiaPermission.READ,
-        AgentInfo.JolokiaPermission.WRITE,
-        AgentInfo.JolokiaPermission.EXECUTE
+        AgentInfo.JolokiaPermission.READ,      // Permission to read MBean values
+        AgentInfo.JolokiaPermission.WRITE,     // Permission to change MBean values
+        AgentInfo.JolokiaPermission.EXECUTE    // Permission to execute MBean operations
     ) // default is rwx
+    .ssl()                                     // use the bundled self-signed cert
+    .ssl("keyStorePath"                        // keystore file path
+         "keyStorePassword",                   // keystore password
+         "keyStoreAlias")                       // keystore alias
+    .allowSelfSignedCert()                     // allow self-signed cert 
     .build();
 app.start();
 //app.startAndWait(); //blocking
@@ -44,5 +49,10 @@ $ java -jar jolokia-web-all.jar
   --agentUrl=http://localhost:8778/jolokia
   --agentUsername=user
   --agentPassword=password
+  --ssl
+  --sslKeyStorePath
+  --sslKeyStoreAlias
+  --sslKeyStorePassword
+  --allowSelfSignedCert
 ```
 Open your browser and navigate to http://yourhost:8080/

@@ -1,10 +1,17 @@
 package prj.jolokiaweb.jolokia;
 
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.SSLContextBuilder;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.jolokia.client.J4pClient;
+import org.jolokia.client.J4pClientBuilder;
 import org.jolokia.client.J4pClientBuilderFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import prj.jolokiaweb.JolokiaApp;
+
+import javax.net.ssl.SSLContext;
+import java.security.NoSuchAlgorithmException;
 
 public class JolokiaClient {
     private static final int MAX_CONNECTIONS = 2;
@@ -25,13 +32,30 @@ public class JolokiaClient {
 
     public static synchronized J4pClient getInstance() {
         if (instance == null) {
-            instance = J4pClientBuilderFactory
+            J4pClientBuilder clientBuilder = J4pClientBuilderFactory
                         .url(agentInfo.getUrl())
                         .user(agentInfo.getUsername())
                         .password(agentInfo.getPassword())
-                        .maxTotalConnections(MAX_CONNECTIONS)
+                        .maxTotalConnections(MAX_CONNECTIONS);
+
+            SSLConfig config = agentInfo.getSSLConfig();
+            if (config.isSelfSignedCertAllowed()) {
+                try {
+                    SSLContext sslContext = new SSLContextBuilder()
+                        .loadTrustMaterial(null, new TrustSelfSignedStrategy())
                         .build();
-            ;
+
+                    SSLConnectionSocketFactory sslConnection = new SSLConnectionSocketFactory(
+                            sslContext,
+                            SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER
+                    );
+
+                    clientBuilder.sslConnectionSocketFactory(sslConnection);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            instance = clientBuilder.build();
         }
         return instance;
     }

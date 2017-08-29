@@ -2,15 +2,19 @@ package prj.jolokiaweb;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
+import org.apache.catalina.Service;
+import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.commons.cli.*;
 import org.apache.tomcat.websocket.server.WsSci;
 import prj.jolokiaweb.jolokia.AgentInfo;
 import prj.jolokiaweb.jolokia.JolokiaClient;
+import prj.jolokiaweb.jolokia.SSLConfig;
 
 import javax.servlet.ServletException;
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 public class JolokiaApp {
@@ -25,17 +29,26 @@ public class JolokiaApp {
      * @param contextPath Tomcat context path
      * @param agentInfo Jolokia AgentInfo
      */
-    public JolokiaApp(final Integer tomcatPort, final String contextPath, final AgentInfo agentInfo) throws ServletException {
+    public JolokiaApp(final Integer tomcatPort, final String contextPath, final AgentInfo agentInfo) throws ServletException, URISyntaxException {
         int port = (tomcatPort == null) ? DEFAULT_PORT : tomcatPort;
         tomcat = new Tomcat();
         tomcat.setPort(port);
         tomcat.setBaseDir(new File(System.getProperty("java.io.tmpdir")).getAbsolutePath());
         tomcat.getHost().setAppBase(".");
+        Service service = tomcat.getService();
+
+        Connector sslConnector = null;
+        if (agentInfo.getSSLConfig().isUseSSL()) {
+            sslConnector = getSslConnector(port, agentInfo);
+            service.addConnector(sslConnector);
+        }
+
         Context ctx = tomcat.addWebapp(contextPath, new File(System.getProperty("java.io.tmpdir")).getAbsolutePath());
         ctx.addServletContainerInitializer(new WsSci(), null);
 
         StringBuilder urlBuilder = new StringBuilder();
-        urlBuilder.append("http://");
+        String scheme = ((sslConnector != null) ? sslConnector.getScheme() : "http");
+        urlBuilder.append(scheme + "://");
         urlBuilder.append(tomcat.getServer().getAddress());
         urlBuilder.append(":");
         urlBuilder.append(port);
@@ -49,6 +62,43 @@ public class JolokiaApp {
             agentInfo.setLocalAgent(false);
         }
         JolokiaClient.init(agentInfo);
+    }
+
+    private static Connector getSslConnector(int port, AgentInfo agentInfo) throws URISyntaxException {
+        SSLConfig sslConfig = agentInfo.getSSLConfig();
+        Connector connector = new Connector();
+        connector.setPort(port);
+        connector.setSecure(true);
+        connector.setScheme("https");
+        connector.setAttribute("clientAuth", "false");
+        connector.setAttribute("protocol", "HTTP/1.1");
+        connector.setAttribute("sslProtocol", "TLS");
+        connector.setAttribute("maxThreads", "10");
+        connector.setAttribute("protocol", "org.apache.coyote.http11.Http11AprProtocol");
+        connector.setAttribute("SSLEnabled", true);
+
+        if (sslConfig.isCustomCert()) {
+            if (sslConfig.getKeystoreAlias() != null) {
+                connector.setAttribute("keyAlias", sslConfig.getKeystoreAlias());
+            }
+            connector.setAttribute("keystorePass", sslConfig.getKeystorePassword());
+            connector.setAttribute("keystoreFile", sslConfig.getKeystorePath());
+        } else {
+            // using the bundled self-signed cert
+            connector.setAttribute("keyAlias", "tomcat");
+            connector.setAttribute("keystorePass", "localhost");
+            //connector.setAttribute("keystoreType", "JKS");
+            connector.setAttribute("keystoreFile",
+                    JolokiaApp.class.getProtectionDomain()
+                            .getCodeSource()
+                            .getLocation()
+                            .toURI()
+                            .getPath()
+                            .replace("/classes/", "") + "/resources/cert/keystore.jks"
+            );
+        }
+
+        return connector;
     }
 
     public static void main(String[] args) throws Exception {
@@ -95,6 +145,41 @@ public class JolokiaApp {
                 .optionalArg(true)
                 .hasArg()
                 .desc("Remote jolokia-jvm-agent password")
+                .build());
+        options.addOption(Option.builder()
+                .argName("")
+                .longOpt("ssl")
+                .optionalArg(true)
+                .hasArg(false)
+                .desc("Use ssl with the bundled self-signed cert")
+                .build());
+        options.addOption(Option.builder()
+                .argName("")
+                .longOpt("sslKeyStoreAlias")
+                .optionalArg(true)
+                .hasArg()
+                .desc("keystore alias")
+                .build());
+        options.addOption(Option.builder()
+                .argName("")
+                .longOpt("sslKeyStorePath")
+                .optionalArg(true)
+                .hasArg()
+                .desc("keystore path")
+                .build());
+        options.addOption(Option.builder()
+                .argName("")
+                .longOpt("sslKeyStorePassword")
+                .optionalArg(true)
+                .hasArg()
+                .desc("keystore password")
+                .build());
+        options.addOption(Option.builder()
+                .argName("")
+                .longOpt("allowSelfSignedCert")
+                .optionalArg(true)
+                .hasArg(false)
+                .desc("Allow self signed certs, default: false")
                 .build());
 
         CommandLineParser parser = new DefaultParser();
@@ -154,6 +239,25 @@ public class JolokiaApp {
             }
             if (line.hasOption("agentPassword") ) {
                 agentInfo.setPassword(line.getOptionValue("agentPassword"));
+            }
+
+            /* SSL specific */
+            SSLConfig sslConfig = agentInfo.getSSLConfig();
+            if (line.hasOption("ssl") ) {
+                sslConfig.setUseSSL(true);;
+            }
+            if (line.hasOption("sslKeyStorePath") ) {
+                sslConfig.setUseSSL(true);
+                sslConfig.setKeystorePath(line.getOptionValue("sslKeyStorePath"));
+            }
+            if (line.hasOption("sslKeyStorePassword") ) {
+                sslConfig.setKeystorePassword(line.getOptionValue("sslKeyStorePassword"));
+            }
+            if (line.hasOption("sslKeyStoreAlias") ) {
+                sslConfig.setKeystoreAlias(line.getOptionValue("sslKeyStoreAlias"));
+            }
+            if (line.hasOption("allowSelfSignedCert") ) {
+                sslConfig.setAllowSelfSignedCert(true);
             }
 
             JolokiaApp app = new JolokiaApp(port, contextPath, agentInfo);
@@ -271,9 +375,49 @@ public class JolokiaApp {
         }
 
         /**
+         * Enable SSL with bundled Self-signed cert
+         * @return
+         */
+        public Builder ssl() {
+            agentInfo.getSSLConfig().setUseSSL(true);
+            return this;
+        }
+
+        /**
+         * Enable SSL with custom cert
+         * @return
+         */
+        public Builder ssl(String keyStorePath,String keyStorePassword) {
+            this.ssl(keyStorePath, keyStorePassword,null);
+            return this;
+        }
+
+        /**
+         * Enable SSL with custom cert
+         * @return
+         */
+        public Builder ssl(String keyStorePath, String keyStorePassword, String keyStoreAlias) {
+            SSLConfig config = agentInfo.getSSLConfig();
+            config.setUseSSL(true);
+            config.setKeystorePath(keyStorePath);
+            config.setKeystorePassword(keyStorePassword);
+            config.setKeystoreAlias(keyStoreAlias);
+            return this;
+        }
+
+        /**
+         * Allow self-signed certs
+         * @return
+         */
+        public Builder allowSelfSignedCert() {
+            agentInfo.getSSLConfig().setAllowSelfSignedCert(true);
+            return this;
+        }
+
+        /**
          * @return new JolokiaApp instance
          */
-        public JolokiaApp build() throws ServletException {
+        public JolokiaApp build() throws ServletException, URISyntaxException {
             return new JolokiaApp(this.port, contextPath, agentInfo);
         }
     }

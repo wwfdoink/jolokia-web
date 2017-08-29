@@ -2,6 +2,7 @@
  * Angular
  */
 @charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}
+
 /*
  * Base structure
  */
@@ -175,6 +176,9 @@ pre.huge-text {
   border-radius: 5px;
   border: 1px;
 }
+.ui-notification > h3 > .fa {
+  margin-right: 5px;
+}
 
 .ui-notification > .message {
   word-wrap: break-word;
@@ -207,3 +211,4 @@ pre.huge-text {
 .ui-notification.success h3 {
   border-color: #3c763d;  
 }
+

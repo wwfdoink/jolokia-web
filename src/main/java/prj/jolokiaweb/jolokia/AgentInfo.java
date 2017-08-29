@@ -14,6 +14,8 @@ public class AgentInfo {
     private boolean isLocalAgent = false;
     private String username;
     private String password;
+    private SSLConfig SSLConfig = new SSLConfig();
+
     private Set<JolokiaPermission> beanPermissions = new HashSet<>();
 
     public AgentInfo() {
@@ -61,5 +63,13 @@ public class AgentInfo {
 
     public Set<JolokiaPermission> getBeanPermissions() {
         return beanPermissions;
+    }
+
+    public SSLConfig getSSLConfig() {
+        return SSLConfig;
+    }
+
+    public void setSSLConfig(SSLConfig SSLConfig) {
+        this.SSLConfig = SSLConfig;
     }
 }

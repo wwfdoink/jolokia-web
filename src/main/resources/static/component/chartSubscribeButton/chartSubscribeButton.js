@@ -21,15 +21,17 @@ angular.module("jolokiaWeb").component('chartSubscribeButton', {
             if (self.alreadyTracking()){
                 DashboardService.unTrackAttribute(self.bean.id, self.attr.name);
                 Notification.success({
-                    title: '<i class="fa fa-check"></i> Attribute tracking removed...',
-                    message: self.attr.name + '<br>' + self.bean.id,
+                    faIcon: 'fa-check',
+                    title: 'Attribute tracking removed...',
+                    message: self.bean.id + ":" + self.attr.name,
                     delay: 5000
                 });            
             } else {
                 DashboardService.trackAttribute(self.bean.id, self.attr.name);
                 Notification.success({
-                    title: '<i class="fa fa-check"></i> Attribute tracking added...',
-                    message: self.attr.name + '<br>' + self.bean.id,
+                    faIcon: 'fa-check',
+                    title: 'Attribute tracking added...',
+                    message: self.bean.id + ":" + self.attr.name,
                     delay: 5000
                 });            
             }

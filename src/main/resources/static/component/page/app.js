@@ -20,9 +20,11 @@ angular.module("jolokiaWeb").component('app', {
             self.clientErrorSub = WebsocketService.errorMessageEvent.subscribe(
                 function(message) { 
                     Notification.error({
-                        title: '<i class="fa fa-exclamation-triangle"></i> J4pClient has encountered a problem',
-                        message: message,
-                        delay: 10000
+                        faIcon: 'fa-exclamation-triangle',
+                        title: 'J4pClient has encountered a problem',
+                        message: message.error,
+                        delay: 10000,
+                        replaceMessage: true
                     });
                 }
             );

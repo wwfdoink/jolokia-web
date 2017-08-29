@@ -8,49 +8,50 @@ angular.module("jolokiaWeb").component('executeFormModal', {
         dismiss: '&'
     },
     controller: function ($scope, JolokiaService, $uibModal) {
-        var $ctrl = this;
+        var self = this;
 
-        $ctrl.$onInit = function () {
-            $ctrl.bean = $ctrl.resolve.bean;
-            $ctrl.operation = $ctrl.resolve.operation;
-            $ctrl.isError = false;
+        self.$onInit = function () {
+            self.bean = self.resolve.bean;
+            self.operation = self.resolve.operation;
+            self.isError = false;
+            self.loading = false;
         };
 
-        $ctrl.cancel = function () {
-            $ctrl.dismiss({$value: 'cancel'});
+        self.cancel = function () {
+            self.dismiss({$value: 'cancel'});
         };
 
-        $ctrl.getOperationNameWithSignature = function(){
+        self.getOperationNameWithSignature = function(){
             // since some of the functions are overloaded, you need to pass the signatures to the method name
-            var sigArr = _.map($ctrl.resolve.operation.args, function(arg){
+            var sigArr = _.map(self.resolve.operation.args, function(arg){
                 return arg.typeOrig;
             });
-            return $ctrl.operation.name + "(" + sigArr.join(',') + ")";
+            return self.operation.name + "(" + sigArr.join(',') + ")";
         }
 
-        $ctrl.execute = function(){
+        self.execute = function(){
             $scope.error = null;
 
-            var params = _.map($ctrl.resolve.operation.args, function(arg){
+            var params = _.map(self.resolve.operation.args, function(arg){
                 return arg.value;
             });
             params = params.filter(function(item){ return item != undefined });
 
-            $scope.loading = true;
-            JolokiaService.execute($ctrl.bean.id, $ctrl.getOperationNameWithSignature(), params).then(function(res) {
-                $scope.loading = false;
-                $ctrl.openResultModal($ctrl.operation.name, res.data, false);
+            self.loading = true;
+            JolokiaService.execute(self.bean.id, self.getOperationNameWithSignature(), params).then(function(res) {
+                self.loading = false;
+                self.openResultModal(self.operation.name, res.data, false);
             }).catch(function(err){
                 if (_.isObject(err.data)) { $scope.error = err.data.error; }
                 else if (err.data) { self.error = err.data; }
                 else { self.error = "Failed to load resource: [" + err.config.method + "] " + err.config.url }
-                $ctrl.openResultModal($ctrl.operation.name, $scope.error, true, $scope.error);
+                self.openResultModal(self.operation.name, $scope.error, true, $scope.error);
             }).finally(function(){
-                $scope.loading = false;
+                self.loading = false;
             });
         }
 
-        $ctrl.openResultModal = function(title, data, isError, error) {
+        self.openResultModal = function(title, data, isError, error) {
             var modalInstance;
 
             if (isError || (_.isEmpty(data) || (typeof data.value === "undefined") || _.isEmpty(data.value) || (data.value === null))) {
@@ -89,7 +90,7 @@ angular.module("jolokiaWeb").component('executeFormModal', {
             }
 
             modalInstance.result.then(function (selectedItem) {
-                $ctrl.selected = selectedItem;
+                self.selected = selectedItem;
             });
         };
     }

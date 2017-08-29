@@ -8,17 +8,17 @@ angular.module("jolokiaWeb").component('executeSimpleModal', {
         dismiss: '&'
     },
     controller: function () {
-        var $ctrl = this;
+        var self = this;
 
-        $ctrl.$onInit = function () {
-            $ctrl.title = $ctrl.resolve.title;
-            $ctrl.data = $ctrl.resolve.data;
-            $ctrl.isError = $ctrl.resolve.isError;
-            $ctrl.error = $ctrl.resolve.error;
+        self.$onInit = function () {
+            self.title = self.resolve.title;
+            self.data = self.resolve.data;
+            self.isError = self.resolve.isError;
+            self.error = self.resolve.error;
         };
 
-        $ctrl.cancel = function () {
-            $ctrl.dismiss({$value: 'cancel'});
+        self.cancel = function () {
+            self.dismiss({$value: 'cancel'});
         };
     }
 });

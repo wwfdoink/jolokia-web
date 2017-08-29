@@ -22,15 +22,24 @@ angular.module("jolokiaWeb").component('mbeanPage', {
             }, false);
         };
 
-        JolokiaService.getMbeanTree().then(function(res){
-            self.tree = $filter('beanTree')(res.data.value);
-            origTree = angular.copy(self.tree);
-        }).catch(function(err){
+        self.showError = function(err){
             var errorText;
             if (_.isObject(err.data)) { errorText = err.data.error; }
             else if (err.data) { errorText = err.data; }
             else { errorText = "Failed to load resource: [" + err.config.method + "] " + err.config.url }
-            Notification.error({title: '<i class="fa fa-exclamation-triangle"></i> Request error', message: errorText, delay: 10000});
+            Notification.error({
+                faIcon: 'fa-exclamation-triangle',
+                title: 'Request error',
+                message: errorText,
+                delay: 10000
+            });
+        }
+
+        JolokiaService.getMbeanTree().then(function(res){
+            self.tree = $filter('beanTree')(res.data.value);
+            origTree = angular.copy(self.tree);
+        }).catch(function(err){
+            self.showError(err);
         }).finally(function(){
             self.loading = false;
         });
@@ -50,11 +59,7 @@ angular.module("jolokiaWeb").component('mbeanPage', {
                         }
                     }
                 }).catch(function(err){
-                    var errorText;
-                    if (_.isObject(err.data)) { errorText = err.data.error; }
-                    else if (err.data) { errorText = err.data; }
-                    else { errorText = "Failed to load resource: [" + err.config.method + "] " + err.config.url }
-                    Notification.error({title: '<i class="fa fa-exclamation-triangle"></i> Request error', message: errorText, delay: 10000});
+                    self.showError(err);
                 }).finally(function(){
                     self.beanLoading = false;
                 });
