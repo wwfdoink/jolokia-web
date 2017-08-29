@@ -31,8 +31,9 @@ JolokiaApp app = new JolokiaApp.Builder()
     .ssl()                                     // use the bundled self-signed cert
     .ssl("keyStorePath"                        // keystore file path
          "keyStorePassword",                   // keystore password
-         "keyStoreAlias")                       // keystore alias
-    .allowSelfSignedCert()                     // allow self-signed cert 
+         "keyStoreAlias")                      // keystore alias
+    .allowSelfSignedCert()                     // allow self-signed cert
+    .requireAuth("username", "password")       // enable Basic-Auth
     .build();
 app.start();
 //app.startAndWait(); //blocking
@@ -54,5 +55,6 @@ $ java -jar jolokia-web-all.jar
   --sslKeyStoreAlias
   --sslKeyStorePassword
   --allowSelfSignedCert
+  --requireAuth=<username>,<password>
 ```
 Open your browser and navigate to http://yourhost:8080/

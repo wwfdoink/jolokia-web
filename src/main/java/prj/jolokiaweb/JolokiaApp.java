@@ -181,6 +181,14 @@ public class JolokiaApp {
                 .hasArg(false)
                 .desc("Allow self signed certs, default: false")
                 .build());
+        options.addOption(Option.builder()
+                .argName("<username> <password>")
+                .longOpt("requireAuth")
+                .optionalArg(true)
+                .valueSeparator(',')
+                .hasArgs()
+                .desc("Enable Basic auth")
+                .build());
 
         CommandLineParser parser = new DefaultParser();
 
@@ -235,10 +243,10 @@ public class JolokiaApp {
                 agentInfo.setUrl(url);
             }
             if (line.hasOption("agentUsername") ) {
-                agentInfo.setUsername(line.getOptionValue("agentUsername"));
+                agentInfo.setAgentUsername(line.getOptionValue("agentUsername"));
             }
             if (line.hasOption("agentPassword") ) {
-                agentInfo.setPassword(line.getOptionValue("agentPassword"));
+                agentInfo.setAgentPassword(line.getOptionValue("agentPassword"));
             }
 
             /* SSL specific */
@@ -258,6 +266,15 @@ public class JolokiaApp {
             }
             if (line.hasOption("allowSelfSignedCert") ) {
                 sslConfig.setAllowSelfSignedCert(true);
+            }
+            if (line.hasOption("requireAuth") ) {
+                String[] values = line.getOptionValues("requireAuth");
+                if (values.length != 2) {
+                    throw new RuntimeException("requireAuth requires 2 parameters: <username>,<password>");
+                }
+                agentInfo.setWebUsername(values[0]);
+                agentInfo.setWebPassword(values[1]);
+                agentInfo.setLocalAgent(true);
             }
 
             JolokiaApp app = new JolokiaApp(port, contextPath, agentInfo);
@@ -359,8 +376,8 @@ public class JolokiaApp {
          * @return this Builder
          */
         public Builder agentAuth(final String username, final String password) {
-            this.agentInfo.setUsername(username);
-            this.agentInfo.setPassword(password);
+            this.agentInfo.setAgentUsername(username);
+            this.agentInfo.setAgentPassword(password);
             return this;
         }
 
@@ -411,6 +428,16 @@ public class JolokiaApp {
          */
         public Builder allowSelfSignedCert() {
             agentInfo.getSSLConfig().setAllowSelfSignedCert(true);
+            return this;
+        }
+
+        /**
+         * Require Basic Authentication
+         * @return
+         */
+        public Builder requireAuth(String username, String password) {
+            agentInfo.setWebUsername(username);
+            agentInfo.setWebPassword(password);
             return this;
         }
 

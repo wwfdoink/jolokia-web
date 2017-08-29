@@ -24,6 +24,8 @@ repositories {
 dependencies {
     compile "org.springframework:spring-webmvc:4.3.9.RELEASE",
             "org.springframework:spring-websocket:4.3.10.RELEASE",
+            "org.springframework.security:spring-security-web:4.2.3.RELEASE",
+            "org.springframework.security:spring-security-config:4.2.3.RELEASE",
             "org.apache.tomcat.embed:tomcat-embed-core:8.5.16",
             "org.apache.tomcat.embed:tomcat-embed-jasper:8.5.16",
             "org.apache.tomcat.embed:tomcat-embed-logging-log4j:8.5.2",

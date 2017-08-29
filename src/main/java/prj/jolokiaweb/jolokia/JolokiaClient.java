@@ -6,12 +6,8 @@ import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.jolokia.client.J4pClient;
 import org.jolokia.client.J4pClientBuilder;
 import org.jolokia.client.J4pClientBuilderFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import prj.jolokiaweb.JolokiaApp;
 
 import javax.net.ssl.SSLContext;
-import java.security.NoSuchAlgorithmException;
 
 public class JolokiaClient {
     private static final int MAX_CONNECTIONS = 2;
@@ -32,10 +28,17 @@ public class JolokiaClient {
 
     public static synchronized J4pClient getInstance() {
         if (instance == null) {
+            String user = agentInfo.getAgentUsername();
+            String password = agentInfo.getAgentUsername();
+            if (agentInfo.requiresLocalAuth() && agentInfo.getAgentUsername() == null) {
+                user = agentInfo.getWebUsername();
+                password = agentInfo.getWebPassword();
+            }
+
             J4pClientBuilder clientBuilder = J4pClientBuilderFactory
                         .url(agentInfo.getUrl())
-                        .user(agentInfo.getUsername())
-                        .password(agentInfo.getPassword())
+                        .user(user)
+                        .password(password)
                         .maxTotalConnections(MAX_CONNECTIONS);
 
             SSLConfig config = agentInfo.getSSLConfig();

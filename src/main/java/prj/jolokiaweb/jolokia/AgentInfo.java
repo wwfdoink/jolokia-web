@@ -12,8 +12,12 @@ public class AgentInfo {
 
     private String url;
     private boolean isLocalAgent = false;
-    private String username;
-    private String password;
+    private boolean requireAuth = false;
+    private String agentUsername;
+    private String agentPassword;
+
+    private String webUsername;
+    private String webPassword;
     private SSLConfig SSLConfig = new SSLConfig();
 
     private Set<JolokiaPermission> beanPermissions = new HashSet<>();
@@ -29,28 +33,56 @@ public class AgentInfo {
         this.url = url;
     }
 
-    public String getUsername() {
-        return username;
+    public String getAgentUsername() {
+        return agentUsername;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setAgentUsername(String agentUsername) {
+        this.agentUsername = agentUsername;
     }
 
-    public String getPassword() {
-        return password;
+    public String getAgentPassword() {
+        return agentPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAgentPassword(String agentPassword) {
+        this.agentPassword = agentPassword;
+    }
+
+    public String getWebUsername() {
+        return webUsername;
+    }
+
+    public void setWebUsername(String webUsername) {
+        this.webUsername = webUsername;
+    }
+
+    public String getWebPassword() {
+        return webPassword;
+    }
+
+    public void setWebPassword(String webPassword) {
+        this.webPassword = webPassword;
     }
 
     public boolean isLocalAgent() {
         return isLocalAgent;
     }
 
+    public boolean requiresLocalAuth() {
+        return webUsername != null;
+    }
+
     public void setLocalAgent(boolean localAgent) {
         isLocalAgent = localAgent;
+    }
+
+    public boolean isRequireAuth() {
+        return requireAuth;
+    }
+
+    public void setRequireAuth(boolean requireAuth) {
+        this.requireAuth = requireAuth;
     }
 
     public void addPermission(JolokiaPermission ... permission) {
