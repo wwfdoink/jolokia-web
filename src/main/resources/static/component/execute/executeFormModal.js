@@ -54,13 +54,13 @@ angular.module("jolokiaWeb").component('executeFormModal', {
         self.openResultModal = function(title, data, isError, error) {
             var modalInstance;
 
-            if (isError || (_.isEmpty(data) || (typeof data.value === "undefined") || _.isEmpty(data.value) || (data.value === null))) {
+            if (isError || (_.isEmpty(data) || (typeof data.value === "undefined") || (data.value === null))) {
                 // if it's just a simple error or empty value we don't need the valueInspector
                 modalInstance = $uibModal.open({
                     component: 'executeSimpleModal',
                     resolve: {
                         data: function () {
-                            if (_.isEmpty(data) || _.isEmpty(data.value)) {
+                            if (_.isEmpty(data) || (typeof data.value === "undefined")) {
                                 return null;
                             }
                             return data.value;
