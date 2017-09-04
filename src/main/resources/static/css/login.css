@@ -1,0 +1,28 @@
+html, body {
+    background-color: #666;
+}
+
+.login-box {
+    margin-top: 40px;
+    background-color: #ededed;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px #000;
+    padding: 20px;
+}
+.login-box .input-group {
+    width:100%;
+    margin-bottom: 5px;
+}
+.login-box .input-group > .input-group-addon {
+    text-align: center;
+    width: 40px;
+}
+.login-box button[type="submit"] {
+    margin-top:5px;
+    width:100%;    
+}
+.login-icon {
+    font-size: 5em;
+    text-align: center;
+    color: #cdcdcd;
+}

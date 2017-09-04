@@ -1,5 +1,20 @@
 angular.module('jolokiaWeb').service("UtilService", function(){
     var self = this;
+    
+    self.types = {
+        number: ["int","double","long","float","java.lang.Integer","java.lang.Double","java.lang.Long","java.lang.Float"],
+        boolean: ["boolean","java.lang.Boolean"],
+    }
+    self.isNumber = function(text){
+        return (self.types.number.indexOf(text) > -1);
+    }
+    self.isBoolean = function(text){
+        return (self.types.boolean.indexOf(text) > -1);
+    }
+    self.isArray = function(text){
+        return text.endsWith('[]');
+    }
+
 
     this.getTimeString = function(){
         var date = new Date();

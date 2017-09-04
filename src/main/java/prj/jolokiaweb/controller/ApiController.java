@@ -41,12 +41,8 @@ public class ApiController {
     }
 
     @RequestMapping(value = "/api/beans", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<JSONObject> beanTree() {
+    public ResponseEntity<JSONObject> beans() {
         JSONObject result = new JSONObject();
-        if (!JolokiaClient.getAgentInfo().getBeanPermissions().contains(AgentInfo.JolokiaPermission.READ)) {
-            result.put("error", "Access denied");
-            return ResponseEntity.badRequest().body(result);
-        }
 
         try {
             String path = null; // null means full tree
@@ -63,10 +59,6 @@ public class ApiController {
     @RequestMapping(value = "/api/version", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JSONObject> version() {
         JSONObject result = new JSONObject();
-        if (!JolokiaClient.getAgentInfo().getBeanPermissions().contains(AgentInfo.JolokiaPermission.READ)) {
-            result.put("error", "Access denied");
-            return ResponseEntity.badRequest().body(result);
-        }
 
         try {
             J4pReadRequest runtimeReq = new J4pReadRequest("java.lang:type=Runtime");
@@ -85,10 +77,6 @@ public class ApiController {
     @RequestMapping(value = "/api/read", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JSONObject> read(@RequestBody ReadForm readForm) {
         JSONObject result = new JSONObject();
-        if (!JolokiaClient.getAgentInfo().getBeanPermissions().contains(AgentInfo.JolokiaPermission.READ)) {
-            result.put("error", "Access denied");
-            return ResponseEntity.badRequest().body(result);
-        }
 
         try {
             J4pReadRequest readReq = new J4pReadRequest(readForm.getMbean());
@@ -110,10 +98,6 @@ public class ApiController {
     @RequestMapping(value = "/api/execute", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JSONObject> execute(@RequestBody ExecForm execForm) {
         JSONObject result = new JSONObject();
-        if (!JolokiaClient.getAgentInfo().getBeanPermissions().contains(AgentInfo.JolokiaPermission.EXECUTE)) {
-            result.put("error", "Access denied");
-            return ResponseEntity.badRequest().body(result);
-        }
 
         try {
             J4pExecRequest execReq;
@@ -138,10 +122,6 @@ public class ApiController {
     @RequestMapping(value = "/api/write", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JSONObject> write(@RequestBody WriteForm form) {
         JSONObject result = new JSONObject();
-        if (!JolokiaClient.getAgentInfo().getBeanPermissions().contains(AgentInfo.JolokiaPermission.WRITE)) {
-            result.put("error", "Access denied");
-            return ResponseEntity.badRequest().body(result);
-        }
 
         try {
             J4pWriteRequest writeReq = new J4pWriteRequest(form.getMbean(), form.getAttribute(), form.getValue());

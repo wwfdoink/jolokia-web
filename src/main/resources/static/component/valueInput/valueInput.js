@@ -5,55 +5,49 @@ angular.module("jolokiaWeb").component('valueInput', {
     bindings: {
         arg: '='
     },
-    controller: function($scope) {
-        var $ctrl = this;
+    controller: function($scope, UtilService) {
+        var self = this;
         this.$onInit = function(){
-            if (this.arg.type === "boolean" && !this.arg.value) {
-                this.arg.value = false;
-            } else if (_.contains(["java.lang.String[]", "long[]"], this.arg.type)) {
-                this.arg.value = [];
+            if (UtilService.isBoolean(self.arg.type) && !self.arg.value) {
+                self.arg.value = false;
+            } else if (UtilService.isArray(self.arg.type)) {
+                self.arg.value = [];
             }
         }
+
+        self.isBoolean = function(){ return UtilService.isBoolean(self.arg.type); }
+        self.isNumber = function(){ return UtilService.isNumber(self.arg.type); }
+        self.isArray = function(){ return UtilService.isArray(self.arg.type); }
+        self.isNumberArray = function(){
+            return UtilService.isNumber(self.arg.type.replace('[]',''));
+        }
+        
         this.getType = function(){
-            if (this.isBoolean(this.arg.type)) {
+            if (self.isBoolean()) {
                 return "boolean"
-            } else if (_.contains(["java.lang.String[]", "long[]"], this.arg.type)) {
-                return this.arg.type;
-            } else if (this.isNumber(this.arg.type)) {
+            } else if (self.isArray()) {
+                return "array";
+            } else if (self.isNumber()) {
                 return "number";
             } else {
                 return "simple";
             }
         }
 
-        this.isBoolean = function(type){
-            if (type === "boolean" || type === "java.lang.Boolean") {
-                return true;
-            }
-            return false;
-        }
-
-        this.isNumber = function(type){
-            if (type === "long" || type === "double" || type === "int") {
-                return true;
-            }
-            return false;
-        }
-
         this.pushToArray = function(val){
             if (val === "" || typeof val === "undefined" || val === null) {
                 return;
             }
-            if (!_.isArray($ctrl.arg.value)) {
-                $ctrl.arg.value = [];
+            if (!_.isArray(self.arg.value)) {
+                self.arg.value = [];
             }
-            $ctrl.arg.value.push(val);
-            $ctrl.arrayInput = null;
+            self.arg.value.push(val);
+            self.arrayInput = null;
         }
 
         this.removeFromArray = function(idx){
             if (idx > -1) {
-                $ctrl.arg.value.splice(idx, 1);
+                self.arg.value.splice(idx, 1);
             }
         }
     }

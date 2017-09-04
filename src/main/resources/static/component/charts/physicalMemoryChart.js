@@ -9,8 +9,8 @@ angular.module("jolokiaWeb").component('physicalMemoryChart', {
         self.$onInit = function() {
             self.chartData = {
                 labels:[],
-                series:['Used','Committed','Max'],
-                data:[[],[],[]]
+                series:['Used','Committed'],
+                data:[[],[]]
              }
 
             // fill with empty values

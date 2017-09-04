@@ -12,6 +12,10 @@ body {
   padding-top: 50px;
 }
 
+.no-wrap {
+  white-space:nowrap;
+}
+
 /*
  * Global add-ons
  */

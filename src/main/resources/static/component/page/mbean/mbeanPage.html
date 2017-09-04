@@ -88,7 +88,7 @@
                         </tr>
                         <tr ng-repeat="attr in $ctrl.currentNode.attr | filter:{name:$ctrl.searchAttribute} | orderBy:'name'">
                             <td ng-if="$ctrl.hasPermission('WRITE')"><edit-attribute-button bean="$ctrl.currentNode" attr="attr"></edit-attribute-button></td>
-                            <td><chart-subscribe-button bean="$ctrl.currentNode" attr="attr"></chart-subscribe-button> {{attr.name}}</td>
+                            <td class="no-wrap"><chart-subscribe-button bean="$ctrl.currentNode" attr="attr"></chart-subscribe-button> {{attr.name}}</td>
                             <td><value-inspector value="attr.value"></value-inspector></td>
                             <td class="visible-lg">{{attr.type}}</td>
                             <td class="visible-lg">{{attr.desc}}</td>

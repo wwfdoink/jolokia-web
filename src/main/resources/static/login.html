@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html ng-app="jolokiaWeb" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="static/pics/favicon.ico" sizes="16x16" type="image/vnd.microsoft.icon">
+
+    <title>Login</title>
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.7-1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.7-1/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="webjars/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- own css -->
+    <link rel="stylesheet" href="static/css/login.css">
+
+    <!-- libs -->
+    <script src="webjars/jquery/3.2.1/jquery.min.js"></script>
+    <script src="webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-4 col-lg-offset-4 login-box">
+                <form method="post" action="auth">
+                    <div class="login-icon">
+                        <i class="fa fa-user-o"></i>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                        <input name="username" type="text" class="form-control" placeholder="Username...">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-certificate"></i></span>
+                        <input name="password" type="text" class="form-control" placeholder="Password...">
+                    </div>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <button type="submit" class="btn btn-primary pull-right">Login</button>
+                </form>
+            </div>                        
+        </div>                    
+    </div>
+</body>
+</html>

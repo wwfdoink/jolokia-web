@@ -36,19 +36,20 @@ public class JolokiaApp {
         tomcat.setBaseDir(new File(System.getProperty("java.io.tmpdir")).getAbsolutePath());
         tomcat.getHost().setAppBase(".");
         Service service = tomcat.getService();
-
-        Connector sslConnector = null;
+        Connector connector;
         if (agentInfo.getSSLConfig().isUseSSL()) {
-            sslConnector = getSslConnector(port, agentInfo);
-            service.addConnector(sslConnector);
+            connector = getSslConnector(port, agentInfo);
+            service.addConnector(connector);
+        } else {
+            connector = getHttpConnector(port);
+            service.addConnector(connector);
         }
 
         Context ctx = tomcat.addWebapp(contextPath, new File(System.getProperty("java.io.tmpdir")).getAbsolutePath());
         ctx.addServletContainerInitializer(new WsSci(), null);
 
         StringBuilder urlBuilder = new StringBuilder();
-        String scheme = ((sslConnector != null) ? sslConnector.getScheme() : "http");
-        urlBuilder.append(scheme + "://");
+        urlBuilder.append(connector.getScheme() + "://");
         urlBuilder.append(tomcat.getServer().getAddress());
         urlBuilder.append(":");
         urlBuilder.append(port);
@@ -64,12 +65,22 @@ public class JolokiaApp {
         JolokiaClient.init(agentInfo);
     }
 
+    private static Connector getHttpConnector(int port) throws URISyntaxException {
+        Connector connector = new Connector();
+        connector.setPort(port);
+        connector.setSecure(true);
+        connector.setScheme("http");
+        connector.setURIEncoding("UTF-8");
+        return connector;
+    }
+
     private static Connector getSslConnector(int port, AgentInfo agentInfo) throws URISyntaxException {
         SSLConfig sslConfig = agentInfo.getSSLConfig();
         Connector connector = new Connector();
         connector.setPort(port);
         connector.setSecure(true);
         connector.setScheme("https");
+        connector.setURIEncoding("UTF-8");
         connector.setAttribute("clientAuth", "false");
         connector.setAttribute("protocol", "HTTP/1.1");
         connector.setAttribute("sslProtocol", "TLS");
@@ -333,12 +344,14 @@ public class JolokiaApp {
      * Builder class for JolokiaApp
      */
     public static class Builder {
-        private Integer port;
-        private String contextPath;
+        private Integer port = DEFAULT_PORT;
+        private String contextPath = "";
         private AgentInfo agentInfo = new AgentInfo();
 
         public Builder() {
-            this.port = DEFAULT_PORT;
+            agentInfo.addPermission(AgentInfo.JolokiaPermission.READ);
+            agentInfo.addPermission(AgentInfo.JolokiaPermission.WRITE);
+            agentInfo.addPermission(AgentInfo.JolokiaPermission.EXECUTE);
         }
 
         /**
