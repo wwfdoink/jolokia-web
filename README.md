@@ -47,9 +47,9 @@ $ java -jar jolokia-web-all.jar
   --port=8080
   --contextPath=jolokiaweb
   --permissions=rwxn
-  --agentUrl=http://localhost:8778/jolokia
-  --agentUsername=user
-  --agentPassword=password
+  --remoteAgentUrl=http://localhost:8778/jolokia
+  --remoteAgentUsername=user
+  --remoteAgentPassword=password
   --ssl
   --sslKeyStorePath
   --sslKeyStoreAlias
