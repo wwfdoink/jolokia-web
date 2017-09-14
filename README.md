@@ -58,3 +58,14 @@ $ java -jar jolokia-web-all.jar
   --requireAuth=<username>,<password>
 ```
 Open your browser and navigate to http://yourhost:8080/
+
+##### Dashboard
+![dashboard](https://user-images.githubusercontent.com/9130989/30425931-0913f2c8-994b-11e7-9a44-7190678ca021.jpg)
+##### Managed-Beans
+![mbeans](https://user-images.githubusercontent.com/9130989/30425944-14129684-994b-11e7-8b4c-211d22b6b089.jpg)
+##### Edit MBean attributes
+![attrib](https://user-images.githubusercontent.com/9130989/30425953-19fd0246-994b-11e7-91b8-36ed09b7e777.jpg)
+##### Dealing with non-primitive types
+![vi](https://user-images.githubusercontent.com/9130989/30426095-1e42c4e4-994b-11e7-9648-136b39fb0033.jpg)
+##### Execute MBean operations
+![ops](https://user-images.githubusercontent.com/9130989/30426131-2d511e4a-994b-11e7-895f-a015bae4b809.jpg)
