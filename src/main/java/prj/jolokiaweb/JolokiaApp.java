@@ -256,8 +256,8 @@ public class JolokiaApp {
             if (line.hasOption("remoteAgentUsername") ) {
                 agentInfo.setAgentUsername(line.getOptionValue("remoteAgentUsername"));
             }
-            if (line.hasOption("remoteAgentUsername") ) {
-                agentInfo.setAgentPassword(line.getOptionValue("remoteAgentUsername"));
+            if (line.hasOption("remoteAgentPassword") ) {
+                agentInfo.setAgentPassword(line.getOptionValue("remoteAgentPassword"));
             }
 
             /* SSL specific */
