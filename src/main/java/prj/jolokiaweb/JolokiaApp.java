@@ -245,19 +245,19 @@ public class JolokiaApp {
                     contextPath = "/" + contextPath;
                 }
             }
-            if (line.hasOption("agentUrl") ) {
-                String url = line.getOptionValue("agentUrl");
+            if (line.hasOption("remoteAgentUrl") ) {
+                String url = line.getOptionValue("remoteAgentUrl");
                 if (!url.endsWith("/")) {
                     url += "/";
                 }
                 URL urlCheck = new URL(url); // check url
                 agentInfo.setUrl(url);
             }
-            if (line.hasOption("agentUsername") ) {
-                agentInfo.setAgentUsername(line.getOptionValue("agentUsername"));
+            if (line.hasOption("remoteAgentUsername") ) {
+                agentInfo.setAgentUsername(line.getOptionValue("remoteAgentUsername"));
             }
-            if (line.hasOption("agentPassword") ) {
-                agentInfo.setAgentPassword(line.getOptionValue("agentPassword"));
+            if (line.hasOption("remoteAgentUsername") ) {
+                agentInfo.setAgentPassword(line.getOptionValue("remoteAgentUsername"));
             }
 
             /* SSL specific */
