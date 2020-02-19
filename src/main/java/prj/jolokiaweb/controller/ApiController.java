@@ -80,7 +80,6 @@ public class ApiController {
 
         try {
             J4pReadRequest readReq = new J4pReadRequest(readForm.getMbean());
-            readReq.setPreferredHttpMethod("POST");
             Map<J4pQueryParameter,String> params = new HashMap<>();
             params.put(J4pQueryParameter.IGNORE_ERRORS,"true");
             J4pReadResponse readRes = JolokiaClient.getInstance().execute(readReq, params);
