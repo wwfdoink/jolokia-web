@@ -29,7 +29,7 @@ public class JolokiaClient {
     public static synchronized J4pClient getInstance() {
         if (instance == null) {
             String user = agentInfo.getAgentUsername();
-            String password = agentInfo.getAgentUsername();
+            String password = agentInfo.getAgentPassword();
             if (agentInfo.requiresLocalAuth() && agentInfo.getAgentUsername() == null) {
                 user = agentInfo.getWebUsername();
                 password = agentInfo.getWebPassword();
